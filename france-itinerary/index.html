@@ -528,6 +528,7 @@ function showDetail(id) {
       <div style="text-align:right;flex-shrink:0">
         ${reserveBadge}
         <div style="font-size:11px;color:#86868b;margin-top:2px">${poi.time}</div>
+        <button onclick="hideDetail()" class="detail-close-btn" style="margin-top:4px;background:none;border:none;font-size:16px;cursor:pointer;color:#86868b;padding:2px 4px" title="关闭">✕</button>
       </div>
     </div>
 
@@ -877,9 +878,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initMap();
   buildSidebar();
 
-  // Close detail panel
+  // Close detail panel - click anywhere on the panel or the handle
   document.getElementById('detailPanel').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('detailPanel') || e.target.classList.contains('detail-handle')) {
+    if (e.target === document.getElementById('detailPanel') || 
+        e.target.classList.contains('detail-handle') ||
+        e.target.closest('.detail-close-btn')) {
       hideDetail();
     }
   });
