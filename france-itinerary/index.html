@@ -104,6 +104,31 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 /* Desktop detail panel */
 @media(min-width:901px){.detail-panel{max-width:380px;left:auto;right:20px;bottom:20px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.15)}.detail-handle{display:none}}
 
+/* Version badge */
+.version-badge{position:absolute;top:10px;left:10px;z-index:1000;background:rgba(255,255,255,.92);border-radius:6px;padding:3px 8px;font-size:10px;color:#86868b;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s}
+.version-badge:hover{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12);color:#555}
+.version-badge .v-dot{width:5px;height:5px;border-radius:50%;background:#34c759;flex-shrink:0}
+
+/* Changelog modal */
+.changelog-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:9999;align-items:center;justify-content:center}
+.changelog-overlay.open{display:flex}
+.changelog-modal{background:#fff;border-radius:16px;width:90%;max-width:560px;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.15)}
+.changelog-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
+.changelog-header h2{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.changelog-header h2 span{font-size:11px;color:#86868b;font-weight:400}
+.changelog-close{background:none;border:none;font-size:20px;cursor:pointer;color:#86868b;padding:4px}
+.changelog-close:hover{color:#333}
+.changelog-body{overflow-y:auto;padding:16px 20px;flex:1}
+.version-entry{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
+.version-entry:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.version-tag{display:inline-block;background:#007aff;color:#fff;border-radius:4px;padding:1px 8px;font-size:11px;font-weight:600;margin-right:6px}
+.version-tag.old{background:#86868b}
+.version-date{font-size:11px;color:#86868b;margin-left:4px}
+.version-title{font-size:14px;font-weight:600;margin:4px 0 2px;color:#1d1d1f}
+.version-items{list-style:none;padding:0;margin:4px 0 0}
+.version-items li{font-size:12px;color:#555;line-height:1.6;padding:1px 0 1px 12px;position:relative}
+.version-items li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;border-radius:50%;background:#007aff}
+
 /* Summary modal - wider */
 .summary-modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:9999;align-items:center;justify-content:center}
 .summary-modal-overlay.open{display:flex}
@@ -191,6 +216,52 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 <div class="detail-panel" id="detailPanel">
 <div class="detail-handle"></div>
 <div class="detail-content" id="detailContent"></div>
+</div>
+
+<!-- Changelog modal -->
+<div class="changelog-overlay" id="changelogModal">
+<div class="changelog-modal">
+<div class="changelog-header">
+<h2>📋 更新日志 <span>v1.2.0</span></h2>
+<button class="changelog-close" onclick="hideChangelog()">✕</button>
+</div>
+<div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.2.0</span><span class="version-date">2026-07-24</span>
+<div class="version-title">详情面板重构 + 汇总表增强</div>
+<ul class="version-items">
+<li>详情面板改为左右布局，增加关闭按钮</li>
+<li>增加官网链接、多渠道预约信息（官网/博物馆通票/旁听）</li>
+<li>汇总表新增「最早预约」列，按需筛选/排序</li>
+<li>底部门票总价合计（€ + ¥换算）</li>
+<li>行程显示改为箭头↓样式，标注距离和预计到达时间</li>
+<li>修复巴黎圣母院预约链接缺失</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag old">v1.1.0</span><span class="version-date">2026-07-24</span>
+<div class="version-title">路线优化 + 类型标签 + 加载加速</div>
+<ul class="version-items">
+<li>所有路线统一蓝色+白色描边</li>
+<li>新增闭馆冲突检测（红色标注冲突行）</li>
+<li>行程增加类型徽标（景点/餐饮/体验/行程）</li>
+<li>路线加载改为并行4条一批，大幅提速</li>
+<li>localStorage 缓存路线数据</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag old">v1.0.0</span><span class="version-date">2026-07-23</span>
+<div class="version-title">初始版本发布</div>
+<ul class="version-items">
+<li>12天行程数据全量导入（巴黎→波尔多→图卢兹→蒙彼利埃→里昂→日内瓦）</li>
+<li>Leaflet 交互式地图 + OSRM 真实驾车路线</li>
+<li>每日行程切换 + 景点详情面板</li>
+<li>一键总览全部路线</li>
+<li>手机端响应式适配</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 
 <!-- Summary modal -->
@@ -782,6 +853,16 @@ function hideSummary() {
 }
 
 // ============================================================
+// CHANGELOG
+// ============================================================
+function showChangelog() {
+  document.getElementById('changelogModal').classList.add('open');
+}
+function hideChangelog() {
+  document.getElementById('changelogModal').classList.remove('open');
+}
+
+// ============================================================
 // BUILD SIDEBAR
 // ============================================================
 function buildSidebar() {
@@ -891,6 +972,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('summaryCloseBtn').onclick = hideSummary;
   document.getElementById('summaryModal').addEventListener('click', (e) => {
     if (e.target === document.getElementById('summaryModal')) hideSummary();
+  });
+
+  // Close changelog
+  document.getElementById('changelogModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('changelogModal')) hideChangelog();
   });
 
   // Mobile sidebar
