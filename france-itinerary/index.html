@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>法国深度13天自由行</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#f5f5f7;color:#1d1d1f;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* Header */
+header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:1000;flex-shrink:0}
+header h1{font-size:16px;font-weight:700;white-space:nowrap}
+header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
+
+/* Layout */
+.app-wrapper{display:flex;flex:1;overflow:hidden}
+
+/* Sidebar */
+.sidebar{width:340px;min-width:340px;background:#fff;display:flex;flex-direction:column;border-right:1px solid #e5e5ea;overflow:hidden}
+@media(max-width:900px){.sidebar{width:100%;min-width:100%;border-right:none;position:absolute;z-index:500;height:100%;transform:translateX(-100%);transition:transform .3s ease;top:0}.sidebar.open{transform:translateX(0)}}
+.sidebar-header{padding:10px 14px 6px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
+
+/* Day tabs - FIXED: wrapping layout */
+.day-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:8px 12px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
+.day-tab{white-space:nowrap;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:500;border:1px solid #d1d1d6;background:#fff;color:#555;cursor:pointer;transition:all .15s}
+.day-tab:hover{background:#f0f0f5}
+.day-tab.active{background:#007aff;color:#fff;border-color:#007aff}
+.day-tab.overview-tab{background:#e8f0fe;border-color:#007aff;color:#007aff;font-weight:600}
+.day-tab.overview-tab.active{background:#007aff;color:#fff}
+.day-tab.summary-tab{background:#fef3e0;border-color:#ff9500;color:#ff9500;font-weight:600}
+.day-tab.summary-tab.active{background:#ff9500;color:#fff}
+
+/* Itinerary list */
+.itinerary-list{flex:1;overflow-y:auto;padding:10px 14px}
+.day-card{display:none}
+.day-card.active{display:block}
+.day-card h3{font-size:15px;font-weight:600;margin-bottom:3px;color:#1d1d1f}
+.day-card .day-sub{font-size:11px;color:#86868b;margin-bottom:10px}
+.day-card .stop-list{list-style:none}
+.stop-item{padding:8px 10px;margin-bottom:4px;border-radius:8px;background:#f5f5f7;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
+.stop-item:hover{background:#e8e8ed}
+.stop-item .stop-name{font-weight:600;font-size:13px;color:#1d1d1f}
+.stop-item .stop-time{font-size:11px;color:#86868b;margin-top:1px}
+.stop-item .stop-badge{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-top:2px;color:#fff}
+.badge-need{background:#ff9500}
+.badge-free{background:#34c759}
+
+/* Transit arrow item */
+.transit-item{display:flex;align-items:center;gap:10px;padding:6px 8px;margin:2px 0;border-radius:6px;background:#f8f9fc;cursor:default;border-left:3px solid #34c759}
+.transit-arrow{font-size:16px;color:#34c759;flex-shrink:0;width:20px;text-align:center}
+.transit-info{flex:1;font-size:11px;color:#555;line-height:1.4}
+.transit-info strong{color:#1d1d1f;font-size:12px}
+.transit-time{font-size:10px;color:#86868b;white-space:nowrap}
+
+/* Detail panel */
+.detail-panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.12);z-index:2000;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:70vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom)}
+.detail-panel.open{transform:translateY(0)}
+.detail-handle{width:36px;height:4px;background:#d1d1d6;border-radius:2px;margin:8px auto 4px}
+.detail-content{padding:6px 18px 20px}
+.detail-content h3{font-size:17px;font-weight:700;margin-bottom:3px}
+.detail-content .detail-sub{font-size:12px;color:#86868b;margin-bottom:10px}
+.detail-section{margin-bottom:10px}
+.detail-section h4{font-size:13px;font-weight:600;color:#555;margin-bottom:3px}
+.detail-section p,.detail-section li{font-size:13px;line-height:1.6;color:#333}
+.detail-section ul{padding-left:16px}
+.detail-section a{color:#007aff;text-decoration:none}
+
+/* Map */
+.map-container{flex:1;position:relative}
+#map{width:100%;height:100%}
+
+/* Mobile toggle */
+.sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:2px}
+@media(max-width:900px){.sidebar-toggle{display:block}}
+
+/* Map legend */
+.map-legend{position:absolute;bottom:20px;right:10px;background:rgba(255,255,255,.95);border-radius:8px;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:11px;z-index:1000;max-width:170px}
+.map-legend h4{font-size:11px;font-weight:600;margin-bottom:4px}
+.legend-item{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* Markers */
+.poi-marker{background:#007aff;border:2px solid #fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.poi-marker.start{background:#34c759}
+.poi-marker.end{background:#ff3b30}
+
+/* Marker tooltip label */
+.marker-label{background:rgba(0,0,0,.65)!important;color:#fff!important;border:none!important;border-radius:4px!important;padding:2px 6px!important;font-size:10px!important;font-weight:500!important;box-shadow:0 1px 4px rgba(0,0,0,.2)!important;white-space:nowrap!important}
+.marker-label::before{border-top-color:rgba(0,0,0,.65)!important}
+
+.leaflet-popup-content{font-size:12px;line-height:1.5;max-width:260px}
+.leaflet-popup-content strong{font-size:13px}
+.popup-reserve{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;margin-top:3px;color:#fff}
+
+/* Loading */
+.loading-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;z-index:999;font-size:13px;color:#555}
+.loading-overlay.hidden{display:none}
+.spinner{width:28px;height:28px;border:3px solid #e5e5ea;border-top-color:#007aff;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Desktop detail panel */
+@media(min-width:901px){.detail-panel{max-width:380px;left:auto;right:20px;bottom:20px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.15)}.detail-handle{display:none}}
+
+/* Summary modal - wider */
+.summary-modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:9999;align-items:center;justify-content:center}
+.summary-modal-overlay.open{display:flex}
+.summary-modal{background:#fff;border-radius:16px;width:96%;max-width:1200px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.15)}
+.summary-modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
+.summary-modal-header h2{font-size:16px;font-weight:700}
+.summary-modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:#86868b;padding:4px}
+.summary-modal-close:hover{color:#333}
+.summary-modal-body{overflow:auto;padding:0;flex:1}
+.summary-table{width:100%;border-collapse:collapse;font-size:11px}
+.summary-table thead{position:sticky;top:0;z-index:1}
+.summary-table th{background:#f5f5f7;padding:6px 6px;text-align:left;font-weight:600;color:#555;border-bottom:2px solid #e5e5ea;font-size:10px;white-space:nowrap}
+.summary-table td{padding:5px 6px;border-bottom:1px solid #f0f0f0;vertical-align:middle;word-break:break-word}
+.summary-table tr:hover{background:#f8f8fa}
+.summary-table .tag-day{display:inline-block;background:#007aff;color:#fff;border-radius:4px;padding:1px 5px;font-size:9px;font-weight:600}
+.summary-table .tag-time{color:#86868b;font-size:10px}
+.summary-table .tag-price{font-weight:500;font-size:10px}
+.summary-table .tag-cat{display:inline-block;background:#f0f0f5;border-radius:3px;padding:1px 5px;font-size:9px;color:#555}
+.summary-table .tag-reserve{font-size:10px}
+.summary-table .tag-reserve.need{color:#e65100}
+.summary-table .tag-reserve.free{color:#555}
+.summary-table .link-btn{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9px;color:#007aff;border:1px solid #007aff;text-decoration:none;cursor:pointer;white-space:nowrap}
+.summary-table .link-btn:hover{background:#e8f0fe}
+.summary-table .closed-warn{color:#e65100;font-size:10px}
+.summary-table .closed-ok{color:#34c759;font-size:10px}
+.summary-table .adv-info{font-size:10px;color:#555;line-height:1.4}
+
+.summary-stats{padding:10px 16px;background:#fafafe;border-bottom:1px solid #e5e5ea;display:flex;gap:16px;flex-wrap:wrap;font-size:12px;flex-shrink:0}
+.summary-stats span{color:#555}
+.summary-stats strong{color:#1d1d1f}
+
+/* Summary filter bar */
+.summary-filter{display:flex;align-items:center;gap:10px;padding:6px 16px;background:#fafafe;border-bottom:1px solid #e5e5ea;flex-shrink:0;font-size:12px;flex-wrap:wrap}
+.summary-filter label{display:flex;align-items:center;gap:4px;cursor:pointer;color:#555}
+.summary-filter label input{cursor:pointer}
+.summary-filter select{padding:3px 8px;border:1px solid #d1d1d6;border-radius:6px;font-size:11px;background:#fff;cursor:pointer}
+.summary-filter .filter-btn{padding:3px 12px;border:none;border-radius:6px;font-size:11px;cursor:pointer;color:#fff}
+.filter-btn-blue{background:#007aff}
+.filter-btn-blue:hover{background:#0056b3}
+.filter-btn-orange{background:#ff9500}
+.filter-btn-orange:hover{background:#e68600}
+
+/* Total price banner */
+.summary-total{padding:10px 20px;background:#f0f4ff;border-top:2px solid #007aff;flex-shrink:0;font-size:13px;display:flex;gap:20px;flex-wrap:wrap}
+.summary-total span{color:#555}
+.summary-total strong{color:#1d1d1f;font-size:14px}
+</style>
+</head>
+<body>
+
+<header>
+<div style="display:flex;align-items:center;gap:8px">
+<button class="sidebar-toggle" id="menuBtn">☰</button>
+</div>
+<div>
+<h1>🇫🇷 法国深度13天自由行</h1>
+<div class="subtitle">2026.9.25 - 10.6 · 巴黎→波尔多→图卢兹→蒙彼利埃→里昂→日内瓦</div>
+</div>
+<div style="width:36px"></div>
+</header>
+
+<div class="app-wrapper">
+
+<div class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<strong style="font-size:14px">📋 行程列表</strong>
+</div>
+</div>
+<div class="day-tabs" id="dayTabs"></div>
+<div class="itinerary-list" id="itineraryList"></div>
+</div>
+
+<div class="map-container">
+<div id="map"></div>
+<div class="loading-overlay hidden" id="loadingOverlay">
+<div class="spinner"></div>
+<span id="loadingText">加载路线中...</span>
+</div>
+<div class="map-legend" id="mapLegend"><h4>📌 图例</h4></div>
+</div>
+</div>
+
+<!-- Detail panel -->
+<div class="detail-panel" id="detailPanel">
+<div class="detail-handle"></div>
+<div class="detail-content" id="detailContent"></div>
+</div>
+
+<!-- Summary modal -->
+<div class="summary-modal-overlay" id="summaryModal">
+<div class="summary-modal">
+<div class="summary-modal-header">
+<h2>📍 全部景点汇总</h2>
+<button class="summary-modal-close" id="summaryCloseBtn">✕</button>
+</div>
+<div class="summary-stats" id="summaryStats"></div>
+<div class="summary-filter" id="summaryFilter"></div>
+<div class="summary-modal-body" id="summaryBody"></div>
+<div class="summary-total" id="summaryTotal"></div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const DAY_COLORS = ['#007AFF','#34C759','#FF9500','#FF3B30','#AF52DE','#5856D6','#FF2D55','#00C7BE','#FF6482','#36C9C6','#5AC8FA','#FF9500','#8E8E93'];
+
+const POI_DATA = {
+  "d1_1":{name:"巴黎航空航天博物馆",nameEn:"Musée de l'Air et de l'Espace",coords:[48.9472,2.4344],day:1,desc:"欧洲最大、世界最古老的航空博物馆之一，坐落在勒布尔热机场。",why:"镇馆之宝包括协和式超音速客机、空客A380与波音747、二战与冷战战机，还有阿波罗登月舱1:1复原模型、阿丽亚娜火箭以及人造卫星实物。航空迷必去！",reservation:"无需预约，现场购票",price:"17€（进入协和客机/A380/747内部需另购登机牌约6-8€）",reserveUrl:"https://www.museeairespace.fr",advanceBooking:"当天即可",time:"09:00",category:"博物馆",closed:"周一闭馆",website:"https://www.museeairespace.fr"},
+  "d1_2":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:1,desc:"世界四大博物馆之首，坐落于塞纳河畔。",why:"藏品涵盖从古埃及到19世纪的40万件艺术品，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。建议周五夜场参观至21:45，人少体验更佳。",reservation:"需要预约，官方唯一售票网站 ticket.louvre.fr",price:"32€（非欧盟游客）",reserveUrl:"https://www.ticketlouvre.fr",advanceBooking:"建议提前2-4周预约，旺季需更早",time:"17:00",category:"博物馆",closed:"周二闭馆",website:"https://www.louvre.fr",reserveChannels:"官网 ticket.louvre.fr（有中文版）；也可通过 Paris Museum Pass 预约时段"},
+  "d1_3":{name:"Le Cafe Marly (晚餐)",nameEn:"Le Cafe Marly",coords:[48.8610,2.3370],day:1,desc:"位于卢浮宫黎塞留通道内的法式餐厅，正对卢浮宫金字塔。",why:"在卢浮宫享用晚餐后，出门就是玻璃金字塔夜景，位置绝佳，氛围满分。",reservation:"已通过Google预约，3位21:30",price:"中高档",reserveUrl:"",advanceBooking:"已预约",time:"21:30",category:"餐饮",type:"餐饮"},
+  "d2_1":{name:"奥赛博物馆",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:2,desc:"巴黎19世纪艺术圣殿，由奥赛火车站改建而成。",why:"收藏全世界最丰富的印象派和后印象派作品：梵高《星月夜》《自画像》、莫奈干草垛/鲁昂大教堂、马奈《草地上的午餐》、米勒《拾穗者》。顶楼巨型大钟是网红打卡点。",reservation:"需要预约",price:"16€，有奥赛+橘园通票",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"建议提前2-3周",time:"09:00",category:"博物馆",closed:"周一闭馆",website:"https://www.musee-orsay.fr",reserveChannels:"官网购票；奥赛+橘园通票两馆通用"},
+  "d2_2":{name:"杜乐丽花园",nameEn:"Jardin des Tuileries",coords:[48.8637,2.3260],day:2,desc:"巴黎最经典的法式花园，连接卢浮宫和协和广场。",why:"漫步在雕塑点缀的法式花园中，水池边的绿色椅子是经典法式生活场景。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:00",category:"公园"},
+  "d2_3":{name:"橘园美术馆",nameEn:"Musée de l'Orangerie",coords:[48.8636,2.3220],day:2,desc:"位于杜乐丽花园西端，以莫奈《睡莲》闻名。",why:"核心一层两大椭圆形展厅，展示8幅莫奈巨幅《睡莲》全景壁画，光影氛围感极强。",reservation:"需要预约",price:"12.5€",reserveUrl:"https://www.musee-orangerie.fr",advanceBooking:"建议提前2周",time:"13:00",category:"博物馆",closed:"周二闭馆"},
+  "d2_4":{name:"香榭丽舍大街",nameEn:"Avenue des Champs-Élysées",coords:[48.8698,2.3075],day:2,desc:"巴黎最著名的大道，全长1.8km。",why:"东段林荫绿地适合散步，西段汇集奢侈品总店、咖啡馆、剧院，是感受巴黎繁华的必到之处。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"14:30",category:"地标"},
+  "d2_5":{name:"凯旋门",nameEn:"Arc de Triomphe",coords:[48.8738,2.2950],day:2,desc:"拿破仑为纪念奥斯特里茨战役胜利而建。",why:"可以登顶俯瞰香榭丽舍大街和巴黎全景12条放射状大道。持有博物馆通票免票+免排队。",reservation:"需要购票/持有通票",price:"22€，博物馆通票免票",reserveUrl:"https://www.ticketlouvre.fr",advanceBooking:"建议提前预约",time:"16:00",category:"地标"},
+  "d3_1":{name:"凡尔赛宫",nameEn:"Château de Versailles",coords:[48.8049,2.1204],day:3,desc:"路易十四'太阳王'打造的欧洲顶级皇家宫殿，世界文化遗产。",why:"镜厅是凡尔赛标志——73米长廊17扇落地窗对357面威尼斯镜子；国王大套房极致巴洛克奢华。整套园区含主宫殿、皇家花园、大小特里亚农宫、玛丽王后农庄。",reservation:"需要预约",price:"32€，巴黎博物馆通票更划算",reserveUrl:"https://www.chateauversailles.fr",advanceBooking:"建议提前2-4周，旺季至少一个月",time:"09:00",category:"宫殿",transport:"RER C线至 Versailles Château Rive Gauche，车程30-40min，单程约4€",closed:"周一闭馆",website:"https://www.chateauversailles.fr",reserveChannels:"官网在线购票；Paris Museum Pass 可免排队（需预约时段）"},
+  "d3_2":{name:"塞纳河游船晚餐",nameEn:"Seine River Cruise Dinner",coords:[48.8589,2.3468],day:3,desc:"乘游船沿塞纳河航行，一边享用法式晚餐一边欣赏两岸古迹。",why:"夜游塞纳河，经过巴黎圣母院、卢浮宫、埃菲尔铁塔等标志性建筑。",reservation:"需要预约",price:"70-130€/人（依套餐）",reserveUrl:"",advanceBooking:"建议提前2-3周",time:"18:00",category:"体验",type:"体验"},
+  "d4_1":{name:"蒙马特高地",nameEn:"Montmartre",coords:[48.8867,2.3431],day:4,desc:"巴黎北部艺术区，含圣心堂、画家广场、葡萄园等。",why:"Rue Lamarck是铁塔隐藏机位→Clos Montmartre葡萄园→登顶圣心堂360°俯瞰全城→蒙马特博物馆（雷诺阿故居）→Place du Tertre看街头画家。",reservation:"教堂免费，穹顶登顶约8€，博物馆16€",price:"圣心堂免费，登顶8€，博物馆16€",reserveUrl:"",advanceBooking:"无需预约（教堂），博物馆可提前购票",time:"09:00",category:"街区"},
+  "d4_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:4,desc:"拿破仑三世下令建造的新巴洛克式歌剧院。",why:"奢华的大楼梯、夏加尔穹顶画、金碧辉煌的镜廊，《歌剧魅影》原型。",reservation:"需要购票",price:"约14€",reserveUrl:"https://www.operadeparis.fr",advanceBooking:"建议提前预约",time:"13:00",category:"剧院"},
+  "d4_3":{name:"蓬皮杜艺术中心",nameEn:"Centre Pompidou",coords:[48.8606,2.3522],day:4,desc:"欧洲最大的现代艺术博物馆。" ,why:"彩色管道本身就是艺术品；顶层俯瞰巴黎全景。注意：周二闭馆！",reservation:"需要购票",price:"14€",reserveUrl:"https://www.centrepompidou.fr",advanceBooking:"建议提前1-2周",time:"14:30",category:"博物馆",closed:"周二闭馆",website:"https://www.centrepompidou.fr"},
+  "d4_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:4,desc:"哥特式建筑的巅峰之作。",why:"修复后重新开放，内部修复效果令人惊叹。免费参观但需预约。",reservation:"教堂免费但需预约，珍宝馆付费",price:"教堂免费（需预约），珍宝馆另付费",reserveUrl:"https://www.notredamedeparis.fr",advanceBooking:"免费入内需提前预约时段",time:"15:30",category:"教堂",website:"https://www.notredamedeparis.fr",reserveChannels:"官方App（Notre-Dame de Paris）或官网在线预约；免费入内需预约时段，珍宝馆现场购票"},
+  "d4_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:4,desc:"塞纳河畔传奇英文书店。",why:"海明威等'迷惘一代'聚集地，二楼可看到圣母院，店里还有猫。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
+  "d4_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:4,desc:"法国伟大灵魂的安息之地。",why:"伏尔泰、卢梭、雨果、居里夫人长眠地。注意6点闭园。",reservation:"需要购票",price:"11€",reserveUrl:"",advanceBooking:"建议提前购票",time:"17:00",category:"纪念馆"},
+  "d4_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:4,desc:"从大草坪仰望埃菲尔铁塔的最佳位置。",why:"傍晚在草坪上看铁塔灯光秀，每小时整点闪烁5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:00",category:"地标"},
+  "d5_1":{name:"香波尔城堡",nameEn:"Château de Chambord",coords:[47.6161,1.5170],day:5,desc:"卢瓦尔河谷最大、最标志性的文艺复兴城堡。",why:"达芬奇双螺旋楼梯是灵魂；顶层露台360°俯瞰护城河与狩猎森林。",reservation:"无需预约",price:"15€（博物馆通票不含）",reserveUrl:"https://www.chambord.org",advanceBooking:"提前购票即可",time:"10:00",category:"城堡"},
+  "d5_2":{name:"波尔多",nameEn:"Bordeaux",coords:[44.8378,-0.5792],day:5,desc:"世界葡萄酒之都，联合国世界文化遗产城市。",why:"18世纪建筑群保存完好，水镜广场是网红打卡点。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"4h",dist:"560km",depart:"13:00"},
+  "d6_1":{name:"波尔多葡萄酒城",nameEn:"La Cité du Vin",coords:[44.8629,-0.5498],day:6,desc:"沉浸式葡萄酒主题文化体验馆，造型如醒酒器。",why:"六大主题18个沉浸式空间，门票含一杯免费品酒。",reservation:"无需预约",price:"23€（含一杯免费酒）",reserveUrl:"https://www.laciteduvin.com",advanceBooking:"提前购票即可",time:"10:00",category:"博物馆",closed:"周一闭馆"},
+  "d6_2":{name:"波尔多酒庄体验",nameEn:"Bordeaux Château Visit",coords:[44.8500,-0.6000],day:6,desc:"在TripAdvisor上选择开放酒庄品酒。",why:"数百家酒庄可供参观品酒，体验正宗法国酒庄文化。",reservation:"需要预约",price:"30-100€ 视酒庄和套餐",reserveUrl:"",advanceBooking:"建议提前2-4周联系酒庄",time:"14:00",category:"体验",type:"体验"},
+  "d7_1":{name:"空客工厂",nameEn:"Airbus Factory",coords:[43.5800,1.3690],day:7,desc:"全球最大飞机制造商的装配工厂。",why:"亲眼目睹A350、A380大型客机装配线。需提前2周预约。",reservation:"需要预约",price:"约20€",reserveUrl:"https://www.airbus.com/visit",advanceBooking:"建议提前2周预约",time:"10:00",category:"工业",website:"https://www.airbus.com/visit"},
+  "d7_2":{name:"协和博物馆",nameEn:"Concorde Museum / Aeroscopia",coords:[43.5770,1.3710],day:7,desc:"与空客工厂相邻的航空博物馆。",why:"可登机体验协和式超音速客机内部。",reservation:"无需预约",price:"含在参观套票中",reserveUrl:"",advanceBooking:"当天即可",time:"13:00",category:"博物馆"},
+  "d7_3":{name:"图卢兹",nameEn:"Toulouse",coords:[43.6045,1.4440],day:7,desc:"法国第四大城市，'玫瑰之城'（红砖建筑）。",why:"圣塞尔南教堂是世界遗产，还有空中客车总部、欧洲航天局。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"16:00",category:"城市",type:"行程",driveTime:"2h40",dist:"240km",depart:"13:00"},
+  "d8_1":{name:"卡尔卡松城堡",nameEn:"Carcassonne",coords:[43.2066,2.3638],day:8,desc:"欧洲最大、保存最完好的中世纪城堡要塞。",why:"52座塔楼和3公里城墙的防御体系，入城穿越回中世纪。",reservation:"无需预约",price:"城堡免费进入，伯爵城堡9.5€",reserveUrl:"",advanceBooking:"无需预约",time:"10:00",category:"城堡"},
+  "d8_2":{name:"蒙彼利埃",nameEn:"Montpellier",coords:[43.6119,3.8772],day:8,desc:"南法阳光之城。",why:"老城区迷宫般小巷、喜剧广场、凯旋门和植物园。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"15:00",category:"城市",type:"行程",driveTime:"1h",dist:"95km",depart:"14:00"},
+  "d9_1":{name:"尼姆竞技场",nameEn:"Arènes de Nîmes",coords:[43.8347,4.3600],day:9,desc:"保存最完好的古罗马竞技场之一，建于公元1世纪。",why:"比罗马斗兽场保存更好，至今用于斗牛和音乐会。",reservation:"无需预约",price:"约10€",reserveUrl:"",advanceBooking:"提前购票即可",time:"09:00",category:"古迹"},
+  "d9_2":{name:"嘉德水道桥",nameEn:"Pont du Gard",coords:[43.9474,4.5350],day:9,desc:"古罗马最伟大的水利工程之一，世界文化遗产。",why:"三层拱桥跨越加尔德河，河岸可游泳划皮划艇。",reservation:"无需预约",price:"停车/参观约8.5€",reserveUrl:"",advanceBooking:"无需预约",time:"10:00",category:"古迹"},
+  "d9_3":{name:"阿维尼翁教皇宫",nameEn:"Palais des Papes",coords:[43.9077,4.8059],day:9,desc:"中世纪欧洲最大哥特式宫殿。",why:"见证14世纪教皇与法国国王的权力斗争，旁边有阿维尼翁断桥。",reservation:"无需预约",price:"约12€",reserveUrl:"https://www.palais-des-papes.com",advanceBooking:"提前购票即可",time:"11:30",category:"宫殿"},
+  "d9_4":{name:"里昂",nameEn:"Lyon",coords:[45.7640,4.8357],day:9,desc:"法国美食之都，千年古城。",why:"里昂老城是世界遗产，Traboules穿越通道是里昂独有特色。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"15:00",category:"城市",type:"行程",driveTime:"2h",dist:"230km",depart:"13:00"},
+  "d10_1":{name:"里昂老城 & Traboule",nameEn:"Vieux Lyon & Traboules",coords:[45.7630,4.8270],day:10,desc:"里昂文艺复兴老城区，拥有独特的秘密通道系统。",why:"Traboules是丝绸工人秘密通道，二战时被抵抗军使用，可穿越建筑内部。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"09:00",category:"街区"},
+  "d10_2":{name:"博若莱酒区",nameEn:"Beaujolais Wine Region",coords:[46.0000,4.7000],day:10,desc:"从里昂出发30分钟可达的著名葡萄酒产区。",why:"在19世纪丝绸厂改建的酒窖里品酒，品尝博若莱新酒。",reservation:"需要预约",price:"品酒费用5-20€",reserveUrl:"",advanceBooking:"建议提前1周联系酒庄",time:"11:00",category:"体验"},
+  "d10_3":{name:"日内瓦",nameEn:"Geneva",coords:[46.2044,6.1432],day:10,desc:"国际化大都市，联合国欧洲总部所在地。",why:"日内瓦湖大喷泉、花钟、老城区。200多个国际组织汇集地。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"2h",dist:"150km",depart:"15:00"},
+  "d11_1":{name:"百达翡丽博物馆",nameEn:"Patek Philippe Museum",coords:[46.2002,6.1447],day:11,desc:"全球最重要钟表博物馆之一。",why:"500年2000多件钟表珍品，钟表爱好者的朝圣地。",reservation:"需要预约",price:"约10-15瑞郎",reserveUrl:"https://www.patek.com/museum",advanceBooking:"建议提前1-2周预约",time:"10:00",category:"博物馆",closed:"周日、周一闭馆"},
+  "d11_2":{name:"联合国日内瓦办事处",nameEn:"United Nations Geneva",coords:[46.2263,6.1393],day:11,desc:"联合国欧洲总部，又称万国宫。",why:"参观国际外交真实发生场所。提供英文/法文导览团（约1h），可参观会议厅、各国赠礼及艺术品。如当天有会议，可申请旁听（需提前确认议程）。",reservation:"需要预约",price:"约15瑞郎",reserveUrl:"https://www.ungeneva.org",advanceBooking:"建议提前2周预约",time:"11:30",category:"机构",website:"https://www.ungeneva.org",reserveChannels:"官网在线预约导览；如需旁听理事会/委员会会议，需当天凭护照在入口处申请旁听席位（先到先得）"},
+  "d11_3":{name:"欧洲核子研究中心(CERN)",nameEn:"CERN",coords:[46.2333,6.0492],day:11,desc:"全球最大的粒子物理学实验室。",why:"参观大型强子对撞机(LHC)，了解宇宙起源奥秘。免费参观需预约。",reservation:"需要预约",price:"免费",reserveUrl:"https://visit.cern",advanceBooking:"建议提前2-4周预约导览",time:"14:00",category:"科技",website:"https://visit.cern",reserveChannels:"官网 visit.cern 在线预约导览（免费）；也可自行参观展览区（无需预约）"},
+  "d12_1":{name:"日内瓦湖 & 返程",nameEn:"Lake Geneva",coords:[46.2100,6.1600],day:12,desc:"西欧最大的湖泊。",why:"清晨湖滨漫步看大喷泉，远眺阿尔卑斯山，15:55返程。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"09:00",category:"自然"}
+};
+
+const ITINERARY = [
+  {day:1,date:"9月25日 (五)",title:"抵达巴黎",summary:"上午航空博物馆 → 民宿入住 → 傍晚卢浮宫夜场 → Cafe Marly晚餐",stops:["d1_1","d1_2","d1_3"]},
+  {day:2,date:"9月26日 (六)",title:"巴黎艺术日",summary:"奥赛博物馆 → 杜乐丽花园 → 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d2_1","d2_2","d2_3","d2_4","d2_5"]},
+  {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
+  {day:4,date:"9月28日 (一)",title:"巴黎全景日",summary:"蒙马特高地 → 歌剧院 → 蓬皮杜 → 圣母院 → 莎翁书店 → 先贤祠 → 战神广场",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6","d4_7"]},
+  {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
+  {day:6,date:"9月30日 (三)",title:"波尔多红酒日",summary:"葡萄酒城(上午) → 酒庄品酒(下午)",stops:["d6_1","d6_2"]},
+  {day:7,date:"10月1日 (四)",title:"图卢兹航空日",summary:"波尔多→图卢兹(2h40) → 空客工厂 → 协和博物馆",stops:["d7_1","d7_2","d7_3"]},
+  {day:8,date:"10月2日 (五)",title:"南法中古城堡",summary:"图卢兹→卡尔卡松城堡(2h) → 蒙彼利埃",stops:["d8_1","d8_2"]},
+  {day:9,date:"10月3日 (六)",title:"古罗马之旅→里昂",summary:"尼姆竞技场 → 嘉德水道桥 → 阿维尼翁教皇宫 → 里昂",stops:["d9_1","d9_2","d9_3","d9_4"]},
+  {day:10,date:"10月4日 (日)",title:"里昂美食→日内瓦",summary:"里昂老城Traboule → 博若莱酒区 → 出发日内瓦",stops:["d10_1","d10_2","d10_3"]},
+  {day:11,date:"10月5日 (一)",title:"日内瓦文化日",summary:"百达翡丽博物馆 → 联合国 → CERN粒子加速器",stops:["d11_1","d11_2","d11_3"]},
+  {day:12,date:"10月6日 (二)",title:"日内瓦返程",summary:"日内瓦湖晨间漫步 → 15:55返程",stops:["d12_1"]}
+];
+
+// ============================================================
+// APP STATE
+// ============================================================
+let map = null;
+let currentMode = 'day'; // 'day' | 'overview' | 'summary'
+let currentDay = 1;
+let markers = {};
+let routeLayers = {};
+let allDayRoutes = {};
+let fullJourneyRoute = null;
+
+// ============================================================
+// INIT MAP
+// ============================================================
+function initMap() {
+  map = L.map('map', { center: [46.0, 2.5], zoom: 6, zoomControl: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors', maxZoom: 18
+  }).addTo(map);
+  
+  // Build legend (all routes are blue now)
+  const legend = document.getElementById('mapLegend');
+  legend.innerHTML = '<h4>📌 图例</h4><div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>景点标记</span></div><div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div>';
+}
+
+// ============================================================
+// ROUTE FETCHING (OSRM) - with caching + parallel loading
+// ============================================================
+function getCacheKey(coords) {
+  // Simple hash from first, last and count of coords for cache key
+  const first = coords[0].map(c => c.toFixed(4)).join(',');
+  const last = coords[coords.length-1].map(c => c.toFixed(4)).join(',');
+  return `route_${coords.length}_${first}_${last}`;
+}
+
+async function fetchRoute(coords) {
+  // Try localStorage cache first
+  const cacheKey = getCacheKey(coords);
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed && parsed.length > 0) return parsed;
+    }
+  } catch(e) {}
+
+  // Fetch from OSRM with simplified geometry for speed
+  const lngLatStr = coords.map(c => `${c[1]},${c[0]}`).join(';');
+  const url = `https://router.project-osrm.org/route/v1/driving/${lngLatStr}?geometries=geojson&overview=simplified&steps=false&alternatives=false`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.code === 'Ok' && data.routes && data.routes.length > 0) {
+      const route = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+      // Cache result
+      try { localStorage.setItem(cacheKey, JSON.stringify(route)); } catch(e) {}
+      return route;
+    }
+  } catch(e) {
+    console.warn('OSRM failed:', e);
+  }
+  return null;
+}
+
+async function loadAllRoutes() {
+  const loadingEl = document.getElementById('loadingOverlay');
+  const loadingText = document.getElementById('loadingText');
+  loadingEl.classList.remove('hidden');
+
+  // Show day 1 markers immediately (before routes load)
+  showDay(1);
+
+  // Collect all route fetch tasks
+  const routeTasks = [];
+  for (const day of ITINERARY) {
+    if (day.stops.length < 2) continue;
+    const coords = day.stops.map(id => POI_DATA[id].coords);
+    routeTasks.push({ day: day.day, coords });
+  }
+
+  // Load daily routes in parallel (batches of 4 to avoid OSRM rate limits)
+  const BATCH_SIZE = 4;
+  for (let i = 0; i < routeTasks.length; i += BATCH_SIZE) {
+    const batch = routeTasks.slice(i, i + BATCH_SIZE);
+    loadingText.textContent = `加载路线 ${i+1}-${Math.min(i+BATCH_SIZE, routeTasks.length)}/${routeTasks.length}...`;
+    const results = await Promise.all(batch.map(t => fetchRoute(t.coords)));
+    results.forEach((route, j) => {
+      const task = batch[j];
+      allDayRoutes[task.day] = route || task.coords;
+      // If current day is shown, update the map
+      if (currentMode === 'day' && currentDay === task.day) {
+        showDay(task.day);
+      }
+    });
+  }
+
+  // Skip full journey fetch - daily routes already cover all connections
+  fullJourneyRoute = null;
+
+  loadingEl.classList.add('hidden');
+}
+
+// ============================================================
+// MAP OPERATIONS
+// ============================================================
+function clearMap() {
+  Object.values(markers).forEach(m => { if (m._map) m.remove(); });
+  Object.values(routeLayers).forEach(l => { if (l._map) l.remove(); });
+  markers = {}; routeLayers = {};
+}
+
+function addMarker(id, poi, idx, total, compact) {
+  const color = DAY_COLORS[poi.day];
+  let cls = 'poi-marker';
+  if (idx === 0 && total > 1) cls += ' start';
+  else if (idx === total - 1 && total > 1) cls += ' end';
+
+  const size = compact ? 20 : 26;
+  const fontSize = compact ? 8 : 10;
+  const label = compact ? String(poi.day) : String(idx + 1);
+
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="${cls}" style="background:${color};width:${size}px;height:${size}px;font-size:${fontSize}px">${label}</div>`,
+    iconSize: [size, size], iconAnchor: [size/2, size/2], popupAnchor: [0, -(size/2+4)]
+  });
+
+  const marker = L.marker(poi.coords, { icon }).addTo(map);
+  const pType = poi.type || '景点';
+  const popupTypeIcon = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗'}[pType] || '📍';
+  marker.bindPopup(`
+    <div style="min-width:190px">
+      <strong>${popupTypeIcon} ${poi.name}</strong>
+      <div style="font-size:11px;color:#86868b;margin-bottom:3px">${poi.nameEn || ''}</div>
+      <div style="margin:3px 0">
+        <span class="popup-reserve" style="background:#5ac8fa">${poi.category}</span>
+        <span class="popup-reserve" style="background:${poi.reservation.includes('无需')||poi.reservation.includes('免费')?'#34c759':'#ff9500'}">${poi.reservation.includes('无需')?'无需预约':'需预约'}</span>
+      </div>
+      <p style="font-size:12px;line-height:1.5;margin-top:3px">${poi.desc}</p>
+      <p style="font-size:12px;color:#555;margin-top:3px"><strong>💰</strong> ${poi.price}</p>
+    </div>`, { maxWidth: 260 });
+  // Add Chinese name label (not for overview/compact mode to avoid clutter)
+  if (!compact) {
+    marker.bindTooltip(poi.name, {
+      permanent: true, direction: 'top', offset: [0, -14], className: 'marker-label'
+    });
+  }
+
+  marker.on('click', () => showDetail(id));
+  markers[id] = marker;
+}
+
+function addRoute(dayNum, coords, weight) {
+  const w = weight || 4;
+  // White glow outline
+  const outline = L.polyline(coords, {
+    color: '#fff', weight: w + 3, opacity: 0.6, lineCap: 'round', lineJoin: 'round'
+  }).addTo(map);
+  routeLayers[`route_outline_${dayNum}`] = outline;
+  // Main blue line (solid)
+  const route = L.polyline(coords, {
+    color: '#007AFF', weight: w, opacity: 1, lineCap: 'round', lineJoin: 'round'
+  }).addTo(map);
+  routeLayers[`route_${dayNum}`] = route;
+}
+
+// ============================================================
+// DAY MODE
+// ============================================================
+function showDay(dayNum) {
+  currentMode = 'day';
+  currentDay = dayNum;
+  const dayData = ITINERARY.find(d => d.day === dayNum);
+  if (!dayData) return;
+
+  clearMap();
+  dayData.stops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, dayData.stops.length, false));
+  if (allDayRoutes[dayNum]) addRoute(dayNum, allDayRoutes[dayNum]);
+
+  if (dayData.stops.length > 0) {
+    const allCoords = dayData.stops.map(id => POI_DATA[id].coords);
+    map.fitBounds(L.latLngBounds(allCoords), { padding: [50, 50], maxZoom: 14 });
+  }
+
+  // Update UI
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sidebar').classList.remove('open');
+  document.querySelector(`.day-tab[data-day="${dayNum}"]`)?.classList.add('active');
+  document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+  const card = document.getElementById(`day-card-${dayNum}`);
+  if (card) card.classList.add('active');
+}
+
+// ============================================================
+// OVERVIEW MODE: ALL routes including inter-city driving
+// ============================================================
+function showOverview() {
+  currentMode = 'overview';
+  clearMap();
+
+  // Add all POI markers (compact)
+  Object.values(POI_DATA).forEach(poi => {
+    const dayData = ITINERARY.find(d => d.day === poi.day);
+    if (!dayData) return;
+    const idx = dayData.stops.findIndex(id => POI_DATA[id] === poi);
+    addMarker(`ov_${poi.day}_${idx}`, poi, idx, dayData.stops.length, true);
+  });
+
+  // Show ALL daily route lines (covers all inter-city connections)
+  Object.keys(allDayRoutes).forEach(day => {
+    addRoute(parseInt(day), allDayRoutes[day]);
+  });
+
+  const allCoords = Object.values(POI_DATA).map(p => p.coords);
+  map.fitBounds(L.latLngBounds(allCoords), { padding: [25, 25] });
+
+  // Update UI
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sidebar').classList.remove('open');
+  document.querySelector('.day-tab.overview-tab')?.classList.add('active');
+  document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+}
+
+// ============================================================
+// DETAIL PANEL - cleaner layout with professional info
+// ============================================================
+function showDetail(id) {
+  const poi = POI_DATA[id] || Object.values(POI_DATA).find(p => {
+    const dayData = ITINERARY.find(d => d.day === p.day);
+    return dayData && `ov_${p.day}_${dayData.stops.findIndex(s => POI_DATA[s] === p)}` === id;
+  });
+  if (!poi) return;
+
+  const panel = document.getElementById('detailPanel');
+  const content = document.getElementById('detailContent');
+
+  // Professional reservation badge
+  const hasReserve = poi.reservation && !poi.reservation.includes('无需') && !poi.reservation.includes('免费') && !poi.reservation.includes('已通过');
+  const reserveBadge = hasReserve
+    ? `<span style="display:inline-block;background:#ff9500;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">需要预约</span>`
+    : `<span style="display:inline-block;background:#34c759;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">免预约</span>`;
+
+  // Clean up reservation text
+  let reserveClean = '';
+  if (poi.reservation) {
+    if (poi.reservation.includes('无需')) reserveClean = '现场购票即可，不需提前预约';
+    else if (poi.reservation.includes('已通过')) reserveClean = '已通过 Google 预约完成';
+    else if (poi.reservation.includes('免费但需预约')) reserveClean = '入内免费但需预约时段，珍宝馆另行购票';
+    else reserveClean = poi.reservation.replace('需要预约，', '').replace('需要预约', '需提前在线购票预约');
+  }
+
+  content.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div>
+        <h3 style="font-size:18px;font-weight:700;margin:0">${poi.name}</h3>
+        <div style="font-size:12px;color:#86868b;margin-top:2px">${poi.nameEn || ''} · ${poi.category}${poi.website ? ' · <a href="'+poi.website+'" target="_blank" style="color:#007aff;text-decoration:none">官网</a>' : ''}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        ${reserveBadge}
+        <div style="font-size:11px;color:#86868b;margin-top:2px">${poi.time}</div>
+      </div>
+    </div>
+
+    <div style="background:#f5f5f7;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:13px;line-height:1.6">
+      ${poi.desc}
+    </div>
+
+    <div style="margin-bottom:10px">
+      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">必看亮点</div>
+      <div style="font-size:13px;line-height:1.6;color:#333">${poi.why}</div>
+    </div>
+
+    <div style="margin-bottom:10px">
+      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">门票价格</div>
+      <div style="font-size:13px;color:#1d1d1f;font-weight:500">${poi.price}</div>
+    </div>
+
+    <div style="margin-bottom:10px">
+      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">预约信息</div>
+      <table style="font-size:12px;border-collapse:collapse;width:100%">
+        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约方式</td><td style="padding:3px 0;color:#333">${reserveClean}</td></tr>
+        ${poi.advanceBooking ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">建议提前</td><td style="padding:3px 0;color:#333">${poi.advanceBooking}</td></tr>` : ''}
+        ${poi.reserveUrl ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约入口</td><td style="padding:3px 0;color:#333"><a href="${poi.reserveUrl}" target="_blank" style="color:#007aff">${poi.reserveUrl}</a></td></tr>` : (hasReserve ? '<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约入口</td><td style="padding:3px 0;color:#e65100;font-size:11px">需自行搜索官网预约</td></tr>' : '')}
+        ${poi.reserveChannels ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约渠道</td><td style="padding:3px 0;color:#333">${poi.reserveChannels}</td></tr>` : ''}
+        ${poi.transport ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">交通方式</td><td style="padding:3px 0;color:#333">${poi.transport}</td></tr>` : ''}
+        ${poi.closed ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">休息日</td><td style="padding:3px 0;color:#e65100">${poi.closed}</td></tr>` : ''}
+      </table>
+    </div>
+  `;
+  panel.classList.add('open');
+}
+
+function hideDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+}
+
+// ============================================================
+// SUMMARY MODAL - with filter, sort, earliest booking, price total
+// ============================================================
+const DAY_WEEK = {1:"五",2:"六",3:"日",4:"一",5:"二",6:"三",7:"四",8:"五",9:"六",10:"日",11:"一",12:"二"};
+const VISIT_DATES = {1:"9/25",2:"9/26",3:"9/27",4:"9/28",5:"9/29",6:"9/30",7:"10/1",8:"10/2",9:"10/3",10:"10/4",11:"10/5",12:"10/6"};
+
+function calcEarliestBooking(dateStr, advanceStr) {
+  if (!advanceStr || advanceStr.includes('无需') || advanceStr.includes('当天') || advanceStr.includes('已预约')) return null;
+  const parts = dateStr.split('/');
+  const visitDate = new Date(2026, parseInt(parts[0])-1, parseInt(parts[1]));
+  
+  let earliestDays = null;
+  if (advanceStr.includes('2-4周')) earliestDays = 28;
+  else if (advanceStr.includes('2-3周')) earliestDays = 21;
+  else if (advanceStr.includes('提前2周') || advanceStr.includes('2周预约')) earliestDays = 14;
+  else if (advanceStr.includes('1-2周')) earliestDays = 14;
+  else if (advanceStr.includes('提前1周') || advanceStr.includes('1周联系')) earliestDays = 7;
+  else if (advanceStr.includes('提前预约')) earliestDays = 7;
+
+  if (earliestDays) {
+    const d = new Date(visitDate);
+    d.setDate(d.getDate() - earliestDays);
+    const m = d.getMonth() + 1;
+    const day = d.getDate();
+    return `${m}/${day}`;
+  }
+  return null;
+}
+
+// Price parser: extract EUR number from price string
+function parsePrice(str) {
+  if (!str) return 0;
+  // Match numbers before €
+  const m = str.match(/(\d+\.?\d*)\s*€/);
+  if (m) return parseFloat(m[1]);
+  // Match "约N€"
+  const m2 = str.match(/约(\d+\.?\d*)/);
+  if (m2) return parseFloat(m2[1]);
+  // Match "N-100" ranges - take midpoint
+  const m3 = str.match(/(\d+)\s*-\s*(\d+)/);
+  if (m3) return (parseFloat(m3[1]) + parseFloat(m3[2])) / 2;
+  return 0;
+}
+
+// Build all row data once
+function buildSummaryRows() {
+  const rows = [];
+  const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗'};
+
+  ITINERARY.forEach(day => {
+    day.stops.forEach((id) => {
+      const p = POI_DATA[id];
+      if (!p) return;
+
+      const need = p.reservation && !p.reservation.includes('无需') && !p.reservation.includes('免费') && !p.reservation.includes('已通过');
+      const pType = p.type || '景点';
+      const typeIcon = typeIcons[pType] || '📍';
+      const weekday = DAY_WEEK[day.day];
+      const visitDate = VISIT_DATES[day.day];
+
+      // Earliest booking date
+      const earliestDate = calcEarliestBooking(visitDate, p.advanceBooking);
+
+      // Closed check
+      let closedConflict = false;
+      let closedText = '◯ 正常开放';
+      if (p.closed) {
+        if (p.closed.includes(weekday)) {
+          closedText = `⚠️ ${p.closed}，本周${weekday}闭馆！`;
+          closedConflict = true;
+        } else {
+          closedText = `◯ ${p.closed}（不冲突）`;
+        }
+      }
+
+      let linkCell = '<span style="color:#ccc;font-size:10px">—</span>';
+      if (p.reserveUrl) linkCell = `<a href="${p.reserveUrl}" target="_blank" class="link-btn">🔗 预约</a>`;
+      else if (need) linkCell = '<span style="color:#e65100;font-size:9px">见备注</span>';
+
+      const reserveTag = need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯</span>';
+
+      // Sort key for booking urgency: earliest date, lower = more urgent
+      const sortKey = earliestDate ? earliestDate : '9999';
+
+      rows.push({
+        day: day.day,
+        weekday,
+        time: p.time,
+        name: p.name,
+        nameEn: p.nameEn || '',
+        type: pType,
+        typeIcon,
+        category: p.category,
+        price: p.price,
+        priceEur: parsePrice(p.price),
+        need,
+        advanceBooking: p.advanceBooking || '—',
+        earliestDate,
+        sortKey,
+        closedText,
+        closedConflict,
+        linkCell
+      });
+    });
+  });
+  return rows;
+}
+
+let summaryRows = [];
+let summaryFilter = 'all'; // 'all' | 'need'
+let summarySort = 'day'; // 'day' | 'earliest'
+
+function renderSummaryTable() {
+  const body = document.getElementById('summaryBody');
+  const totalEl = document.getElementById('summaryTotal');
+
+  // Filter
+  let filtered = summaryRows;
+  if (summaryFilter === 'need') filtered = summaryRows.filter(r => r.need);
+
+  // Sort
+  if (summarySort === 'day') {
+    filtered.sort((a, b) => a.day - b.day || a.time.localeCompare(b.time));
+  } else if (summarySort === 'earliest') {
+    filtered.sort((a, b) => {
+      if (a.sortKey === '9999' && b.sortKey === '9999') return 0;
+      if (a.sortKey === '9999') return 1;
+      if (b.sortKey === '9999') return -1;
+      return a.sortKey.localeCompare(b.sortKey);
+    });
+  }
+
+  let html = `<table class="summary-table"><thead><tr>
+    <th>天</th><th>时间</th><th>景点</th><th>分类</th><th>价格</th><th>预约</th><th>提前多久</th><th>最早预约</th><th>闭馆日</th><th>预约链接</th>
+  </tr></thead><tbody>`;
+
+  filtered.forEach(r => {
+    html += `<tr${r.closedConflict ? ' style="background:#fff5f5"' : ''}>
+      <td><span class="tag-day" style="background:${DAY_COLORS[r.day]}">D${r.day}</span></td>
+      <td class="tag-time">${r.time}<br><span style="font-size:9px;color:#ccc">周${r.weekday}</span></td>
+      <td><strong>${r.typeIcon} ${r.name}</strong><br><span style="font-size:9px;color:#86868b">${r.nameEn}</span></td>
+      <td><span class="tag-cat">${r.category}</span></td>
+      <td class="tag-price" style="font-weight:600;font-size:11px;color:#1d1d1f;white-space:nowrap">${r.price}</td>
+      <td>${r.need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯</span>'}</td>
+      <td class="adv-info">${r.advanceBooking}</td>
+      <td class="adv-info" style="font-weight:${r.earliestDate ? '600' : '400'};color:${r.earliestDate ? '#e65100' : '#555'}">${r.earliestDate || '—'}</td>
+      <td>${r.closedText}</td>
+      <td>${r.linkCell}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  body.innerHTML = html;
+
+  // Calculate totals
+  let totalEur = 0;
+  let freeCount = 0;
+  filtered.forEach(r => {
+    if (r.priceEur > 0) totalEur += r.priceEur;
+    if (r.price.includes('免费')) freeCount++;
+  });
+  const cnyRate = 7.5; // approximate EUR to CNY
+  const totalCny = Math.round(totalEur * cnyRate);
+
+  totalEl.innerHTML = `
+    <span>💰 门票合计：<strong>≈ €${Math.round(totalEur)}</strong> <span style="color:#86868b">(约 ¥${totalCny})</span></span>
+    <span>🆓 其中免费：<strong>${freeCount}</strong> 个</span>
+    <span>📊 含预约费 ${filtered.filter(r => r.need).length} 项</span>
+  `;
+}
+
+function showSummary() {
+  currentMode = 'summary';
+  const overlay = document.getElementById('summaryModal');
+
+  // Build filter bar
+  const filterBar = document.getElementById('summaryFilter');
+  filterBar.innerHTML = `
+    <label><input type="checkbox" id="filterNeed" onchange="summaryFilter=this.checked?'need':'all';renderSummaryTable()"> 仅看需预约</label>
+    <select id="sortSelect" onchange="summarySort=this.value;renderSummaryTable()">
+      <option value="day">按日期排序</option>
+      <option value="earliest">按最早预约→最急</option>
+    </select>
+    <span style="color:#86868b;font-size:11px">共 <strong id="rowCount">${summaryRows.length}</strong> 项</span>
+  `;
+
+  // Rebuild data if needed
+  if (summaryRows.length === 0) {
+    summaryRows = buildSummaryRows();
+  }
+
+  // Stats
+  const stats = document.getElementById('summaryStats');
+  const totalPOIs = summaryRows.length;
+  const needReserve = summaryRows.filter(r => r.need).length;
+  const freePOIs = summaryRows.filter(r => r.price.includes('免费')).length;
+  const conflictCount = summaryRows.filter(r => r.closedConflict).length;
+  stats.innerHTML = `
+    <span>📍 <strong>${totalPOIs}</strong> 个</span>
+    <span>⬡ <strong>${needReserve}</strong> 个需预约</span>
+    <span>◯ <strong>${freePOIs}</strong> 个免费</span>
+    <span>⚠️ <strong>${conflictCount}</strong> 个闭馆冲突</span>
+    <span>📅 共 <strong>12</strong> 天</span>
+  `;
+
+  renderSummaryTable();
+  overlay.classList.add('open');
+
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.day-tab.summary-tab')?.classList.add('active');
+}
+
+function hideSummary() {
+  document.getElementById('summaryModal').classList.remove('open');
+}
+
+// ============================================================
+// BUILD SIDEBAR
+// ============================================================
+function buildSidebar() {
+  const tabsContainer = document.getElementById('dayTabs');
+  const listContainer = document.getElementById('itineraryList');
+
+  // Add special tabs: 总览 + 汇总
+  const overviewTab = document.createElement('div');
+  overviewTab.className = 'day-tab overview-tab';
+  overviewTab.textContent = '🗺️ 总览';
+  overviewTab.onclick = showOverview;
+  tabsContainer.appendChild(overviewTab);
+
+  const summaryTab = document.createElement('div');
+  summaryTab.className = 'day-tab summary-tab';
+  summaryTab.textContent = '📊 汇总';
+  summaryTab.onclick = showSummary;
+  tabsContainer.appendChild(summaryTab);
+
+  // Day tabs
+  ITINERARY.forEach(day => {
+    const tab = document.createElement('div');
+    tab.className = 'day-tab';
+    tab.dataset.day = day.day;
+    tab.textContent = `第${day.day}天`;
+    tab.onclick = () => showDay(day.day);
+    tabsContainer.appendChild(tab);
+  });
+
+  // Day cards
+  ITINERARY.forEach(day => {
+    const card = document.createElement('div');
+    card.className = 'day-card';
+    card.id = `day-card-${day.day}`;
+
+    let stopsHtml = '';
+    let prevTime = null;
+    day.stops.forEach((id, idx) => {
+      const p = POI_DATA[id];
+      if (!p) return;
+
+      // If transit type, render as arrow
+      if (p.type === '行程' && p.driveTime) {
+        const arrTime = p.time || '—';
+        const eta = p.depart ? `（出发${p.depart} → 预计${arrTime}抵达）` : '';
+        stopsHtml += `
+        <div class="transit-item">
+          <div class="transit-arrow">↓</div>
+          <div class="transit-info">
+            <strong>🚗 ${p.name}</strong><br>
+            ${p.driveTime} · ${p.dist || ''} ${eta}
+          </div>
+        </div>`;
+        return;
+      }
+
+      // Regular POI
+      const pType = p.type || '景点';
+      const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗'};
+      const typeColors = {'景点':'#007aff','餐饮':'#ff9500','体验':'#af52de','行程':'#34c759'};
+      const typeIcon = typeIcons[pType] || '📍';
+      const typeColor = typeColors[pType] || '#007aff';
+
+      let badge = '';
+      if (p.driveTime) {
+        badge = `<span class="stop-badge" style="background:#34c759;font-size:9px">${p.driveTime}</span>`;
+      } else if (p.reservation && !p.reservation.includes('无需') && !p.reservation.includes('免费')) {
+        badge = '<span class="stop-badge badge-need">需预约</span>';
+      } else if (p.price && p.price.includes('免费')) {
+        badge = '<span class="stop-badge badge-free">免费</span>';
+      }
+      stopsHtml += `<li class="stop-item" onclick="showDetail('${id}')">
+        <div class="stop-name">
+          <span style="display:inline-block;background:${typeColor};color:#fff;border-radius:4px;padding:0 5px;font-size:10px;margin-right:4px">${typeIcon} ${pType}</span>
+          ${idx+1}. ${p.name}
+        </div>
+        <div class="stop-time">${p.time}${p.nameEn ? ' · '+p.nameEn : ''} ${badge}</div>
+      </li>`;
+    });
+
+    card.innerHTML = `
+      <h3>📅 第${day.day}天 · ${day.title}</h3>
+      <div class="day-sub">${day.date}</div>
+      <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
+      <ul class="stop-list">${stopsHtml}</ul>`;
+    listContainer.appendChild(card);
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  initMap();
+  buildSidebar();
+
+  // Close detail panel
+  document.getElementById('detailPanel').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('detailPanel') || e.target.classList.contains('detail-handle')) {
+      hideDetail();
+    }
+  });
+
+  // Close summary modal
+  document.getElementById('summaryCloseBtn').onclick = hideSummary;
+  document.getElementById('summaryModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('summaryModal')) hideSummary();
+  });
+
+  // Mobile sidebar
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+  document.getElementById('map').addEventListener('click', () => {
+    if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
+  });
+
+  loadAllRoutes();
+});
+</script>
+</body>
+</html>
