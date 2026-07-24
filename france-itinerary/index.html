@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>法国深度13天自由行</title>
+<title>法兰西深度13日自由行 · 互动行程地图</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -11,9 +11,13 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#f5f5f7;color:#1d1d1f;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
 /* Header */
-header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:1000;flex-shrink:0}
-header h1{font-size:16px;font-weight:700;white-space:nowrap}
-header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
+header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;z-index:1000;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.brand-logo{font-size:26px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.brand-text{min-width:0}
+.brand-text h1{font-size:17px;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-text .subtitle{font-size:11px;opacity:.72;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:560px){.brand-text h1{font-size:14px}.brand-text .subtitle{font-size:10px}.brand-logo{font-size:22px}}
 
 /* Layout */
 .app-wrapper{display:flex;flex:1;overflow:hidden}
@@ -104,10 +108,10 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 /* Desktop detail panel */
 @media(min-width:901px){.detail-panel{max-width:380px;left:auto;right:20px;bottom:20px;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,.15)}.detail-handle{display:none}}
 
-/* Version badge */
-.version-badge{position:absolute;top:10px;left:10px;z-index:1000;background:rgba(255,255,255,.92);border-radius:6px;padding:3px 8px;font-size:10px;color:#86868b;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s}
-.version-badge:hover{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12);color:#555}
-.version-badge .v-dot{width:5px;height:5px;border-radius:50%;background:#34c759;flex-shrink:0}
+/* Version badge (in header) */
+.version-badge{background:rgba(255,255,255,.15);border-radius:20px;padding:5px 11px;font-size:10px;color:#fff;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;border:1px solid rgba(255,255,255,.25);white-space:nowrap;flex-shrink:0}
+.version-badge:hover{background:rgba(255,255,255,.28);color:#fff}
+.version-badge .v-dot{width:6px;height:6px;border-radius:50%;background:#34c759;flex-shrink:0;box-shadow:0 0 6px #34c759}
 
 /* Changelog modal */
 .changelog-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:9999;align-items:center;justify-content:center}
@@ -193,19 +197,79 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 .ev-badge.invite{background:#8e8e93}
 .ev-badge.free{background:#34c759}
 .ev-note{font-size:10px;color:#e65100;margin-top:4px;line-height:1.4}
+
+/* ===== Detail panel v1.4: header + sectioned cards ===== */
+.detail-panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.16);z-index:2000;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:78vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.detail-panel.open{transform:translateY(0)}
+.detail-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:12px 16px 8px;border-bottom:1px solid #efeff2;flex-shrink:0;background:linear-gradient(180deg,#fafbff,#fff)}
+.detail-head-main{min-width:0;flex:1}
+.detail-title{font-size:17px;font-weight:700;color:#1d1d1f;line-height:1.25}
+.detail-sub{font-size:12px;color:#86868b;margin-top:3px}
+.detail-sub a{color:#007aff;text-decoration:none}
+.detail-head-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.detail-ico-btn{background:#f2f2f7;border:none;width:28px;height:28px;border-radius:8px;font-size:14px;cursor:pointer;color:#555;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.detail-ico-btn:hover{background:#e5e5ea}
+.detail-content{padding:12px 16px 20px;overflow-y:auto;flex:1}
+.detail-panel.collapsed .detail-content{display:none}
+
+.detail-card{background:#fafafa;border:1px solid #efeff2;border-radius:10px;padding:9px 12px;margin-bottom:9px}
+.detail-card-h{font-size:12px;font-weight:700;color:#1d1d1f;margin-bottom:4px;letter-spacing:.3px}
+.detail-card-b{font-size:13px;line-height:1.6;color:#333}
+.detail-card.tip{background:#fff8ec;border-color:#ffe6b3}
+.detail-card.tip .detail-card-h{color:#b07400}
+.detail-card.study{background:#f3edff;border-color:#d9c7ff}
+.detail-card.study .detail-card-h{color:#6a3cc9}
+.detail-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:none;border:none;padding:0;margin-bottom:9px}
+.detail-info-grid>div{background:#f7f7fb;border-radius:8px;padding:7px 10px}
+.detail-info-grid span{display:block;font-size:11px;color:#86868b}
+.detail-info-grid b{display:block;font-size:12px;color:#1d1d1f;font-weight:600;margin-top:1px;line-height:1.4}
+.detail-table{font-size:12px;border-collapse:collapse;width:100%}
+.detail-table td{padding:4px 8px 4px 0;vertical-align:top}
+.detail-table td.k{color:#555;white-space:nowrap;width:1%}
+.detail-table td.v{color:#333;padding-left:6px}
+.badge-reserve{display:inline-block;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500}
+.badge-need{background:#ff9500;color:#fff}
+.badge-free{background:#34c759;color:#fff}
+
+/* Events listed inside a day card */
+.event-day-block{margin-top:10px;padding:10px 12px;background:#fff0f5;border:1px solid #ffd6e6;border-radius:10px}
+.event-day-title{font-size:12px;font-weight:700;color:#ff2d55;margin-bottom:6px}
+.event-day-item{padding:6px 8px;margin-bottom:5px;background:#fff;border-radius:8px;cursor:pointer;transition:background .15s;font-size:12px;color:#1d1d1f;border-left:3px solid #ff2d55}
+.event-day-item:hover{background:#fff0f5}
+.event-day-item .ev-when{color:#86868b;font-size:11px;margin-left:4px}
+.ev-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;font-weight:600}
+.ev-tag.during{background:#34c759;color:#fff}
+.ev-tag.before{background:#8e8e93;color:#fff}
+.ev-tag.after{background:#ff9500;color:#fff}
+
+/* Transport cost block in summary */
+.summary-transport{padding:12px 20px;background:#eef7ee;border-bottom:1px solid #d8ecd8;font-size:12px;flex-shrink:0}
+.summary-transport h3{font-size:13px;font-weight:700;color:#1d1d1f;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.summary-transport .tr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:6px}
+.summary-transport .tr-item{background:#fff;border-radius:8px;padding:6px 10px}
+.summary-transport .tr-item span{display:block;font-size:10px;color:#86868b}
+.summary-transport .tr-item b{font-size:13px;color:#1d1d1f}
+.summary-transport .tr-note{font-size:10px;color:#777;line-height:1.5}
+.summary-transport .tr-total{font-size:13px;font-weight:700;color:#1d6b1d;margin-top:4px}
+
+/* Desktop detail panel */
+@media(min-width:901px){.detail-panel{max-width:400px;left:auto;right:20px;bottom:20px;border-radius:16px;box-shadow:0 4px 28px rgba(0,0,0,.18)}}
 </style>
 </head>
 <body>
 
 <header>
-<div style="display:flex;align-items:center;gap:8px">
-<button class="sidebar-toggle" id="menuBtn">☰</button>
-</div>
-<div>
-<h1>🇫🇷 法国深度13天自由行</h1>
-<div class="subtitle">2026.9.25 - 10.6 · 巴黎→波尔多→图卢兹→蒙彼利埃→里昂→日内瓦</div>
-</div>
-<div style="width:36px"></div>
+  <button class="sidebar-toggle" id="menuBtn">☰</button>
+  <div class="brand">
+    <div class="brand-logo">🇫🇷</div>
+    <div class="brand-text">
+      <h1>法兰西深度 13 日自由行</h1>
+      <div class="subtitle">2026.09.25 – 10.06 · 巴黎 → 波尔多 → 图卢兹 → 蒙彼利埃 → 里昂 → 日内瓦</div>
+    </div>
+  </div>
+  <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
+    <span class="v-dot"></span><span>v1.4.0</span>
+  </div>
 </header>
 
 <div class="app-wrapper">
@@ -233,7 +297,7 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 
 <!-- Detail panel -->
 <div class="detail-panel" id="detailPanel">
-<div class="detail-handle"></div>
+<div class="detail-header" id="detailHeader"></div>
 <div class="detail-content" id="detailContent"></div>
 </div>
 
@@ -241,10 +305,23 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 <div class="changelog-overlay" id="changelogModal">
 <div class="changelog-modal">
 <div class="changelog-header">
-<h2>📋 更新日志 <span>v1.3.0</span></h2>
+<h2>📋 更新日志 <span>v1.4.0</span></h2>
 <button class="changelog-close" onclick="hideChangelog()">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.4.0</span><span class="version-date">2026-07-24</span>
+<div class="version-title">🎪 活动扩充 + 见学景点 + 详情重构 + 自驾费用</div>
+<ul class="version-items">
+<li>活动数量 9 → 17 项：新增欧洲遗产日、里昂双年展、马恩音乐节、尼姆葡萄节斗牛节、巴黎巧克力沙龙、日内瓦拉巴蒂节、图卢兹犯罪小说节、波尔多游园会（以「行程附近时段」为主，标注行程内/前/后）</li>
+<li>每日日程内嵌「当日活动」板块，并在该天地图上叠加对应粉色🎪活动标记</li>
+<li>新增「见学」类型景点：法国国民议会（波旁宫）、法国参议院（卢森堡宫），含免费导览/预约信息与见学提示</li>
+<li>景点详情卡重构：分区卡片化（简介/必看亮点/开放时间·建议时长·地址/门票/预约/小贴士/见学提示），新增开放时间、建议时长、地址、小贴士等游客实用信息</li>
+<li>详情面板新增折叠（▾）与关闭（✕），关闭后彻底隐藏，解决「缩小未完全消失」问题</li>
+<li>网站标题/页眉重新设计，版本徽章移至页眉</li>
+<li>汇总表新增「🚗 自驾费用预估」：按总车程估算租车+异地还车+油费+过路费</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.3.0</span><span class="version-date">2026-07-24</span>
 <div class="version-title">🎪 特殊活动功能</div>
@@ -303,6 +380,7 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 </div>
 <div class="summary-stats" id="summaryStats"></div>
 <div class="summary-filter" id="summaryFilter"></div>
+<div class="summary-transport" id="summaryTransport"></div>
 <div class="summary-modal-body" id="summaryBody"></div>
 <div class="summary-total" id="summaryTotal"></div>
 </div>
@@ -332,6 +410,8 @@ const POI_DATA = {
   "d4_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:4,desc:"塞纳河畔传奇英文书店。",why:"海明威等'迷惘一代'聚集地，二楼可看到圣母院，店里还有猫。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
   "d4_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:4,desc:"法国伟大灵魂的安息之地。",why:"伏尔泰、卢梭、雨果、居里夫人长眠地。注意6点闭园。",reservation:"需要购票",price:"11€",reserveUrl:"",advanceBooking:"建议提前购票",time:"17:00",category:"纪念馆"},
   "d4_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:4,desc:"从大草坪仰望埃菲尔铁塔的最佳位置。",why:"傍晚在草坪上看铁塔灯光秀，每小时整点闪烁5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:00",category:"地标"},
+  "d4_8":{name:"法国国民议会（波旁宫）",nameEn:"Assemblée nationale · Palais Bourbon",coords:[48.8600,2.3188],day:4,desc:"法国国民议会（下议院）所在地，拿破仑时代建成的波旁宫，正对塞纳河左岸。",why:"可参加免费导览参观半圆会议厅、历届议长肖像厅与图书馆；每年9月欧洲遗产日还可免预约入场。是了解法国民主制度的绝佳「见学」地。",reservation:"免费导览需官网预约，欧洲遗产日免约",price:"免费",reserveUrl:"https://www.assemblee-nationale.fr",advanceBooking:"建议提前2-3周预约导览",time:"—",category:"见学/机构",type:"见学",transport:"地铁12号线 Assemblée Nationale 站",closed:"导览仅周二至周六，周日周一不开放",website:"https://www.assemblee-nationale.fr",reserveChannels:"官网「Visiter l'Assemblée」预约免费导览；欧洲遗产日（9月第三个周末）开放免预约参观",studyTour:true},
+  "d4_9":{name:"法国参议院（卢森堡宫）",nameEn:"Sénat · Palais du Luxembourg",coords:[48.8555,2.3370],day:4,desc:"法国参议院（上议院）所在地，建于17世纪的卢森堡宫，旁为同名法式花园。",why:"可预约免费导览参观参议院会议厅与卢森堡花园；法式花园免费对公众开放，是巴黎核心区少有的静谧绿地。同为「见学」好去处。",reservation:"免费导览需官网预约，花园免费开放",price:"免费",reserveUrl:"https://www.senat.fr",advanceBooking:"建议提前2-3周预约导览",time:"—",category:"见学/机构",type:"见学",transport:"地铁10号线 Odéon / RER B Luxembourg 站",closed:"导览需预约时段，花园每日开放",website:"https://www.senat.fr",reserveChannels:"官网预约免费导览；卢森堡花园免费开放（日出至日落）",studyTour:true},
   "d5_1":{name:"香波尔城堡",nameEn:"Château de Chambord",coords:[47.6161,1.5170],day:5,desc:"卢瓦尔河谷最大、最标志性的文艺复兴城堡。",why:"达芬奇双螺旋楼梯是灵魂；顶层露台360°俯瞰护城河与狩猎森林。",reservation:"无需预约",price:"15€（博物馆通票不含）",reserveUrl:"https://www.chambord.org",advanceBooking:"提前购票即可",time:"10:00",category:"城堡"},
   "d5_2":{name:"波尔多",nameEn:"Bordeaux",coords:[44.8378,-0.5792],day:5,desc:"世界葡萄酒之都，联合国世界文化遗产城市。",why:"18世纪建筑群保存完好，水镜广场是网红打卡点。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"4h",dist:"560km",depart:"13:00"},
   "d6_1":{name:"波尔多葡萄酒城",nameEn:"La Cité du Vin",coords:[44.8629,-0.5498],day:6,desc:"沉浸式葡萄酒主题文化体验馆，造型如醒酒器。",why:"六大主题18个沉浸式空间，门票含一杯免费品酒。",reservation:"无需预约",price:"23€（含一杯免费酒）",reserveUrl:"https://www.laciteduvin.com",advanceBooking:"提前购票即可",time:"10:00",category:"博物馆",closed:"周一闭馆"},
@@ -358,7 +438,7 @@ const ITINERARY = [
   {day:1,date:"9月25日 (五)",title:"抵达巴黎",summary:"上午航空博物馆 → 民宿入住 → 傍晚卢浮宫夜场 → Cafe Marly晚餐",stops:["d1_1","d1_2","d1_3"]},
   {day:2,date:"9月26日 (六)",title:"巴黎艺术日",summary:"奥赛博物馆 → 杜乐丽花园 → 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d2_1","d2_2","d2_3","d2_4","d2_5"]},
   {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
-  {day:4,date:"9月28日 (一)",title:"巴黎全景日",summary:"蒙马特高地 → 歌剧院 → 蓬皮杜 → 圣母院 → 莎翁书店 → 先贤祠 → 战神广场",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6","d4_7"]},
+  {day:4,date:"9月28日 (一)",title:"巴黎全景日",summary:"蒙马特高地 → 歌剧院 → 蓬皮杜 → 圣母院 → 莎翁书店 → 先贤祠 → 战神广场 → 国民议会 → 参议院",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6","d4_7","d4_8","d4_9"]},
   {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
   {day:6,date:"9月30日 (三)",title:"波尔多红酒日",summary:"葡萄酒城(上午) → 酒庄品酒(下午)",stops:["d6_1","d6_2"]},
   {day:7,date:"10月1日 (四)",title:"图卢兹航空日",summary:"波尔多→图卢兹(2h40) → 空客工厂 → 协和博物馆",stops:["d7_1","d7_2","d7_3"]},
@@ -372,6 +452,35 @@ const ITINERARY = [
 // ============================================================
 // SPECIAL EVENTS (行程期间各城市特殊活动 — 2026年真实活动)
 // ============================================================
+// ============================================================
+// POI EXTRA (游客实用补充信息：开放时间/建议时长/地址/小贴士)
+// ============================================================
+const POI_EXTRA = {
+  "d1_1":{hours:"周二–周日 10:00–18:00（周一闭馆）",duration:"2–3 小时",address:"Aéroport de Paris-Le Bourget, 93350 Le Bourget",tips:"镇馆之宝协和号/A380需另购登机牌；建议预留时间登机参观。"},
+  "d1_2":{hours:"周三、周五 至 21:45；其余日 9:00–18:00（周二闭馆）",duration:"半天（3–4 小时）",address:"Rue de Rivoli, 75001 Paris",tips:"周五夜场人少体验佳；可从 Pyramid 或 Carrousel 入口避开主队。"},
+  "d2_1":{hours:"周二 9:30–18:00；周四 至 21:45（周一闭馆）",duration:"2–3 小时",address:"1 Rue de la Légion d'Honneur, 75007 Paris",tips:"顶楼大钟与印象派厅必看；周四夜场较空。"},
+  "d2_2":{hours:"每日 7:00–21:00（夏季至 23:00）",duration:"0.5–1 小时",address:"Jardin des Tuileries, 75001 Paris",tips:"免费；水池边绿椅是经典法式休闲。"},
+  "d2_3":{hours:"周三 9:00–21:00；其余日 9:00–18:00（周二闭馆）",duration:"1–1.5 小时",address:"Jardin des Tuileries, 75001 Paris",tips:"莫奈《睡莲》8 幅在椭圆形厅；建议早到避人流。"},
+  "d2_5":{hours:"屋顶 10:00–23:00（旺季）",duration:"1–1.5 小时",address:"Place Charles de Gaulle, 75008 Paris",tips:"博物馆通票免排队；登顶看 12 条放射状大道。"},
+  "d3_1":{hours:"周二–周日 9:00–18:30（周一闭馆）",duration:"全天（宫殿+花园 5–6 小时）",address:"Place d'Armes, 78000 Versailles",tips:"建议买 Passport 通票含花园；花园音乐喷泉日需另购票；RER C 直达。"},
+  "d4_1":{hours:"圣心堂 6:00–22:30；登顶 8:30–20:00",duration:"2–3 小时",address:"Montmartre, 75018 Paris",tips:"Rue Lamarck 是拍铁塔的隐藏机位；山顶看日落极佳，注意扒手。"},
+  "d4_2":{hours:"导览团 10:00 起（演出日不同）",duration:"1–1.5 小时",address:"Place de l'Opéra, 75009 Paris",tips:"参观需购票；正厅与夏加尔穹顶是精华。"},
+  "d4_3":{hours:"每日 11:00–21:00（周二闭馆）",duration:"2–3 小时",address:"Place Georges Pompidou, 75004 Paris",tips:"顶层露台俯瞰巴黎全景；彩色管道外立面本身就是展品。"},
+  "d4_4":{hours:"教堂 7:45–19:00（参观 9:30 起）；免费入内需预约时段",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"修复后重新开放，免费但必须官网/App 预约时段；珍宝馆可现场购票。"},
+  "d5_1":{hours:"每日 9:00–18:00（旺季至 17:00）",duration:"2–3 小时",address:"Château de Chambord, 41250 Chambord",tips:"达芬奇双螺旋楼梯与屋顶露台是精华；园区很大，留足停车步行时间。"},
+  "d6_1":{hours:"周二–周日 10:00–18:00（周一闭馆）",duration:"2–3 小时",address:"134 Quai de Bacalan, 33300 Bordeaux",tips:"门票含一杯免费品酒；沉浸式展厅建议租语音导览。"},
+  "d7_1":{hours:"需预约导览约 1.5 小时（周二–周六）",duration:"半天",address:"Aéroport de Toulouse-Blagnac",tips:"A350/A380 装配线必看；需提前 2 周预约，带护照。"},
+  "d8_1":{hours:"城堡免费进入；伯爵城堡 10:00–18:00",duration:"2–3 小时",address:"Carcassonne, 11000",tips:"52 座塔楼可登；城内石板路滑，穿舒适鞋。"},
+  "d9_1":{hours:"每日 9:00–19:00（冬季至 17:00）",duration:"1–1.5 小时",address:"Arènes de Nîmes, 1 Pl. des Arènes, 30000 Nîmes",tips:"比罗马斗兽场保存更完整；可买 Nîmes 通票含嘉德水道桥。"},
+  "d9_2":{hours:"园区全天开放（博物馆 10:00–18:00）",duration:"1.5–2 小时",address:"Pont du Gard, 30210 Vers-Pont-du-Gard",tips:"河岸可游泳/皮划艇；夏季防晒；停车另收费。"},
+  "d9_3":{hours:"每日 9:00–19:00（冬季至 17:30）",duration:"2–3 小时",address:"Palais des Papes, 84000 Avignon",tips:"买通票含断桥（Pont Saint-Bénézet）；屋顶视野好。"},
+  "d10_1":{hours:"老城全天；Traboule 通道白天开放",duration:"2–3 小时",address:"Vieux Lyon, 69005 Lyon",tips:"寻找隐藏 Traboule 入口（如 54 Rue Saint-Jean）；里昂老城免费。"},
+  "d11_1":{hours:"周二–周五 11:00–18:00；周六 10:00–18:00（周日周一闭馆）",duration:"1.5–2 小时",address:"Rue des Vieux-Grenadiers 7, 1208 Genève",tips:"钟表迷朝圣；珍藏品需预约，官网购票。"},
+  "d11_2":{hours:"导览团 工作日 10:30 / 14:30（需预约）",duration:"1–1.5 小时",address:"Palais des Nations, 14 Av. de la Paix, Genève",tips:"带护照；如逢会议可入口申请旁听席位（先到先得）。"},
+  "d11_3":{hours:"导览团需预约；展览区免费无需约",duration:"2–3 小时",address:"CERN, 1211 Genève",tips:"Globe of Science 展览免费；导览需提前数周预约。"},
+  "d12_1":{hours:"全天开放",duration:"1 小时",address:"Quai du Mont-Blanc, Genève",tips:"清晨大喷泉与阿尔卑斯山景最佳；可沿湖滨步道散步。"}
+};
+
 const TRIP_START = "9/25";
 const TRIP_END = "10/6";
 function dateToNum(s){const p=s.split('/');return parseInt(p[0])*100+parseInt(p[1]);}
@@ -544,6 +653,150 @@ const EVENTS = [
     website:"https://nimes-tourisme.com",
     bookingUrl:"",
     note:"对应尼姆行程第9天。展期覆盖整个秋季，可与行程日期重合。"
+  },
+  {
+    id:"ev_patrimoine",
+    name:"欧洲遗产日 (Journées du Patrimoine)",
+    nameEn:"Journées Européennes du Patrimoine",
+    city:"巴黎", day:1,
+    coords:[48.8600,2.3200],
+    dateText:"9月19日 – 20日 (周末)",
+    dateStart:"9/19", dateEnd:"9/20",
+    category:"开放日",
+    desc:"法国每年9月第三个周末的全国性开放日，总统府(爱丽舍宫)、国民议会、参议院、部委与大使馆等平时不对外开放的建筑免费向公众开放。",
+    why:"行程前一周即可赶上！这正是参观法国议会(国民议会/参议院)的绝佳机会——平时需预约的导览，遗产日当天免预约免费入场，还能看到议会会议厅与珍贵厅室。",
+    reservation:"免费，免预约（部分热门站点需现场排队）",
+    inviteOnly:false,
+    price:"免费",
+    website:"https://www.journeesdupatrimoine.culture.gouv.fr",
+    bookingUrl:"",
+    note:"对应巴黎行程第1天之前(9/19-20)。若行程提前或延展至该周末即可免费参观议会；与「见学」景点(国民议会/参议院)高度相关。"
+  },
+  {
+    id:"ev_lyonbiennale",
+    name:"里昂双年展 (当代艺术)",
+    nameEn:"Biennale de Lyon",
+    city:"里昂", day:9,
+    coords:[45.7400,4.8400],
+    dateText:"9月中旬 – 2027年1月（跨年大展）",
+    dateStart:"9/12", dateEnd:"12/31",
+    category:"特展",
+    desc:"全球最重要的当代艺术双年展之一，第16届。主场馆 La Sucrière 及里昂全城场馆呈现国际前沿装置、影像与行为艺术。",
+    why:"里昂作为艺术之城的年度盛事；行程第9-10天在里昂，正好赶上展期。学生/26岁以下有优惠票。",
+    reservation:"需购票",
+    inviteOnly:false,
+    price:"约 18–25€，优惠票更低",
+    website:"https://www.biennale-de-lyon.fr",
+    bookingUrl:"https://www.biennale-de-lyon.fr",
+    note:"对应里昂行程第9-10天。展期自9月中旬持续至次年1月，覆盖行程日期。"
+  },
+  {
+    id:"ev_marne",
+    name:"马恩河谷音乐节",
+    nameEn:"Festival de Marne",
+    city:"巴黎", day:2,
+    coords:[48.7900,2.4700],
+    dateText:"9月29日 – 10月17日",
+    dateStart:"9/29", dateEnd:"10/17",
+    category:"演出",
+    desc:"法兰西岛大区历史最久的音乐节之一，第40届，三周内在巴黎南郊多个场馆呈现 Imany、Benjamin Biolay、Barbara Pravi 等法国民谣与流行阵容。",
+    why:"行程第1-2天(巴黎)与音乐节前段重叠；票价亲民，适合喜欢法语香颂的游客。",
+    reservation:"需购票（部分免费户外场次）",
+    inviteOnly:false,
+    price:"约 15–35€，部分免费",
+    website:"https://www.festival-de-marne.fr",
+    bookingUrl:"https://www.festival-de-marne.fr",
+    note:"对应巴黎行程第1-2天。活动日期(9/29起)与巴黎行程(9/25-9/28)后期重叠。"
+  },
+  {
+    id:"ev_feria_nimes",
+    name:"尼姆葡萄节斗牛节 (Feria des Vendanges)",
+    nameEn:"Feria de Nîmes (Septembre)",
+    city:"尼姆", day:9,
+    coords:[43.8347,4.3600],
+    dateText:"9月中旬（约9/18–21，以官方为准）",
+    dateStart:"9/18", dateEnd:"9/21",
+    category:"节日",
+    desc:"尼姆每年9月的葡萄丰收节(Feria des Vendanges)，含斗牛、卡门弗拉明戈、街头狂欢与白色着装游行，是南法最具热情的节庆之一。",
+    why:"行程第9天经停尼姆，若提前或延展至9月中旬即可感受这座罗马古城的沸腾气氛。注意：斗牛涉及动物伦理，请自行判断是否参与。",
+    reservation:"部分需购票（斗牛竞技场）",
+    inviteOnly:false,
+    price:"街头活动免费，斗牛约 30–60€",
+    website:"https://www.nimes-tourisme.com",
+    bookingUrl:"",
+    note:"对应尼姆行程第9天。活动日期(9月中旬)在行程标注日期(10/3)之前；若实际出行提前可参加。"
+  },
+  {
+    id:"ev_chocolat",
+    name:"巴黎巧克力沙龙 (Salon du Chocolat)",
+    nameEn:"Salon du Chocolat Paris",
+    city:"巴黎", day:1,
+    coords:[48.8380,2.3080],
+    dateText:"10月底 – 11月初（约10/28 – 11/1）",
+    dateStart:"10/28", dateEnd:"11/1",
+    category:"特展",
+    desc:"全球最大的巧克力专业展，巴黎凡尔赛门展览馆，汇聚顶级巧克力匠人、甜点演示与可食时装秀。",
+    why:"巧克力与甜点爱好者必去；行程之后举办，若延展行程可顺道。",
+    reservation:"需购票",
+    inviteOnly:false,
+    price:"约 15–20€",
+    website:"https://www.salon-du-chocolat.com",
+    bookingUrl:"https://www.salon-du-chocolat.com",
+    note:"对应巴黎行程第1天。活动日期(10月底)在巴黎行程(9/25-9/28)之后；若延展行程可参加。"
+  },
+  {
+    id:"ev_batie",
+    name:"日内瓦拉巴蒂艺术节 (La Bâtie)",
+    nameEn:"La Bâtie Festival",
+    city:"日内瓦", day:11,
+    coords:[46.2100,6.1430],
+    dateText:"8月25日 – 9月13日",
+    dateStart:"8/25", dateEnd:"9/13",
+    category:"演出",
+    desc:"日内瓦秋季旗舰跨领域艺术节，逾20个场馆呈现戏剧、舞蹈、音乐会和DJ，是日内瓦秋季文化季的开端。",
+    why:"对应日内瓦行程第11天之前；若行程提前至9月上旬即可赶上尾声。票价亲民，多场馆通用。",
+    reservation:"部分需购票，部分免费",
+    inviteOnly:false,
+    price:"约 10瑞郎起，多场免费",
+    website:"https://www.batie.ch",
+    bookingUrl:"https://www.batie.ch",
+    note:"对应日内瓦行程第11天。活动日期(8/25-9/13)在日内瓦行程(10/5)之前；若实际出行提前可参加。"
+  },
+  {
+    id:"ev_polars",
+    name:"图卢兹南方犯罪小说节",
+    nameEn:"Toulouse Polars du Sud",
+    city:"图卢兹", day:7,
+    coords:[43.6045,1.4440],
+    dateText:"10月9日 – 11日",
+    dateStart:"10/9", dateEnd:"10/11",
+    category:"特展",
+    desc:"图卢兹国际犯罪/侦探小说节，汇集作家见面会、签售与主题对谈，悬疑推理迷的聚会。",
+    why:"对应图卢兹行程第7天(10/1)之后；若延展行程可参加。免费入场为主。",
+    reservation:"免费（部分活动需预约）",
+    inviteOnly:false,
+    price:"免费",
+    website:"https://www.polarsdusud.com",
+    bookingUrl:"",
+    note:"对应图卢兹行程第7天。活动日期(10/9-11)在图卢兹行程(10/1)之后；若延展行程可参加。"
+  },
+  {
+    id:"ev_foire_bx",
+    name:"波尔多欢乐游园会 (Foire aux Plaisirs)",
+    nameEn:"Foire aux Plaisirs Bordeaux",
+    city:"波尔多", day:5,
+    coords:[44.8460,-0.5710],
+    dateText:"10月9日 – 11月1日",
+    dateStart:"10/9", dateEnd:"11/1",
+    category:"节日",
+    desc:"法国南部最大的游园会之一，设于波尔多交易所广场(Place des Quinconces)，摩天轮、过山车与各式游乐设施。",
+    why:"对应波尔多行程第5-6天(9/29-9/30)之后；若延展行程可带家人游玩。",
+    reservation:"现场购票（按项目）",
+    inviteOnly:false,
+    price:"按游乐项目计费",
+    website:"https://www.bordeaux-tourisme.com",
+    bookingUrl:"",
+    note:"对应波尔多行程第5-6天。活动日期(10/9起)在波尔多行程之后；若延展行程可参加。"
   }
 ];
 
@@ -679,7 +932,7 @@ function addMarker(id, poi, idx, total, compact) {
 
   const marker = L.marker(poi.coords, { icon }).addTo(map);
   const pType = poi.type || '景点';
-  const popupTypeIcon = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗'}[pType] || '📍';
+  const popupTypeIcon = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗','见学':'🎓'}[pType] || '📍';
   marker.bindPopup(`
     <div style="min-width:190px">
       <strong>${popupTypeIcon} ${poi.name}</strong>
@@ -731,8 +984,13 @@ function showDay(dayNum) {
   dayData.stops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, dayData.stops.length, false));
   if (allDayRoutes[dayNum]) addRoute(dayNum, allDayRoutes[dayNum]);
 
+  // Events for this day (nearby-time focus) — shown as pink 🎪 markers
+  const dayEvents = EVENTS.filter(e => e.day === dayNum);
+  dayEvents.forEach(addEventMarker);
+
   if (dayData.stops.length > 0) {
     const allCoords = dayData.stops.map(id => POI_DATA[id].coords);
+    dayEvents.forEach(e => allCoords.push(e.coords));
     map.fitBounds(L.latLngBounds(allCoords), { padding: [50, 50], maxZoom: 14 });
   }
 
@@ -835,10 +1093,11 @@ function renderEventsList() {
     let badge = ev.inviteOnly
       ? '<span class="ev-badge invite">邀请制</span>'
       : (ev.reservation.includes('无需') ? '<span class="ev-badge free">免费</span>' : '<span class="ev-badge reserve">需预约</span>');
+    const tlabel = timing === 'during' ? '<span class="ev-tag during">行程内</span>' : (timing === 'after' ? '<span class="ev-tag after">行程后</span>' : '<span class="ev-tag before">行程前</span>');
     const timingTag = timing === 'during' ? '' : `<div class="ev-note">⚠️ 活动日期在行程${timing === 'after' ? '之后' : '之前'}，若实际出行日期覆盖此区间可参加</div>`;
     html += `<div class="event-item" onclick="focusEvent('${ev.id}')">
       <div class="ev-name">🎪 ${ev.name}</div>
-      <div class="ev-meta">${ev.dateText} · ${ev.city} · 对应第${ev.day}天</div>
+      <div class="ev-meta">${ev.dateText} · ${ev.city} · 对应第${ev.day}天 ${tlabel}</div>
       <div>${badge}</div>
       ${timingTag}
     </div>`;
@@ -856,45 +1115,52 @@ function focusEvent(id) {
 function showEventDetail(id) {
   const ev = EVENTS.find(e => e.id === id);
   if (!ev) return;
-  const panel = document.getElementById('detailPanel');
-  const content = document.getElementById('detailContent');
 
   let badge = ev.inviteOnly
-    ? '<span style="display:inline-block;background:#8e8e93;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">邀请制</span>'
+    ? '<span class="badge-reserve badge-need" style="background:#8e8e93">邀请制</span>'
     : (ev.reservation.includes('无需')
-        ? '<span style="display:inline-block;background:#34c759;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">免预约</span>'
-        : '<span style="display:inline-block;background:#ff9500;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">需要预约</span>');
+        ? '<span class="badge-reserve badge-free">免预约</span>'
+        : '<span class="badge-reserve badge-need">需要预约</span>');
 
-  content.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-      <div>
-        <h3 style="font-size:18px;font-weight:700;margin:0">🎪 ${ev.name}</h3>
-        <div style="font-size:12px;color:#86868b;margin-top:2px">${ev.nameEn} · ${ev.category}${ev.website ? ' · <a href="' + ev.website + '" target="_blank" style="color:#007aff;text-decoration:none">官网</a>' : ''}</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0">
-        ${badge}
-        <button onclick="hideDetail()" class="detail-close-btn" style="margin-top:4px;background:none;border:none;font-size:16px;cursor:pointer;color:#86868b;padding:2px 4px" title="关闭">✕</button>
-      </div>
+  const timing = eventTiming(ev);
+  const timingTag = timing === 'during'
+    ? '<span class="ev-tag during">行程内</span>'
+    : (timing === 'after' ? '<span class="ev-tag after">行程之后</span>' : '<span class="ev-tag before">行程之前</span>');
+
+  const headerHtml = `
+    <div class="detail-head-main">
+      <div class="detail-title">🎪 ${ev.name}</div>
+      <div class="detail-sub">${ev.nameEn} · ${ev.category}${ev.website ? ' · <a href="' + ev.website + '" target="_blank">官网</a>' : ''} ${timingTag}</div>
     </div>
-    <div style="background:#fff0f5;border-left:3px solid #ff2d55;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:13px;line-height:1.6">${ev.desc}</div>
-    <div style="margin-bottom:10px">
-      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">亮点 / 为什么值得去</div>
-      <div style="font-size:13px;line-height:1.6;color:#333">${ev.why}</div>
+    <div class="detail-head-actions">
+      ${badge}
+      <button class="detail-ico-btn" onclick="toggleDetailCollapse()" title="折叠/展开">▾</button>
+      <button class="detail-ico-btn" onclick="hideDetail()" title="关闭">✕</button>
+    </div>`;
+
+  const bodyHtml = `
+    <div class="detail-card" style="background:#fff0f5;border-color:#ffd6e6">
+      <div class="detail-card-b">${ev.desc}</div>
     </div>
-    <div style="margin-bottom:10px">
-      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">活动信息</div>
-      <table style="font-size:12px;border-collapse:collapse;width:100%">
-        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">活动日期</td><td style="padding:3px 0;color:#333">${ev.dateText}</td></tr>
-        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">所在城市</td><td style="padding:3px 0;color:#333">${ev.city} · 对应行程第${ev.day}天</td></tr>
-        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">是否需要预约</td><td style="padding:3px 0;color:#333">${ev.reservation}</td></tr>
-        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">是否需受邀</td><td style="padding:3px 0;color:${ev.inviteOnly ? '#e65100' : '#333'}">${ev.inviteOnly ? '是 — 邀请制 / 行业内部，公众无法参加' : '否 — 公众可参与'}</td></tr>
-        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">费用</td><td style="padding:3px 0;color:#1d1d1f;font-weight:500">${ev.price}</td></tr>
-        ${ev.website ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">官网</td><td style="padding:3px 0;color:#333"><a href="${ev.website}" target="_blank" style="color:#007aff">${ev.website}</a></td></tr>` : ''}
-        ${ev.bookingUrl ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约 / 购票</td><td style="padding:3px 0;color:#333"><a href="${ev.bookingUrl}" target="_blank" style="color:#007aff">前往购票 / 预约</a></td></tr>` : ''}
-        ${ev.note ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">备注</td><td style="padding:3px 0;color:#e65100">${ev.note}</td></tr>` : ''}
+    <div class="detail-card">
+      <div class="detail-card-h">⭐ 亮点 / 为什么值得去</div>
+      <div class="detail-card-b">${ev.why}</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-card-h">🎟️ 活动信息</div>
+      <table class="detail-table">
+        <tr><td class="k">活动日期</td><td class="v">${ev.dateText}</td></tr>
+        <tr><td class="k">所在城市</td><td class="v">${ev.city} · 对应行程第${ev.day}天</td></tr>
+        <tr><td class="k">是否需要预约</td><td class="v">${ev.reservation}</td></tr>
+        <tr><td class="k">是否需受邀</td><td class="v" style="color:${ev.inviteOnly ? '#e65100' : '#333'}">${ev.inviteOnly ? '是 — 邀请制 / 行业内部，公众无法参加' : '否 — 公众可参与'}</td></tr>
+        <tr><td class="k">费用</td><td class="v" style="font-weight:600">${ev.price}</td></tr>
+        ${ev.website ? `<tr><td class="k">官网</td><td class="v"><a href="${ev.website}" target="_blank" style="color:#007aff">${ev.website}</a></td></tr>` : ''}
+        ${ev.bookingUrl ? `<tr><td class="k">预约/购票</td><td class="v"><a href="${ev.bookingUrl}" target="_blank" style="color:#007aff">前往购票 / 预约</a></td></tr>` : ''}
+        ${ev.note ? `<tr><td class="k">备注</td><td class="v" style="color:#e65100">${ev.note}</td></tr>` : ''}
       </table>
     </div>`;
-  panel.classList.add('open');
+
+  openDetailPanel(headerHtml, bodyHtml);
 }
 
 // ============================================================
@@ -907,14 +1173,13 @@ function showDetail(id) {
   });
   if (!poi) return;
 
-  const panel = document.getElementById('detailPanel');
-  const content = document.getElementById('detailContent');
+  const extra = POI_EXTRA[id] || {};
 
   // Professional reservation badge
   const hasReserve = poi.reservation && !poi.reservation.includes('无需') && !poi.reservation.includes('免费') && !poi.reservation.includes('已通过');
   const reserveBadge = hasReserve
-    ? `<span style="display:inline-block;background:#ff9500;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">需要预约</span>`
-    : `<span style="display:inline-block;background:#34c759;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">免预约</span>`;
+    ? '<span class="badge-reserve badge-need">需要预约</span>'
+    : '<span class="badge-reserve badge-free">免预约</span>';
 
   // Clean up reservation text
   let reserveClean = '';
@@ -925,50 +1190,73 @@ function showDetail(id) {
     else reserveClean = poi.reservation.replace('需要预约，', '').replace('需要预约', '需提前在线购票预约');
   }
 
-  content.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-      <div>
-        <h3 style="font-size:18px;font-weight:700;margin:0">${poi.name}</h3>
-        <div style="font-size:12px;color:#86868b;margin-top:2px">${poi.nameEn || ''} · ${poi.category}${poi.website ? ' · <a href="'+poi.website+'" target="_blank" style="color:#007aff;text-decoration:none">官网</a>' : ''}</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0">
-        ${reserveBadge}
-        <div style="font-size:11px;color:#86868b;margin-top:2px">${poi.time}</div>
-        <button onclick="hideDetail()" class="detail-close-btn" style="margin-top:4px;background:none;border:none;font-size:16px;cursor:pointer;color:#86868b;padding:2px 4px" title="关闭">✕</button>
-      </div>
+  const headerHtml = `
+    <div class="detail-head-main">
+      <div class="detail-title">${poi.name}</div>
+      <div class="detail-sub">${poi.nameEn || ''} · ${poi.category}${poi.website ? ' · <a href="'+poi.website+'" target="_blank">官网</a>' : ''}</div>
     </div>
+    <div class="detail-head-actions">
+      ${reserveBadge}
+      <button class="detail-ico-btn" onclick="toggleDetailCollapse()" title="折叠/展开">▾</button>
+      <button class="detail-ico-btn" onclick="hideDetail()" title="关闭">✕</button>
+    </div>`;
 
-    <div style="background:#f5f5f7;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:13px;line-height:1.6">
-      ${poi.desc}
-    </div>
+  let infoGrid = '';
+  const gridItems = [];
+  if (extra.hours) gridItems.push(`<div><span>🕒 开放时间</span><b>${extra.hours}</b></div>`);
+  if (extra.duration) gridItems.push(`<div><span>⏱️ 建议时长</span><b>${extra.duration}</b></div>`);
+  if (extra.address) gridItems.push(`<div><span>📍 地址</span><b>${extra.address}</b></div>`);
+  if (poi.closed) gridItems.push(`<div><span>🔒 休息日</span><b style="color:#e65100">${poi.closed}</b></div>`);
+  if (gridItems.length) infoGrid = `<div class="detail-info-grid">${gridItems.join('')}</div>`;
 
-    <div style="margin-bottom:10px">
-      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">必看亮点</div>
-      <div style="font-size:13px;line-height:1.6;color:#333">${poi.why}</div>
-    </div>
+  let reserveRows = `<tr><td class="k">预约方式</td><td class="v">${reserveClean}</td></tr>`;
+  if (poi.advanceBooking) reserveRows += `<tr><td class="k">建议提前</td><td class="v">${poi.advanceBooking}</td></tr>`;
+  if (poi.reserveUrl) reserveRows += `<tr><td class="k">预约入口</td><td class="v"><a href="${poi.reserveUrl}" target="_blank" style="color:#007aff">${poi.reserveUrl}</a></td></tr>`;
+  else if (hasReserve) reserveRows += `<tr><td class="k">预约入口</td><td class="v" style="color:#e65100;font-size:11px">需自行搜索官网预约</td></tr>`;
+  if (poi.reserveChannels) reserveRows += `<tr><td class="k">预约渠道</td><td class="v">${poi.reserveChannels}</td></tr>`;
+  if (poi.transport) reserveRows += `<tr><td class="k">交通方式</td><td class="v">${poi.transport}</td></tr>`;
 
-    <div style="margin-bottom:10px">
-      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">门票价格</div>
-      <div style="font-size:13px;color:#1d1d1f;font-weight:500">${poi.price}</div>
+  const bodyHtml = `
+    <div class="detail-card">
+      <div class="detail-card-h">📝 简介</div>
+      <div class="detail-card-b">${poi.desc}</div>
     </div>
-
-    <div style="margin-bottom:10px">
-      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">预约信息</div>
-      <table style="font-size:12px;border-collapse:collapse;width:100%">
-        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约方式</td><td style="padding:3px 0;color:#333">${reserveClean}</td></tr>
-        ${poi.advanceBooking ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">建议提前</td><td style="padding:3px 0;color:#333">${poi.advanceBooking}</td></tr>` : ''}
-        ${poi.reserveUrl ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约入口</td><td style="padding:3px 0;color:#333"><a href="${poi.reserveUrl}" target="_blank" style="color:#007aff">${poi.reserveUrl}</a></td></tr>` : (hasReserve ? '<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约入口</td><td style="padding:3px 0;color:#e65100;font-size:11px">需自行搜索官网预约</td></tr>' : '')}
-        ${poi.reserveChannels ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约渠道</td><td style="padding:3px 0;color:#333">${poi.reserveChannels}</td></tr>` : ''}
-        ${poi.transport ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">交通方式</td><td style="padding:3px 0;color:#333">${poi.transport}</td></tr>` : ''}
-        ${poi.closed ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">休息日</td><td style="padding:3px 0;color:#e65100">${poi.closed}</td></tr>` : ''}
-      </table>
+    <div class="detail-card">
+      <div class="detail-card-h">⭐ 必看亮点</div>
+      <div class="detail-card-b">${poi.why}</div>
     </div>
+    ${infoGrid}
+    <div class="detail-card">
+      <div class="detail-card-h">💶 门票价格</div>
+      <div class="detail-card-b" style="font-weight:600">${poi.price}</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-card-h">🎫 预约信息</div>
+      <table class="detail-table">${reserveRows}</table>
+    </div>
+    ${extra.tips ? `<div class="detail-card tip"><div class="detail-card-h">💡 小贴士</div><div class="detail-card-b">${extra.tips}</div></div>` : ''}
+    ${poi.studyTour ? `<div class="detail-card study"><div class="detail-card-h">🎓 见学提示</div><div class="detail-card-b">这是一处非常适合「见学」的地点，可深入了解法国${poi.category.includes('议会') ? '政治与民主制度' : '机构与历史文化'}。多数机构提供免费导览，建议提前在官网预约；欧洲遗产日（9月第三个周末）常开放免预约参观。</div></div>` : ''}
   `;
+
+  openDetailPanel(headerHtml, bodyHtml);
+}
+
+// Shared panel shell: header (title + collapse/close) + body
+function openDetailPanel(headerHtml, bodyHtml) {
+  document.getElementById('detailHeader').innerHTML = headerHtml;
+  document.getElementById('detailContent').innerHTML = bodyHtml;
+  const panel = document.getElementById('detailPanel');
+  panel.classList.remove('collapsed');
   panel.classList.add('open');
+}
+
+function toggleDetailCollapse() {
+  document.getElementById('detailPanel').classList.toggle('collapsed');
 }
 
 function hideDetail() {
   document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('detailPanel').classList.remove('collapsed');
 }
 
 // ============================================================
@@ -1018,7 +1306,7 @@ function parsePrice(str) {
 // Build all row data once
 function buildSummaryRows() {
   const rows = [];
-  const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗'};
+  const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗','见学':'🎓'};
 
   ITINERARY.forEach(day => {
     day.stops.forEach((id) => {
@@ -1142,6 +1430,27 @@ function renderSummaryTable() {
   `;
 }
 
+function computeTransportCost() {
+  let totalKm = 0;
+  ITINERARY.forEach(day => {
+    day.stops.forEach(id => {
+      const p = POI_DATA[id];
+      if (p && p.type === '行程' && p.dist) totalKm += parseFloat(p.dist);
+    });
+  });
+  const rentalDays = 6;      // 第5天取车 → 第10天还车（波尔多→日内瓦）
+  const rentalPerDay = 45;   // 经济型手动挡约 €40-55/天
+  const rental = rentalDays * rentalPerDay;
+  const oneWayFee = 250;     // 异地还车费（Bordeaux 取 → Geneva 还）
+  const fuelLper100 = 6.5;   // 柴油轿车约 6.5L/100km
+  const dieselPrice = 1.65;  // €/L
+  const fuel = Math.round(totalKm * fuelLper100 / 100 * dieselPrice);
+  const tollPer100 = 13;     // 法国高速约 €13-15/100km
+  const toll = Math.round(totalKm * tollPer100 / 100);
+  const total = rental + oneWayFee + fuel + toll;
+  return { totalKm, rentalDays, rental, oneWayFee, fuel, toll, total };
+}
+
 function showSummary() {
   currentMode = 'summary';
   const overlay = document.getElementById('summaryModal');
@@ -1174,6 +1483,22 @@ function showSummary() {
     <span>◯ <strong>${freePOIs}</strong> 个免费</span>
     <span>⚠️ <strong>${conflictCount}</strong> 个闭馆冲突</span>
     <span>📅 共 <strong>12</strong> 天</span>
+  `;
+
+  // Transport cost estimate (car rental + fuel + tolls)
+  const tr = computeTransportCost();
+  const trEl = document.getElementById('summaryTransport');
+  trEl.innerHTML = `
+    <h3>🚗 自驾费用预估（租车 + 油费 + 过路费）</h3>
+    <div class="tr-grid">
+      <div class="tr-item"><span>总车程</span><b>${tr.totalKm} km</b></div>
+      <div class="tr-item"><span>租车 ${tr.rentalDays} 天</span><b>€${tr.rental}</b></div>
+      <div class="tr-item"><span>异地还车费</span><b>€${tr.oneWayFee}</b></div>
+      <div class="tr-item"><span>油费(估)</span><b>€${tr.fuel}</b></div>
+      <div class="tr-item"><span>过路费(估)</span><b>€${tr.toll}</b></div>
+    </div>
+    <div class="tr-total">合计预估：≈ €${tr.total} <span style="font-weight:400;color:#777">（约 ¥${Math.round(tr.total*7.5)}）</span></div>
+    <div class="tr-note">※ 假设：经济型柴油车 €45/天×6天、异地还车 €250、油耗 6.5L/100km、柴油 €1.65/L、高速 €13/100km。实际以租车公司与油价为准；若全程改乘火车/高铁则此项可省。</div>
   `;
 
   renderSummaryTable();
@@ -1262,8 +1587,8 @@ function buildSidebar() {
 
       // Regular POI
       const pType = p.type || '景点';
-      const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗'};
-      const typeColors = {'景点':'#007aff','餐饮':'#ff9500','体验':'#af52de','行程':'#34c759'};
+      const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗','见学':'🎓'};
+      const typeColors = {'景点':'#007aff','餐饮':'#ff9500','体验':'#af52de','行程':'#34c759','见学':'#5856D6'};
       const typeIcon = typeIcons[pType] || '📍';
       const typeColor = typeColors[pType] || '#007aff';
 
@@ -1284,11 +1609,24 @@ function buildSidebar() {
       </li>`;
     });
 
+    // Events for this day (also shown on map as pink markers)
+    let evBlock = '';
+    const dayEvents = EVENTS.filter(e => e.day === day.day);
+    if (dayEvents.length) {
+      evBlock = `<div class="event-day-block"><div class="event-day-title">🎪 当日活动（${dayEvents.length}）</div>`;
+      dayEvents.forEach(ev => {
+        const t = eventTiming(ev);
+        const tag = t === 'during' ? '<span class="ev-tag during">行程内</span>' : (t === 'after' ? '<span class="ev-tag after">行程后</span>' : '<span class="ev-tag before">行程前</span>');
+        evBlock += `<div class="event-day-item" onclick="focusEvent('${ev.id}')">🎪 ${ev.name}<span class="ev-when">${ev.dateText}</span>${tag}</div>`;
+      });
+      evBlock += `</div>`;
+    }
+
     card.innerHTML = `
       <h3>📅 第${day.day}天 · ${day.title}</h3>
       <div class="day-sub">${day.date}</div>
       <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
-      <ul class="stop-list">${stopsHtml}</ul>`;
+      <ul class="stop-list">${stopsHtml}</ul>${evBlock}`;
     listContainer.appendChild(card);
   });
 }
@@ -1299,15 +1637,6 @@ function buildSidebar() {
 document.addEventListener('DOMContentLoaded', () => {
   initMap();
   buildSidebar();
-
-  // Close detail panel - click anywhere on the panel or the handle
-  document.getElementById('detailPanel').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('detailPanel') || 
-        e.target.classList.contains('detail-handle') ||
-        e.target.closest('.detail-close-btn')) {
-      hideDetail();
-    }
-  });
 
   // Close summary modal
   document.getElementById('summaryCloseBtn').onclick = hideSummary;
