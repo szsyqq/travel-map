@@ -175,6 +175,24 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 .summary-total{padding:10px 20px;background:#f0f4ff;border-top:2px solid #007aff;flex-shrink:0;font-size:13px;display:flex;gap:20px;flex-wrap:wrap}
 .summary-total span{color:#555}
 .summary-total strong{color:#1d1d1f;font-size:14px}
+
+/* Events feature */
+.event-tab{background:#ffe5ef;border-color:#ff2d55;color:#ff2d55;font-weight:600}
+.event-tab.active{background:#ff2d55;color:#fff}
+.events-list{display:none;flex:1;overflow-y:auto;padding:0}
+.events-list.active{display:block}
+.events-filter{display:flex;gap:8px;align-items:center;padding:8px 14px;border-bottom:1px solid #e5e5ea;font-size:12px;flex-shrink:0}
+.events-filter select{padding:3px 8px;border:1px solid #d1d1d6;border-radius:6px;font-size:11px;background:#fff;cursor:pointer}
+.events-note{padding:8px 14px;font-size:11px;color:#8a6d3b;background:#fff8f0;border-bottom:1px solid #f0e0d0;line-height:1.5}
+.event-item{padding:10px 14px;margin:6px 10px;border-radius:10px;background:#fff;border:1px solid #f0f0f5;cursor:pointer;transition:all .2s;border-left:3px solid #ff2d55}
+.event-item:hover{background:#fff0f5;box-shadow:0 2px 8px rgba(255,45,85,.12)}
+.event-item .ev-name{font-weight:600;font-size:13px;color:#1d1d1f}
+.event-item .ev-meta{font-size:11px;color:#86868b;margin-top:2px}
+.event-item .ev-badge{display:inline-block;font-size:9px;padding:1px 6px;border-radius:3px;margin-top:5px;color:#fff}
+.ev-badge.reserve{background:#ff9500}
+.ev-badge.invite{background:#8e8e93}
+.ev-badge.free{background:#34c759}
+.ev-note{font-size:10px;color:#e65100;margin-top:4px;line-height:1.4}
 </style>
 </head>
 <body>
@@ -200,6 +218,7 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 </div>
 <div class="day-tabs" id="dayTabs"></div>
 <div class="itinerary-list" id="itineraryList"></div>
+<div class="events-list" id="eventsList"></div>
 </div>
 
 <div class="map-container">
@@ -222,10 +241,21 @@ header .subtitle{font-size:11px;opacity:.7;margin-top:1px}
 <div class="changelog-overlay" id="changelogModal">
 <div class="changelog-modal">
 <div class="changelog-header">
-<h2>📋 更新日志 <span>v1.2.0</span></h2>
+<h2>📋 更新日志 <span>v1.3.0</span></h2>
 <button class="changelog-close" onclick="hideChangelog()">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.3.0</span><span class="version-date">2026-07-24</span>
+<div class="version-title">🎪 特殊活动功能</div>
+<ul class="version-items">
+<li>新增「🎪 活动」标签，地图上叠加显示行程期间各城市特殊活动（粉色🎪标记）</li>
+<li>整理 2026 年真实活动 9 项：白夜艺术节、巴黎时装周、秋季艺术节、卢米埃尔电影节、阿维尼翁中世纪节、日内瓦Bachata节、圣埃米利永/蒙马特丰收节、尼姆特展</li>
+<li>活动详情面板含「是否需受邀（邀请制）」「是否需要预约」「费用」「官网/购票链接」</li>
+<li>侧边栏活动列表可按城市/日期查看，并支持「仅行程日期内」筛选</li>
+<li>图例新增特殊活动标记说明</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.2.0</span><span class="version-date">2026-07-24</span>
 <div class="version-title">详情面板重构 + 汇总表增强</div>
@@ -340,6 +370,184 @@ const ITINERARY = [
 ];
 
 // ============================================================
+// SPECIAL EVENTS (行程期间各城市特殊活动 — 2026年真实活动)
+// ============================================================
+const TRIP_START = "9/25";
+const TRIP_END = "10/6";
+function dateToNum(s){const p=s.split('/');return parseInt(p[0])*100+parseInt(p[1]);}
+function eventTiming(ev){
+  const s=dateToNum(ev.dateStart), e=dateToNum(ev.dateEnd), ts=dateToNum(TRIP_START), te=dateToNum(TRIP_END);
+  if(e<ts) return 'before';
+  if(s>te) return 'after';
+  return 'during';
+}
+
+const EVENTS = [
+  {
+    id:"ev_nuitblanche",
+    name:"白夜艺术节 (Nuit Blanche)",
+    nameEn:"Nuit Blanche Paris",
+    city:"巴黎", day:2,
+    coords:[48.8600,2.3370],
+    dateText:"10月3日 (周六) 19:00 – 次日7:00",
+    dateStart:"10/3", dateEnd:"10/3",
+    category:"节日",
+    desc:"巴黎每年10月第一个周六的通宵当代艺术节，全城博物馆、画廊、教堂、塞纳河岸变成免费露天艺术馆。",
+    why:"约250万人彻夜游走城市，灯光装置、声音艺术、行为表演遍布街头。地铁通宵运营，完全免费，是体验巴黎艺术灵魂的绝佳夜晚。",
+    reservation:"无需预约，免费入场",
+    inviteOnly:false,
+    price:"免费",
+    website:"https://www.paris.fr",
+    bookingUrl:"",
+    note:"对应巴黎行程第2天；活动在全城多点分布，建议提前下载官方地图规划路线。"
+  },
+  {
+    id:"ev_pfw",
+    name:"巴黎时装周 (SS27 春夏系列)",
+    nameEn:"Paris Fashion Week SS27",
+    city:"巴黎", day:1,
+    coords:[48.8630,2.3320],
+    dateText:"9月30日 – 10月7日",
+    dateStart:"9/30", dateEnd:"10/7",
+    category:"特展",
+    desc:"全球四大时装周之一的巴黎时装周，2027春夏系列发布。秀场分布于卡鲁索卢浮宫、东京宫、春天工作室等地。",
+    why:"时尚爱好者可关注官方日程，在秀场外感受街拍与橱窗氛围；专业秀场为行业内部。",
+    reservation:"行业邀请制，公众无法入场看秀",
+    inviteOnly:true,
+    price:"邀请制（不对外售票）",
+    website:"https://www.fhcm.paris",
+    bookingUrl:"",
+    note:"对应巴黎行程第1-2天。秀场为受邀制，普通游客可在秀场外街拍、橱窗与周边展览感受气氛。"
+  },
+  {
+    id:"ev_automne",
+    name:"巴黎秋季艺术节",
+    nameEn:"Festival d'Automne à Paris",
+    city:"巴黎", day:1,
+    coords:[48.8462,2.3460],
+    dateText:"9月 – 12月（秋季持续）",
+    dateStart:"9/1", dateEnd:"12/31",
+    category:"演出",
+    desc:"创办逾50年的当代艺术节，每年9–12月在巴黎及法兰西岛近60个场馆呈现70+场戏剧、音乐、舞蹈、视觉艺术。",
+    why:"部分演出票价亲民（30岁以下/学生8€），并有多个免费公共空间项目。先贤祠、蓬皮杜等均有节目。",
+    reservation:"部分需购票，部分免费",
+    inviteOnly:false,
+    price:"多数8–40€，部分免费",
+    website:"https://www.festival-automne.com",
+    bookingUrl:"https://www.festival-automne.com",
+    note:"对应巴黎行程第1-4天。建议出行前在官网查具体排期并提前购票。"
+  },
+  {
+    id:"ev_lumiere",
+    name:"卢米埃尔电影节",
+    nameEn:"Festival Lumière",
+    city:"里昂", day:10,
+    coords:[45.7337,4.8520],
+    dateText:"10月10日 – 18日",
+    dateStart:"10/10", dateEnd:"10/18",
+    category:"演出",
+    desc:"里昂举办的世界级经典电影致敬节，第18届。近450场放映、回顾展、大师班，2026年卢米埃尔奖授予科恩兄弟。",
+    why:"电影诞生地里昂的年度盛事，票价亲民（单场约6–15€），影迷不可错过。主会场 Institut Lumière 及全城影院。",
+    reservation:"需要购票（单场/通票）",
+    inviteOnly:false,
+    price:"单场约6–15€，通票更优惠",
+    website:"https://www.festival-lumiere.org",
+    bookingUrl:"https://www.festival-lumiere.org",
+    note:"对应里昂行程第10天。活动日期(10/10起)在行程标注日期(10/4)之后；若实际出行延至10月中旬即可参加。"
+  },
+  {
+    id:"ev_rosa",
+    name:"黄金玫瑰中世纪节",
+    nameEn:"Festival Medieval de la Rosa de Oro",
+    city:"阿维尼翁", day:9,
+    coords:[43.9040,4.8100],
+    dateText:"10月10日 – 11日",
+    dateStart:"10/10", dateEnd:"10/11",
+    category:"节日",
+    desc:"法国最负盛名的中世纪节第20届，于阿维尼翁巴尔特拉斯岛举办，含重演、比武、弓箭赛与中世纪市集。",
+    why:"沉浸式中世纪体验，适合家庭与历史爱好者；需购票入场。",
+    reservation:"需要购票",
+    inviteOnly:false,
+    price:"约10–25€（以官网为准）",
+    website:"https://avignon-tourisme.com",
+    bookingUrl:"",
+    note:"对应阿维尼翁行程第9天。活动日期(10/10-11)在行程标注日期(10/3)之后；若实际出行延至10月中旬可参加。"
+  },
+  {
+    id:"ev_bachata",
+    name:"日内瓦Bachata舞蹈节",
+    nameEn:"Bachata Geneva Festival – The Festival of Nations",
+    city:"日内瓦", day:11,
+    coords:[46.2320,6.1090],
+    dateText:"10月8日 – 12日",
+    dateStart:"10/8", dateEnd:"10/12",
+    category:"演出",
+    desc:"在日内瓦Palexpo举办的国际bachata舞蹈盛会，汇聚70+国家舞者，含工作坊、社交舞会、DJ之夜及 Bachata Social World Cup 总决赛。",
+    why:"联合国教科文非遗舞蹈的全球化聚会，专业舞者与爱好者均可参与（需购票）。",
+    reservation:"需要购票（专业舞者/爱好者）",
+    inviteOnly:false,
+    price:"约150瑞郎",
+    website:"https://bachatagenevafestival.com",
+    bookingUrl:"https://bachatagenevafestival.com",
+    note:"对应日内瓦行程第11天。活动日期(10/8-12)在行程标注日期(10/5)之后；若实际出行延至10月中旬可参加。"
+  },
+  {
+    id:"ev_stemilion",
+    name:"圣埃米利永葡萄丰收节",
+    nameEn:"Fête des vendanges de Saint-Émilion",
+    city:"波尔多", day:6,
+    coords:[44.8901,-0.1547],
+    dateText:"10月10日 – 11日",
+    dateStart:"10/10", dateEnd:"10/11",
+    category:"节日",
+    desc:"圣埃米利永（波尔多右岸名庄产区）第4届葡萄丰收节，45家列级名庄联合呈现：葡萄园漫步、遗产地参观、美食工坊与专属品鉴。",
+    why:"葡萄酒爱好者周末，距波尔多约45分钟车程，可深度体验名庄文化。需购票/预约。",
+    reservation:"需要预约/购票",
+    inviteOnly:false,
+    price:"套票视项目而定（官网公布）",
+    website:"https://www.saint-emilion-tourisme.com",
+    bookingUrl:"",
+    note:"对应波尔多行程第6天。活动日期(10/10-11)在波尔多行程(第5-6天, 9/29-9/30)之后；若实际出行延后或作为返程延伸可参加。"
+  },
+  {
+    id:"ev_montmartre",
+    name:"蒙马特葡萄丰收节",
+    nameEn:"Fête des Vendanges de Montmartre",
+    city:"巴黎", day:4,
+    coords:[48.8867,2.3431],
+    dateText:"10月9日 – 15日",
+    dateStart:"10/9", dateEnd:"10/15",
+    category:"节日",
+    desc:"巴黎蒙马特高地传统葡萄丰收节，全城最古老的葡萄酒节之一，含花车游行、音乐会、葡萄园市集与品鉴。",
+    why:"当地社区盛事，免费参与大部分活动，可顺道游览蒙马特。",
+    reservation:"无需预约（部分付费活动）",
+    inviteOnly:false,
+    price:"免费（部分付费）",
+    website:"https://www.fetedesvendangesdemontmartre.com",
+    bookingUrl:"",
+    note:"对应巴黎蒙马特行程第4天。活动日期(10/9起)在巴黎行程(第1-4天, 至9/28)之后；若实际出行延至10月中旬可参加。"
+  },
+  {
+    id:"ev_nimes_expo",
+    name:"尼姆奇趣特展 (Expo de Ouf!)",
+    nameEn:"Expo de Ouf!",
+    city:"尼姆", day:9,
+    coords:[43.8347,4.3600],
+    dateText:"9月 – 12月（长期特展）",
+    dateStart:"9/1", dateEnd:"12/31",
+    category:"特展",
+    desc:"尼姆竞技场举办的沉浸式大型特展（第14届），适合家庭与好奇者。",
+    why:"在古罗马竞技场内部体验特展，行程第9天经停尼姆时可顺道参观。",
+    reservation:"需购票",
+    inviteOnly:false,
+    price:"以官网为准",
+    website:"https://nimes-tourisme.com",
+    bookingUrl:"",
+    note:"对应尼姆行程第9天。展期覆盖整个秋季，可与行程日期重合。"
+  }
+];
+
+// ============================================================
 // APP STATE
 // ============================================================
 let map = null;
@@ -349,6 +557,8 @@ let markers = {};
 let routeLayers = {};
 let allDayRoutes = {};
 let fullJourneyRoute = null;
+let eventMarkers = {};
+let currentEventFilter = 'all'; // 'all' | 'during'
 
 // ============================================================
 // INIT MAP
@@ -361,7 +571,7 @@ function initMap() {
   
   // Build legend (all routes are blue now)
   const legend = document.getElementById('mapLegend');
-  legend.innerHTML = '<h4>📌 图例</h4><div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>景点标记</span></div><div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div>';
+  legend.innerHTML = '<h4>📌 图例</h4><div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>景点标记</span></div><div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#ff2d55;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>🎪 特殊活动</span></div>';
 }
 
 // ============================================================
@@ -447,7 +657,8 @@ async function loadAllRoutes() {
 function clearMap() {
   Object.values(markers).forEach(m => { if (m._map) m.remove(); });
   Object.values(routeLayers).forEach(l => { if (l._map) l.remove(); });
-  markers = {}; routeLayers = {};
+  Object.values(eventMarkers).forEach(m => { if (m._map) m.remove(); });
+  markers = {}; routeLayers = {}; eventMarkers = {};
 }
 
 function addMarker(id, poi, idx, total, compact) {
@@ -514,6 +725,8 @@ function showDay(dayNum) {
   const dayData = ITINERARY.find(d => d.day === dayNum);
   if (!dayData) return;
 
+  document.getElementById('itineraryList').style.display = 'block';
+  document.getElementById('eventsList').style.display = 'none';
   clearMap();
   dayData.stops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, dayData.stops.length, false));
   if (allDayRoutes[dayNum]) addRoute(dayNum, allDayRoutes[dayNum]);
@@ -537,6 +750,8 @@ function showDay(dayNum) {
 // ============================================================
 function showOverview() {
   currentMode = 'overview';
+  document.getElementById('itineraryList').style.display = 'block';
+  document.getElementById('eventsList').style.display = 'none';
   clearMap();
 
   // Add all POI markers (compact)
@@ -560,6 +775,126 @@ function showOverview() {
   document.getElementById('sidebar').classList.remove('open');
   document.querySelector('.day-tab.overview-tab')?.classList.add('active');
   document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+}
+
+// ============================================================
+// EVENTS MODE: special events layer (filterable on map)
+// ============================================================
+function addEventMarker(ev) {
+  const color = '#FF2D55';
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="background:${color};border:2px solid #fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.35);font-size:13px">🎪</div>`,
+    iconSize: [28, 28], iconAnchor: [14, 14], popupAnchor: [0, -16]
+  });
+  const marker = L.marker(ev.coords, { icon }).addTo(map);
+  const timing = eventTiming(ev);
+  marker.bindPopup(`<div style="min-width:200px"><strong>🎪 ${ev.name}</strong><div style="font-size:11px;color:#86868b;margin:2px 0">${ev.city} · ${ev.dateText}</div><p style="font-size:12px;line-height:1.5;margin:4px 0">${ev.desc}</p><p style="font-size:12px;color:#555">${ev.inviteOnly ? '🎫 邀请制' : '🎟️ ' + ev.reservation}</p></div>`, { maxWidth: 260 });
+  marker.bindTooltip(ev.name, { permanent: true, direction: 'top', offset: [0, -16], className: 'marker-label' });
+  marker.on('click', () => showEventDetail(ev.id));
+  eventMarkers[ev.id] = marker;
+}
+
+function showEvents() {
+  currentMode = 'events';
+  clearMap();
+  // Context: itinerary POIs (compact) + routes
+  Object.values(POI_DATA).forEach(poi => {
+    const dayData = ITINERARY.find(d => d.day === poi.day);
+    if (!dayData) return;
+    const idx = dayData.stops.findIndex(id => POI_DATA[id] === poi);
+    addMarker(`ov_${poi.day}_${idx}`, poi, idx, dayData.stops.length, true);
+  });
+  Object.keys(allDayRoutes).forEach(day => addRoute(parseInt(day), allDayRoutes[day]));
+  // Event markers
+  EVENTS.forEach(addEventMarker);
+  // Fit to events
+  const evCoords = EVENTS.map(e => e.coords);
+  map.fitBounds(L.latLngBounds(evCoords), { padding: [40, 40], maxZoom: 12 });
+  // UI
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.day-tab.event-tab')?.classList.add('active');
+  document.getElementById('itineraryList').style.display = 'none';
+  document.getElementById('eventsList').style.display = 'block';
+  renderEventsList();
+}
+
+function renderEventsList() {
+  const list = document.getElementById('eventsList');
+  let evs = EVENTS.slice();
+  if (currentEventFilter === 'during') evs = evs.filter(e => eventTiming(e) === 'during');
+  evs.sort((a, b) => (a.day || 99) - (b.day || 99) || dateToNum(a.dateStart) - dateToNum(b.dateStart));
+
+  let html = `<div class="events-filter"><span>筛选</span><select onchange="currentEventFilter=this.value;renderEventsList()"><option value="all"${currentEventFilter === 'all' ? ' selected' : ''}>全部活动</option><option value="during"${currentEventFilter === 'during' ? ' selected' : ''}>仅行程日期内</option></select><span style="color:#86868b">共 ${evs.length} 项</span></div>`;
+  html += `<div class="events-note">🎪 按所在城市与行程对应。日期为 2026 年真实活动日期，请与您的实际出行日期核对（行程标注 ${TRIP_START}–${TRIP_END}）。</div>`;
+  if (evs.length === 0) {
+    html += '<div style="padding:24px;text-align:center;color:#86868b;font-size:13px">行程日期内暂无已收录的特殊活动</div>';
+  }
+  evs.forEach(ev => {
+    const timing = eventTiming(ev);
+    let badge = ev.inviteOnly
+      ? '<span class="ev-badge invite">邀请制</span>'
+      : (ev.reservation.includes('无需') ? '<span class="ev-badge free">免费</span>' : '<span class="ev-badge reserve">需预约</span>');
+    const timingTag = timing === 'during' ? '' : `<div class="ev-note">⚠️ 活动日期在行程${timing === 'after' ? '之后' : '之前'}，若实际出行日期覆盖此区间可参加</div>`;
+    html += `<div class="event-item" onclick="focusEvent('${ev.id}')">
+      <div class="ev-name">🎪 ${ev.name}</div>
+      <div class="ev-meta">${ev.dateText} · ${ev.city} · 对应第${ev.day}天</div>
+      <div>${badge}</div>
+      ${timingTag}
+    </div>`;
+  });
+  list.innerHTML = html;
+}
+
+function focusEvent(id) {
+  const ev = EVENTS.find(e => e.id === id);
+  if (!ev) return;
+  map.setView(ev.coords, 13, { animate: true });
+  showEventDetail(id);
+}
+
+function showEventDetail(id) {
+  const ev = EVENTS.find(e => e.id === id);
+  if (!ev) return;
+  const panel = document.getElementById('detailPanel');
+  const content = document.getElementById('detailContent');
+
+  let badge = ev.inviteOnly
+    ? '<span style="display:inline-block;background:#8e8e93;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">邀请制</span>'
+    : (ev.reservation.includes('无需')
+        ? '<span style="display:inline-block;background:#34c759;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">免预约</span>'
+        : '<span style="display:inline-block;background:#ff9500;color:#fff;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:500">需要预约</span>');
+
+  content.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div>
+        <h3 style="font-size:18px;font-weight:700;margin:0">🎪 ${ev.name}</h3>
+        <div style="font-size:12px;color:#86868b;margin-top:2px">${ev.nameEn} · ${ev.category}${ev.website ? ' · <a href="' + ev.website + '" target="_blank" style="color:#007aff;text-decoration:none">官网</a>' : ''}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        ${badge}
+        <button onclick="hideDetail()" class="detail-close-btn" style="margin-top:4px;background:none;border:none;font-size:16px;cursor:pointer;color:#86868b;padding:2px 4px" title="关闭">✕</button>
+      </div>
+    </div>
+    <div style="background:#fff0f5;border-left:3px solid #ff2d55;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:13px;line-height:1.6">${ev.desc}</div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">亮点 / 为什么值得去</div>
+      <div style="font-size:13px;line-height:1.6;color:#333">${ev.why}</div>
+    </div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:4px">活动信息</div>
+      <table style="font-size:12px;border-collapse:collapse;width:100%">
+        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">活动日期</td><td style="padding:3px 0;color:#333">${ev.dateText}</td></tr>
+        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">所在城市</td><td style="padding:3px 0;color:#333">${ev.city} · 对应行程第${ev.day}天</td></tr>
+        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">是否需要预约</td><td style="padding:3px 0;color:#333">${ev.reservation}</td></tr>
+        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">是否需受邀</td><td style="padding:3px 0;color:${ev.inviteOnly ? '#e65100' : '#333'}">${ev.inviteOnly ? '是 — 邀请制 / 行业内部，公众无法参加' : '否 — 公众可参与'}</td></tr>
+        <tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">费用</td><td style="padding:3px 0;color:#1d1d1f;font-weight:500">${ev.price}</td></tr>
+        ${ev.website ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">官网</td><td style="padding:3px 0;color:#333"><a href="${ev.website}" target="_blank" style="color:#007aff">${ev.website}</a></td></tr>` : ''}
+        ${ev.bookingUrl ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">预约 / 购票</td><td style="padding:3px 0;color:#333"><a href="${ev.bookingUrl}" target="_blank" style="color:#007aff">前往购票 / 预约</a></td></tr>` : ''}
+        ${ev.note ? `<tr><td style="padding:3px 8px 3px 0;color:#555;white-space:nowrap;vertical-align:top">备注</td><td style="padding:3px 0;color:#e65100">${ev.note}</td></tr>` : ''}
+      </table>
+    </div>`;
+  panel.classList.add('open');
 }
 
 // ============================================================
@@ -881,6 +1216,12 @@ function buildSidebar() {
   summaryTab.textContent = '📊 汇总';
   summaryTab.onclick = showSummary;
   tabsContainer.appendChild(summaryTab);
+
+  const eventTab = document.createElement('div');
+  eventTab.className = 'day-tab event-tab';
+  eventTab.textContent = '🎪 活动';
+  eventTab.onclick = showEvents;
+  tabsContainer.appendChild(eventTab);
 
   // Day tabs
   ITINERARY.forEach(day => {
