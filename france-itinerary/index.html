@@ -281,7 +281,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.5.2</span>
+    <span class="v-dot"></span><span>v1.6.0</span>
   </div>
 </header>
 
@@ -318,10 +318,19 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.5.2</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.6.0</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.6.0</span><span class="version-date">2026-07-25</span>
+<div class="version-title">🍽️ 按日餐厅推荐</div>
+<ul class="version-items">
+<li>新增「🍽️ 餐厅」选项卡，按12天行程筛选并在地图显示沿途餐厅</li>
+<li>每家餐厅补充招牌菜、参考人均、餐厅类型、适合餐次、行程衔接与预约建议</li>
+<li>每日地图同步显示当日餐厅标记，方便直接判断与景点的距离</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.5.2</span><span class="version-date">2026-07-25</span>
 <div class="version-title">✕ 详情窗口彻底关闭</div>
@@ -878,6 +887,25 @@ const EVENTS = [
   }
 ];
 
+// 沿途餐厅推荐：价格为2026年参考人均（不含酒水），菜单与营业时间以餐厅官网为准
+const RESTAURANTS = [
+  {id:"rest_d1_fumoir",day:1,name:"Le Fumoir",city:"巴黎",coords:[48.8608,2.3401],type:"法式小酒馆 / 欧陆菜",meal:"卢浮宫前简餐或晚餐",price:"约35–55€ / 人",specialties:"鸭胸、时令鱼、法式甜点与鸡尾酒",near:"卢浮宫东侧，步行约3分钟",fit:"适合航空博物馆返回市区后、卢浮宫夜场之前；若保留21:30 Cafe Marly，可只在这里喝咖啡或吃轻食。",reservation:"晚餐建议预约",website:"https://www.lefumoir.com/"},
+  {id:"rest_d2_entrecote",day:2,name:"Le Relais de l’Entrecôte – Marbeuf",city:"巴黎",coords:[48.8695,2.3041],type:"经典法式牛排馆",meal:"香榭丽舍晚餐",price:"约35–45€ / 人",specialties:"核桃沙拉、牛排薯条与秘制酱汁",near:"香榭丽舍大街南侧，距凯旋门约15分钟步行",fit:"第2天登完凯旋门后顺路用餐；餐单集中，适合想省去点菜选择的人。",reservation:"通常不接受预约，建议错峰排队",website:"https://www.relaisentrecote.fr/"},
+  {id:"rest_d3_venise",day:3,name:"La Petite Venise",city:"凡尔赛",coords:[48.8055,2.1167],type:"意大利餐厅 / 宫苑餐厅",meal:"凡尔赛宫午餐",price:"约35–50€ / 人",specialties:"松露Pinsa、意面、牛颊肉Pappardelle、提拉米苏",near:"凡尔赛宫花园内，大运河与阿波罗喷泉之间",fit:"不用离开宫苑即可午餐，适合宫殿与花园之间休息；2026菜单平均价约46€。",reservation:"周末与音乐喷泉日建议预约",website:"https://www.restaurant-lapetitevenise.com/"},
+  {id:"rest_d4_pigalle",day:4,name:"Bouillon Pigalle",city:"巴黎",coords:[48.8823,2.3370],type:"大众法式食堂 / Bouillon",meal:"蒙马特早午餐或午餐",price:"约18–28€ / 人",specialties:"法式洋葱汤、蜗牛、油封鸭、焦糖布丁",near:"蒙马特山脚 Pigalle，距圣心堂约15分钟步行",fit:"适合蒙马特下山后用一顿高性价比传统法餐，再前往歌剧院。",reservation:"可在线预约；无预约可能排队",website:"https://bouillonlesite.com/bouillon-pigalle"},
+  {id:"rest_d4_breizh",day:4,name:"Breizh Café – Le Marais",city:"巴黎",coords:[48.8611,2.3610],type:"布列塔尼可丽饼店",meal:"圣母院 / 蓬皮杜之间简餐",price:"约20–35€ / 人",specialties:"荞麦咸可丽饼、黄油焦糖甜可丽饼、苹果酒",near:"玛黑区，距蓬皮杜约10分钟步行",fit:"第4天景点密集，适合控制在一小时内的轻量午餐或下午茶。",reservation:"建议预约，亦可现场候位",website:"https://breizhcafe.com/"},
+  {id:"rest_d5_chambord",day:5,name:"Le Grand Saint-Michel",city:"香波尔",coords:[47.6176,1.5138],type:"现代法餐 / 城堡景观餐厅",meal:"香波尔城堡午餐",price:"约45–70€ / 人",specialties:"卢瓦尔河谷时令菜、河鱼、当地禽肉与精致甜点",near:"Relais de Chambord内，露台正对香波尔城堡",fit:"参观结束后直接午餐，再开车前往波尔多；位置最省绕路。",reservation:"建议提前预约并控制午餐时长",website:"https://relaisdechambord.com/le-grand-saint-michel/"},
+  {id:"rest_d6_tupina",day:6,name:"La Tupina",city:"波尔多",coords:[44.8309,-0.5664],type:"法国西南菜 / 柴火料理",meal:"波尔多晚餐",price:"午市23€；正餐约50–90€ / 人",specialties:"鸭胸、油封鸭、柴火烤肉、鹅肝、卡纳蕾",near:"圣米歇尔区，距水镜广场约20分钟步行",fit:"葡萄酒城与酒庄之后品尝最有代表性的西南菜；官网经典套餐70€。",reservation:"建议预约",website:"https://www.latupina.com/menu"},
+  {id:"rest_d7_genty",day:7,name:"Genty Magre",city:"图卢兹",coords:[43.6001,1.4438],type:"传统法餐 / 图卢兹地方菜",meal:"图卢兹晚餐",price:"约40–60€ / 人",specialties:"图卢兹砂锅豆焖肉 Cassoulet、鸭肉、法国西南葡萄酒",near:"老城中心，距卡皮托广场约7分钟步行",fit:"航空行程结束后进城用餐；其Cassoulet获2023图卢兹最佳称号。",reservation:"座位有限，建议提前预约",website:"https://guide.michelin.com/fr/fr/occitanie/toulouse/restaurant/genty-magre"},
+  {id:"rest_d8_comte",day:8,name:"Comte Roger",city:"卡尔卡松",coords:[43.2069,2.3628],type:"传统 / 现代奥克西塔尼菜",meal:"卡尔卡松城内午餐",price:"约40–60€ / 人",specialties:"招牌Cassoulet、当地羊肉、时令南法菜",near:"中世纪城墙内，距伯爵城堡约5分钟步行",fit:"参观古城途中直接午餐，之后继续开车去蒙彼利埃。",reservation:"周五午餐建议预约",website:"https://guide.michelin.com/us/en/occitanie/carcassonne/restaurant/comte-roger"},
+  {id:"rest_d8_jardin",day:8,name:"Le Petit Jardin",city:"蒙彼利埃",coords:[43.6110,3.8731],type:"地中海创意菜 / 花园餐厅",meal:"抵达蒙彼利埃晚餐",price:"约45–75€ / 人",specialties:"时令鱼类、地中海蔬菜、法式创意套餐",near:"老城中心，紧邻圣皮埃尔大教堂",fit:"抵达后不再开车，在老城花园环境中吃晚餐；也可选择同址较轻松的Bistrot。",reservation:"建议预约花园座位",website:"https://www.petit-jardin.com/"},
+  {id:"rest_d9_bibendum",day:9,name:"Bibendum",city:"阿维尼翁",coords:[43.9456,4.7991],type:"现代南法菜 / 米其林必比登",meal:"教皇宫后午餐",price:"约35–55€ / 人",specialties:"海鲷Ceviche、阿尔代什鳟鱼、南法时令菜",near:"老城内，距教皇宫约10分钟步行",fit:"第9天车程较长，建议在阿维尼翁安排正式午餐，再直达里昂。",reservation:"周六建议预约",website:"https://guide.michelin.com/fr/fr/provence-alpes-cote-dazur/avignon/restaurant/bibendum"},
+  {id:"rest_d10_georges",day:10,name:"Brasserie Georges",city:"里昂",coords:[45.7484,4.8280],type:"历史啤酒馆 / 里昂与阿尔萨斯菜",meal:"里昂早午餐或午餐",price:"约30–50€ / 人",specialties:"里昂香肠、酸菜炖肉、海鲜拼盘、自酿啤酒",near:"Perrache车站旁，老城南侧",fit:"周日仍适合安排，午餐后可直接取车前往博若莱与日内瓦。",reservation:"大厅很大但周日仍建议预约",website:"https://www.brasseriegeorges.com/"},
+  {id:"rest_d10_armures",day:10,name:"Restaurant Les Armures",city:"日内瓦",coords:[46.2015,6.1472],type:"瑞士传统菜",meal:"抵达日内瓦晚餐",price:"约45–75 CHF / 人",specialties:"奶酪火锅、Raclette、Rösti、瑞士肉类料理",near:"日内瓦老城，圣彼得大教堂旁",fit:"抵达日内瓦后一次吃齐典型瑞士菜，步行逛老城也方便。",reservation:"晚餐建议预约",website:"https://www.hotel-les-armures.ch/en/restaurant/"},
+  {id:"rest_d11_dumas",day:11,name:"Bistrot Dumas",city:"日内瓦",coords:[46.1922,6.1515],type:"法式小酒馆 / 米其林必比登",meal:"博物馆前后午餐或晚餐",price:"约40–65 CHF / 人",specialties:"传统法餐、时令肉类、全手工小酒馆菜",near:"Champel区，距百达翡丽博物馆约15分钟公共交通",fit:"周一营业，适合补足许多餐厅周一休息的空档；联合国/CERN行程紧时更建议晚餐。",reservation:"经常满座，建议预约",website:"https://guide.michelin.com/en/geneve-region/geneve/restaurant/bistrot-dumas"},
+  {id:"rest_d12_philippe",day:12,name:"Chez Philippe",city:"日内瓦",coords:[46.2042,6.1456],type:"柴火牛排 / 国际菜",meal:"返程前午餐",price:"约45–75 CHF / 人",specialties:"柴火烤牛排、当日鱼类、芝士蛋糕",near:"Rue du Rhône，距日内瓦湖步行约5分钟",fit:"湖边晨间散步后吃较早午餐，再取行李前往机场；务必预留返程时间。",reservation:"建议预约11:30左右早午餐",website:"https://guide.michelin.com/us/en/geneve-region/geneve/restaurant/chez-philippe"}
+];
+
 // 可实际预约/购票/公开入内的沿途加项；不收录仅能看外观或开放不确定的地点
 const EXTRA_POIS = [
   {id:"extra_sewers",name:"巴黎下水道博物馆",nameEn:"Musée des Égouts de Paris",city:"巴黎",day:4,coords:[48.8627,2.3029],category:"城市工程",price:"9€",duration:"45–75分钟",reservation:"可在线购票预约时段",website:"https://musee-egouts.paris.fr/en/",bookingUrl:"https://billetterie-egouts.paris.fr/fr-FR/accueil",why:"进入真实运行体系旁的地下参观线，了解巴黎2600公里排水网络与奥斯曼城市工程；就在阿尔玛桥，距战神广场很近。",fit:"适合替换已闭馆的蓬皮杜主馆，或接在埃菲尔铁塔之前。"},
@@ -903,6 +931,7 @@ let allDayRoutes = {};
 let interDayRoutes = {};
 let eventMarkers = {};
 let currentEventFilter = 'all'; // 'all' | 'during'
+let currentRestaurantDay = 'all';
 
 // ============================================================
 // INIT MAP
@@ -915,7 +944,7 @@ function initMap() {
   
   // Build legend (all routes are blue now)
   const legend = document.getElementById('mapLegend');
-  legend.innerHTML = '<h4>📌 图例</h4><div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>景点标记</span></div><div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#ff2d55;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>🎪 特殊活动</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#00a887;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>✨ 可预约加项</span></div>';
+  legend.innerHTML = '<h4>📌 图例</h4><div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>景点标记</span></div><div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#ff2d55;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>🎪 特殊活动</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#00a887;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>✨ 可预约加项</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#e05d35;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>🍽️ 推荐餐厅</span></div>';
 }
 
 // ============================================================
@@ -1010,6 +1039,7 @@ async function loadAllRoutes() {
   if (currentMode === 'overview') showOverview();
   else if (currentMode === 'events') showEvents();
   else if (currentMode === 'extras') showExtras();
+  else if (currentMode === 'restaurants') showRestaurants();
 
   loadingEl.classList.add('hidden');
 }
@@ -1106,10 +1136,13 @@ function showDay(dayNum) {
   // Events for this day (nearby-time focus) — shown as pink 🎪 markers
   const dayEvents = EVENTS.filter(e => e.day === dayNum);
   dayEvents.forEach(addEventMarker);
+  const dayRestaurants = RESTAURANTS.filter(r => r.day === dayNum);
+  dayRestaurants.forEach(addRestaurantMarker);
 
   if (dayData.stops.length > 0) {
     const allCoords = dayData.stops.map(id => POI_DATA[id].coords);
     dayEvents.forEach(e => allCoords.push(e.coords));
+    dayRestaurants.forEach(r => allCoords.push(r.coords));
     map.fitBounds(L.latLngBounds(allCoords), { padding: [50, 50], maxZoom: 14 });
   }
 
@@ -1344,6 +1377,92 @@ function showExtraDetail(id) {
     <div class="detail-info-grid"><div><span>💶 费用</span><b>${p.price}</b></div><div><span>⏱️ 建议时长</span><b>${p.duration}</b></div></div>
     <div class="detail-card tip"><div class="detail-card-h">🧭 怎么放进行程</div><div class="detail-card-b">${p.fit}</div></div>
     <div class="detail-card"><div class="detail-card-h">🎫 入内条件</div><div class="detail-card-b">${p.reservation}<br><a href="${p.bookingUrl}" target="_blank" style="color:#007aff">前往官方预约 / 购票 →</a></div></div>`;
+  openDetailPanel(headerHtml,bodyHtml);
+}
+
+// ============================================================
+// RESTAURANTS MODE: daily recommendations along the itinerary
+// ============================================================
+function addRestaurantMarker(r) {
+  const icon = L.divIcon({
+    className:'',
+    html:'<div style="background:#e05d35;border:2px solid #fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px rgba(0,0,0,.35);font-size:14px">🍽️</div>',
+    iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-17]
+  });
+  const marker=L.marker(r.coords,{icon}).addTo(map);
+  marker.bindPopup(`<div style="min-width:220px"><strong>🍽️ ${r.name}</strong><div style="font-size:11px;color:#86868b">${r.city} · 第${r.day}天 · ${r.type}</div><p style="font-size:12px;line-height:1.5;margin:5px 0"><b>推荐：</b>${r.specialties}</p><p style="font-size:12px;margin:3px 0"><b>参考人均：</b>${r.price}</p></div>`,{maxWidth:280});
+  marker.bindTooltip(r.name,{permanent:true,direction:'top',offset:[0,-17],className:'marker-label'});
+  marker.on('click',()=>showRestaurantDetail(r.id));
+  eventMarkers[r.id]=marker;
+}
+
+function showRestaurants() {
+  currentMode='restaurants';
+  clearMap();
+  Object.values(POI_DATA).forEach(poi=>{
+    const dayData=ITINERARY.find(d=>d.day===poi.day);
+    if(!dayData)return;
+    const idx=dayData.stops.findIndex(id=>POI_DATA[id]===poi);
+    addMarker(`ov_${poi.day}_${idx}`,poi,idx,dayData.stops.length,true);
+  });
+  drawCompleteJourneyRoutes();
+  const shown=currentRestaurantDay==='all'
+    ? RESTAURANTS
+    : RESTAURANTS.filter(r=>r.day===Number(currentRestaurantDay));
+  shown.forEach(addRestaurantMarker);
+  const fitCoords=shown.map(r=>r.coords);
+  if(fitCoords.length) map.fitBounds(L.latLngBounds(fitCoords),{padding:[45,45],maxZoom:13});
+  document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.day-tab.restaurant-tab')?.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('itineraryList').style.display='none';
+  document.getElementById('eventsList').style.display='block';
+  renderRestaurantsList();
+}
+
+function renderRestaurantsList() {
+  const list=document.getElementById('eventsList');
+  const options=ITINERARY.map(d=>`<option value="${d.day}"${String(d.day)===String(currentRestaurantDay)?' selected':''}>第${d.day}天 · ${d.title}</option>`).join('');
+  const restaurants=currentRestaurantDay==='all'
+    ? RESTAURANTS.slice()
+    : RESTAURANTS.filter(r=>r.day===Number(currentRestaurantDay));
+  let html=`<div class="events-filter"><span>按行程筛选</span><select onchange="currentRestaurantDay=this.value;showRestaurants()"><option value="all"${currentRestaurantDay==='all'?' selected':''}>全部12天</option>${options}</select><span style="color:#86868b">共 ${restaurants.length} 家</span></div>
+    <div class="events-note" style="background:#fff5f1;color:#88442d;border-color:#f1d7cc">🍽️ 价格为2026年参考人均，不含酒水；菜单、休息日与营业时间可能调整，预约前请以官网为准。</div>`;
+  let lastDay=null;
+  restaurants.sort((a,b)=>a.day-b.day).forEach(r=>{
+    if(r.day!==lastDay){
+      const d=ITINERARY.find(x=>x.day===r.day);
+      html+=`<div style="padding:10px 14px 5px;font-size:12px;font-weight:700;color:#e05d35">第${r.day}天 · ${d?.date||''} · ${d?.title||''}</div>`;
+      lastDay=r.day;
+    }
+    html+=`<div class="event-item" style="border-left-color:#e05d35" onclick="focusRestaurant('${r.id}')">
+      <div class="ev-name">🍽️ ${r.name}</div>
+      <div class="ev-meta">${r.city} · ${r.meal} · ${r.type}</div>
+      <div style="margin-top:5px"><span class="ev-badge" style="background:#e05d35">${r.price}</span></div>
+      <div class="ev-note" style="color:#6e4a3b"><b>推荐：</b>${r.specialties}</div>
+      <div class="ev-note" style="color:#86868b">${r.near}</div>
+    </div>`;
+  });
+  list.innerHTML=html;
+}
+
+function focusRestaurant(id) {
+  const r=RESTAURANTS.find(x=>x.id===id);
+  if(!r)return;
+  map.setView(r.coords,14,{animate:true});
+  showRestaurantDetail(id);
+}
+
+function showRestaurantDetail(id) {
+  const r=RESTAURANTS.find(x=>x.id===id);
+  if(!r)return;
+  const headerHtml=`<div class="detail-head-main"><div class="detail-title">🍽️ ${r.name}</div><div class="detail-sub">${r.city} · 第${r.day}天 · ${r.type}</div></div><div class="detail-head-actions"><span class="badge-reserve" style="background:#e05d35;color:#fff">${r.meal}</span><button class="detail-ico-btn" onclick="hideDetail()" title="关闭" aria-label="关闭餐厅详情">✕</button></div>`;
+  const bodyHtml=`
+    <div class="detail-card"><div class="detail-card-h">😋 有什么好吃的</div><div class="detail-card-b">${r.specialties}</div></div>
+    <div class="detail-info-grid"><div><span>💶 参考人均</span><b>${r.price}</b></div><div><span>🏷️ 餐厅类型</span><b>${r.type}</b></div></div>
+    <div class="detail-card"><div class="detail-card-h">📍 和当天行程的关系</div><div class="detail-card-b">${r.near}<br>${r.fit}</div></div>
+    <div class="detail-card tip"><div class="detail-card-h">📅 预约建议</div><div class="detail-card-b">${r.reservation}</div></div>
+    <div class="detail-card"><div class="detail-card-h">🔗 查询菜单 / 预约</div><div class="detail-card-b"><a href="${r.website}" target="_blank" style="color:#007aff">打开餐厅或参考页面 →</a><br><span style="font-size:11px;color:#86868b">出发前请再次确认当天营业时间和最新价格。</span></div></div>`;
   openDetailPanel(headerHtml,bodyHtml);
 }
 
@@ -1761,6 +1880,12 @@ function buildSidebar() {
   eventTab.onclick = showEvents;
   tabsContainer.appendChild(eventTab);
 
+  const restaurantTab = document.createElement('div');
+  restaurantTab.className = 'day-tab restaurant-tab';
+  restaurantTab.textContent = '🍽️ 餐厅';
+  restaurantTab.onclick = showRestaurants;
+  tabsContainer.appendChild(restaurantTab);
+
   const extraTab = document.createElement('div');
   extraTab.className = 'day-tab extra-tab';
   extraTab.textContent = '✨ 可加项';
@@ -1841,11 +1966,21 @@ function buildSidebar() {
       evBlock += `</div>`;
     }
 
+    let restaurantBlock = '';
+    const dayRestaurants = RESTAURANTS.filter(r => r.day === day.day);
+    if (dayRestaurants.length) {
+      restaurantBlock = `<div class="event-day-block" style="background:#fff5f1;border-color:#f1d7cc"><div class="event-day-title" style="color:#e05d35">🍽️ 当日餐厅（${dayRestaurants.length}）</div>`;
+      dayRestaurants.forEach(r => {
+        restaurantBlock += `<div class="event-day-item" style="border-left-color:#e05d35" onclick="focusRestaurant('${r.id}')">🍽️ ${r.name}<span class="ev-when">${r.meal} · ${r.price}</span></div>`;
+      });
+      restaurantBlock += `</div>`;
+    }
+
     card.innerHTML = `
       <h3>📅 第${day.day}天 · ${day.title}</h3>
       <div class="day-sub">${day.date}</div>
       <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
-      <ul class="stop-list">${stopsHtml}</ul>${evBlock}`;
+      <ul class="stop-list">${stopsHtml}</ul>${restaurantBlock}${evBlock}`;
     listContainer.appendChild(card);
   });
 }
