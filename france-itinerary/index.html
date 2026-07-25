@@ -202,6 +202,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 
 /* ===== Detail panel v1.4: header + sectioned cards ===== */
 .detail-panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.16);z-index:2000;transform:translateY(calc(100% + 32px));opacity:0;visibility:hidden;pointer-events:none;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .2s ease,visibility 0s linear .35s;max-height:78vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.detail-panel[hidden]{display:none!important}
 .detail-panel.open{transform:translateY(0);opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
 .detail-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:12px 16px 8px;border-bottom:1px solid #efeff2;flex-shrink:0;background:linear-gradient(180deg,#fafbff,#fff)}
 .detail-head-main{min-width:0;flex:1}
@@ -280,7 +281,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.5.1</span>
+    <span class="v-dot"></span><span>v1.5.2</span>
   </div>
 </header>
 
@@ -308,7 +309,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 </div>
 
 <!-- Detail panel -->
-<div class="detail-panel" id="detailPanel" aria-hidden="true">
+<div class="detail-panel" id="detailPanel" aria-hidden="true" hidden>
 <div class="detail-header" id="detailHeader"></div>
 <div class="detail-content" id="detailContent"></div>
 </div>
@@ -317,10 +318,18 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.5.1</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.5.2</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.5.2</span><span class="version-date">2026-07-25</span>
+<div class="version-title">✕ 详情窗口彻底关闭</div>
+<ul class="version-items">
+<li>关闭详情窗口时先播放退出动画，随后从页面布局中完全隐藏，修复桌面端右下角残留窗口的问题</li>
+<li>快速重复打开时自动取消旧的关闭计时，避免窗口被延迟隐藏</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.5.1</span><span class="version-date">2026-07-25</span>
 <div class="version-title">🗺️ 总览路线完整性修复</div>
@@ -1420,6 +1429,10 @@ function openDetailPanel(headerHtml, bodyHtml) {
   document.getElementById('detailHeader').innerHTML = headerHtml;
   document.getElementById('detailContent').innerHTML = bodyHtml;
   const panel = document.getElementById('detailPanel');
+  clearTimeout(panel._hideTimer);
+  panel.hidden = false;
+  // Flush the hidden state before starting the entrance transition.
+  void panel.offsetHeight;
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
 }
@@ -1428,6 +1441,14 @@ function hideDetail() {
   const panel = document.getElementById('detailPanel');
   panel.classList.remove('open');
   panel.setAttribute('aria-hidden', 'true');
+  clearTimeout(panel._hideTimer);
+  panel._hideTimer = setTimeout(() => {
+    if (!panel.classList.contains('open')) {
+      panel.hidden = true;
+      document.getElementById('detailHeader').innerHTML = '';
+      document.getElementById('detailContent').innerHTML = '';
+    }
+  }, 360);
 }
 
 // ============================================================
