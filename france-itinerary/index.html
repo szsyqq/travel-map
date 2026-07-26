@@ -32,8 +32,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .tab-group{padding:7px 12px 0}
 .tab-group:last-child{padding-bottom:7px}
 .tab-group-label{font-size:10px;font-weight:700;color:#86868b;letter-spacing:.6px;margin-bottom:5px}
-.day-tabs{display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;overscroll-behavior-x:contain;padding:0 0 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.day-tabs::-webkit-scrollbar{display:none}
+.day-tabs{display:flex;flex-wrap:wrap;gap:5px;padding:0 0 5px}
+.function-tabs .day-tab{flex:1 1 calc(33.333% - 4px);text-align:center}
+.itinerary-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.itinerary-tabs .day-tab{min-width:0;text-align:center;padding:5px 3px;line-height:1.15}
+.day-tab .tab-week{display:block;font-size:9px;font-weight:500;opacity:.72;margin-top:2px}
 .day-tab{white-space:nowrap;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:500;border:1px solid #d1d1d6;background:#fff;color:#555;cursor:pointer;transition:all .15s}
 .day-tab:hover{background:#f0f0f5}
 .day-tab.active{background:#007aff;color:#fff;border-color:#007aff}
@@ -41,6 +44,16 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .day-tab.overview-tab.active{background:#007aff;color:#fff}
 .day-tab.summary-tab{background:#fef3e0;border-color:#ff9500;color:#ff9500;font-weight:600}
 .day-tab.summary-tab.active{background:#ff9500;color:#fff}
+
+/* Day content filters */
+.day-filter-bar{padding:7px 12px 8px;border-bottom:1px solid #e5e5ea;background:#fafafa;flex-shrink:0}
+.filter-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:4px}
+.filter-row:first-child{margin-top:0}
+.filter-row-label{width:48px;font-size:9px;font-weight:700;color:#86868b;letter-spacing:.3px}
+.filter-check{display:flex;align-items:center;gap:3px;font-size:10px;color:#555;cursor:pointer;user-select:none}
+.filter-check input{width:13px;height:13px;accent-color:#007aff;cursor:pointer}
+.filter-check.recommend input{accent-color:#7a5af8}
+.filtered-out{display:none!important}
 
 /* Itinerary list */
 .itinerary-list{flex:1;overflow-y:auto;padding:10px 14px}
@@ -56,6 +69,33 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .stop-item .stop-badge{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-top:2px;color:#fff}
 .badge-need{background:#ff9500}
 .badge-free{background:#34c759}
+
+/* Meal suggestions live inside the daily timeline */
+.meal-slot{display:flex;gap:8px;align-items:flex-start;padding:7px 9px;margin:5px 0;border:1px solid #f0d7cc;border-left:3px solid #e05d35;border-radius:8px;background:#fff8f5;cursor:pointer}
+.meal-slot:hover{background:#fff1eb}
+.meal-slot.missing{border-style:dashed;border-left-style:solid;border-color:#e2c078;border-left-color:#d99a17;background:#fffaf0;cursor:default}
+.meal-slot-icon{width:25px;height:25px;border-radius:7px;background:#ffe7de;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.meal-slot.missing .meal-slot-icon{background:#fff0c9}
+.meal-slot-main{min-width:0;flex:1}
+.meal-slot-title{font-size:11px;font-weight:700;color:#9b3d25}
+.meal-slot.missing .meal-slot-title{color:#9a6800}
+.meal-slot-name{font-size:12px;font-weight:600;color:#1d1d1f;margin-top:1px}
+.meal-slot-meta{font-size:10px;color:#777;line-height:1.4;margin-top:1px}
+.meal-slot-tag{font-size:9px;color:#fff;background:#e05d35;border-radius:3px;padding:1px 5px;white-space:nowrap}
+.meal-slot-tag.planned{background:#ff9500}
+.ai-recommended{margin-left:18px;position:relative}
+.ai-recommended::before{content:'AI';position:absolute;left:-18px;top:8px;width:14px;height:14px;border-radius:4px;background:#7a5af8;color:#fff;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center}
+@media(min-width:520px) and (max-width:900px){.itinerary-tabs{grid-template-columns:repeat(6,minmax(0,1fr))}}
+
+/* Nearby optional stops shown inside each day */
+.daily-extra-block{margin-top:10px;padding:8px;background:#f2fbf8;border:1px solid #d3eee6;border-radius:9px}
+.daily-extra-title{font-size:11px;font-weight:700;color:#087b66;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
+.daily-extra-title span{font-size:9px;font-weight:500;color:#5d8f84}
+.daily-extra-item{padding:7px 8px;margin-top:4px;background:#fff;border:1px solid #deeee9;border-left:3px solid #00a887;border-radius:7px;cursor:pointer;transition:background .15s}
+.daily-extra-item:hover{background:#e9f8f4}
+.daily-extra-name{font-size:12px;font-weight:700;color:#1d1d1f}
+.daily-extra-meta{font-size:10px;color:#68847e;margin-top:2px;line-height:1.4}
+.daily-extra-fit{font-size:10px;color:#555;margin-top:3px;line-height:1.45}
 
 /* Transit arrow item */
 .transit-item{display:flex;align-items:center;gap:10px;padding:6px 8px;margin:2px 0;border-radius:6px;background:#f8f9fc;cursor:default;border-left:3px solid #34c759}
@@ -284,11 +324,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     <div class="brand-logo">🇫🇷</div>
     <div class="brand-text">
       <h1>法兰西深度 13 日自由行</h1>
-      <div class="subtitle">2026.09.25 – 10.06 · 巴黎 → 波尔多 → 图卢兹 → 蒙彼利埃 → 里昂 → 日内瓦</div>
+      <div class="subtitle">2026.09.25 – 10.06 · 巴黎 → 波尔多 → 图卢兹 → 卡尔卡松 → 尼姆 → 里昂 → 日内瓦</div>
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.7.0</span>
+    <span class="v-dot"></span><span>v1.8.0</span>
   </div>
 </header>
 
@@ -302,12 +342,28 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 </div>
 <div class="tab-groups">
   <div class="tab-group">
-    <div class="tab-group-label">功能</div>
+    <div class="tab-group-label">总览与汇总</div>
+    <div class="day-tabs function-tabs" id="overviewTabs"></div>
+  </div>
+  <div class="tab-group">
+    <div class="tab-group-label">活动与推荐</div>
     <div class="day-tabs function-tabs" id="functionTabs"></div>
   </div>
   <div class="tab-group">
-    <div class="tab-group-label">行程日期 · 左右滑动查看更多</div>
+    <div class="tab-group-label">12 天行程 · 全部日期</div>
     <div class="day-tabs itinerary-tabs" id="dayTabs"></div>
+  </div>
+</div>
+<div class="day-filter-bar" id="dayFilterBar">
+  <div class="filter-row">
+    <span class="filter-row-label">内容来源</span>
+    <label class="filter-check"><input type="checkbox" data-filter-source="planned" checked>已制定</label>
+    <label class="filter-check recommend"><input type="checkbox" data-filter-source="recommended" checked>AI 推荐</label>
+  </div>
+  <div class="filter-row">
+    <span class="filter-row-label">主题</span>
+    <label class="filter-check"><input type="checkbox" data-filter-theme="attraction" checked>景点 / 活动</label>
+    <label class="filter-check"><input type="checkbox" data-filter-theme="restaurant" checked>餐厅</label>
   </div>
 </div>
 <div class="itinerary-list" id="itineraryList"></div>
@@ -334,10 +390,20 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.7.0</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.8.0</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.8.0</span><span class="version-date">2026-07-26</span>
+<div class="version-title">🦁 新版里昂行程 + 每日内容筛选</div>
+<ul class="version-items">
+<li>按新版 Excel 重排第8–10天：卡尔卡松、尼姆、嘉德水道桥后直达里昂，增加完整里昂深度日</li>
+<li>取消蒙彼利埃与阿维尼翁固定停靠，同步调整路线、住宿城市提示、餐厅和活动归属</li>
+<li>12天日期改为完整网格，三餐与沿途可加项嵌入每日时间线</li>
+<li>新增“已制定 / AI推荐”与“景点活动 / 餐厅”组合筛选，并同步地图标记</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.7.0</span><span class="version-date">2026-07-26</span>
 <div class="version-title">📱 导航分组 + 三餐扩充 + 活动日期收紧</div>
@@ -495,12 +561,11 @@ const POI_DATA = {
   "d7_1":{name:"空客工厂",nameEn:"Airbus Factory",coords:[43.5800,1.3690],day:7,desc:"全球最大飞机制造商的装配工厂。",why:"亲眼目睹A350、A380大型客机装配线。需提前2周预约。",reservation:"需要预约",price:"约20€",reserveUrl:"https://www.airbus.com/visit",advanceBooking:"建议提前2周预约",time:"10:00",category:"工业",website:"https://www.airbus.com/visit"},
   "d7_2":{name:"协和博物馆",nameEn:"Concorde Museum / Aeroscopia",coords:[43.5770,1.3710],day:7,desc:"与空客工厂相邻的航空博物馆。",why:"可登机体验协和式超音速客机内部。",reservation:"无需预约",price:"含在参观套票中",reserveUrl:"",advanceBooking:"当天即可",time:"13:00",category:"博物馆"},
   "d7_3":{name:"图卢兹",nameEn:"Toulouse",coords:[43.6045,1.4440],day:7,desc:"法国第四大城市，'玫瑰之城'（红砖建筑）。",why:"圣塞尔南教堂是世界遗产，还有空中客车总部、欧洲航天局。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"16:00",category:"城市",type:"行程",driveTime:"2h40",dist:"240km",depart:"13:00"},
-  "d8_1":{name:"卡尔卡松城堡",nameEn:"Carcassonne",coords:[43.2066,2.3638],day:8,desc:"欧洲最大、保存最完好的中世纪城堡要塞。",why:"52座塔楼和3公里城墙的防御体系，入城穿越回中世纪。",reservation:"无需预约",price:"城堡免费进入，伯爵城堡9.5€",reserveUrl:"",advanceBooking:"无需预约",time:"10:00",category:"城堡"},
-  "d8_2":{name:"蒙彼利埃",nameEn:"Montpellier",coords:[43.6119,3.8772],day:8,desc:"南法阳光之城。",why:"老城区迷宫般小巷、喜剧广场、凯旋门和植物园。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"15:00",category:"城市",type:"行程",driveTime:"1h",dist:"95km",depart:"14:00"},
-  "d9_1":{name:"尼姆竞技场",nameEn:"Arènes de Nîmes",coords:[43.8347,4.3600],day:9,desc:"保存最完好的古罗马竞技场之一，建于公元1世纪。",why:"比罗马斗兽场保存更好，至今用于斗牛和音乐会。",reservation:"无需预约",price:"约10€",reserveUrl:"",advanceBooking:"提前购票即可",time:"09:00",category:"古迹"},
-  "d9_2":{name:"嘉德水道桥",nameEn:"Pont du Gard",coords:[43.9474,4.5350],day:9,desc:"古罗马最伟大的水利工程之一，世界文化遗产。",why:"三层拱桥跨越加尔德河，河岸可游泳划皮划艇。",reservation:"无需预约",price:"停车/参观约8.5€",reserveUrl:"",advanceBooking:"无需预约",time:"10:00",category:"古迹"},
-  "d9_3":{name:"阿维尼翁教皇宫",nameEn:"Palais des Papes",coords:[43.9077,4.8059],day:9,desc:"中世纪欧洲最大哥特式宫殿。",why:"见证14世纪教皇与法国国王的权力斗争，旁边有阿维尼翁断桥。",reservation:"无需预约",price:"约12€",reserveUrl:"https://www.palais-des-papes.com",advanceBooking:"提前购票即可",time:"11:30",category:"宫殿"},
-  "d9_4":{name:"里昂",nameEn:"Lyon",coords:[45.7640,4.8357],day:9,desc:"法国美食之都，千年古城。",why:"里昂老城是世界遗产，Traboules穿越通道是里昂独有特色。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"15:00",category:"城市",type:"行程",driveTime:"2h",dist:"230km",depart:"13:00"},
+  "d8_1":{name:"卡尔卡松城堡",nameEn:"Carcassonne",coords:[43.2066,2.3638],day:8,desc:"欧洲最大、保存最完好的中世纪城堡要塞。",why:"52座塔楼和3公里城墙的防御体系，入城穿越回中世纪。",reservation:"无需预约",price:"城堡免费进入，伯爵城堡9.5€",reserveUrl:"",advanceBooking:"无需预约",time:"09:30",category:"城堡"},
+  "d8_2":{name:"尼姆竞技场",nameEn:"Arènes de Nîmes",coords:[43.8347,4.3600],day:8,desc:"保存最完好的古罗马竞技场之一，建于公元1世纪。",why:"比罗马斗兽场保存更好，至今用于斗牛和音乐会。",reservation:"无需预约",price:"约10€",reserveUrl:"",advanceBooking:"提前购票即可",time:"13:45",category:"古迹"},
+  "d8_3":{name:"嘉德水道桥",nameEn:"Pont du Gard",coords:[43.9474,4.5350],day:8,desc:"古罗马最伟大的水利工程之一，世界文化遗产。",why:"三层拱桥跨越加尔德河，是从尼姆前往里昂途中顺路的短暂停靠点。",reservation:"无需预约",price:"停车/参观约8.5€",reserveUrl:"",advanceBooking:"无需预约",time:"16:20",category:"古迹"},
+  "d8_4":{name:"抵达里昂",nameEn:"Arrivée à Lyon",coords:[45.7640,4.8357],day:8,desc:"完成南法长途串联后抵达里昂。",why:"新版行程取消蒙彼利埃住宿，改为当晚直接抵达里昂，为随后两天里昂行程留出完整时间。",reservation:"无需预约",price:"—",reserveUrl:"",advanceBooking:"无需",time:"约20:00",category:"城市",type:"行程",driveTime:"2h40",dist:"约250km",depart:"17:20"},
+  "d9_1":{name:"里昂自由活动",nameEn:"Lyon",coords:[45.7640,4.8357],day:9,desc:"新版行程安排完整一天停留里昂，可按体力在老城、富维耶山和市区之间灵活安排。",why:"不再从尼姆、阿维尼翁赶路，可以留出一整天深入体验里昂。",reservation:"按所选场馆决定",price:"按实际项目",reserveUrl:"",advanceBooking:"建议前一晚确定具体顺序",time:"全天",category:"城市"},
   "d10_1":{name:"里昂老城 & Traboule",nameEn:"Vieux Lyon & Traboules",coords:[45.7630,4.8270],day:10,desc:"里昂文艺复兴老城区，拥有独特的秘密通道系统。",why:"Traboules是丝绸工人秘密通道，二战时被抵抗军使用，可穿越建筑内部。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"09:00",category:"街区"},
   "d10_2":{name:"博若莱酒区",nameEn:"Beaujolais Wine Region",coords:[46.0000,4.7000],day:10,desc:"从里昂出发30分钟可达的著名葡萄酒产区。",why:"在19世纪丝绸厂改建的酒窖里品酒，品尝博若莱新酒。",reservation:"需要预约",price:"品酒费用5-20€",reserveUrl:"",advanceBooking:"建议提前1周联系酒庄",time:"11:00",category:"体验"},
   "d10_3":{name:"日内瓦",nameEn:"Geneva",coords:[46.2044,6.1432],day:10,desc:"国际化大都市，联合国欧洲总部所在地。",why:"日内瓦湖大喷泉、花钟、老城区。200多个国际组织汇集地。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"2h",dist:"150km",depart:"15:00"},
@@ -518,9 +583,9 @@ const ITINERARY = [
   {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
   {day:6,date:"9月30日 (三)",title:"波尔多红酒日",summary:"葡萄酒城(上午) → 酒庄品酒(下午)",stops:["d6_1","d6_2"]},
   {day:7,date:"10月1日 (四)",title:"图卢兹航空日",summary:"波尔多→图卢兹(2h40) → 空客工厂 → 协和博物馆",stops:["d7_1","d7_2","d7_3"]},
-  {day:8,date:"10月2日 (五)",title:"南法中古城堡",summary:"图卢兹→卡尔卡松城堡(2h) → 蒙彼利埃",stops:["d8_1","d8_2"]},
-  {day:9,date:"10月3日 (六)",title:"古罗马之旅→里昂",summary:"尼姆竞技场 → 嘉德水道桥 → 阿维尼翁教皇宫 → 里昂",stops:["d9_1","d9_2","d9_3","d9_4"]},
-  {day:10,date:"10月4日 (日)",title:"里昂美食→日内瓦",summary:"里昂老城Traboule → 博若莱酒区 → 出发日内瓦",stops:["d10_1","d10_2","d10_3"]},
+  {day:8,date:"10月2日 (五)",title:"南法古城→里昂",summary:"图卢兹→卡尔卡松城堡(2h) → 尼姆竞技场(2h10) → 嘉德水道桥(35min) → 里昂(2h40，约20:00抵达)",stops:["d8_1","d8_2","d8_3","d8_4"]},
+  {day:9,date:"10月3日 (六)",title:"里昂深度日",summary:"里昂整天自由安排，不再前往尼姆或阿维尼翁",stops:["d9_1"]},
+  {day:10,date:"10月4日 (日)",title:"里昂深度→日内瓦",summary:"里昂老城与Traboule → 博若莱酒区/丝绸酒窖品酒 → 晚上前往日内瓦",stops:["d10_1","d10_2","d10_3"]},
   {day:11,date:"10月5日 (一)",title:"日内瓦文化日",summary:"百达翡丽博物馆 → 联合国 → CERN粒子加速器",stops:["d11_1","d11_2","d11_3"]},
   {day:12,date:"10月6日 (二)",title:"日内瓦返程",summary:"日内瓦湖晨间漫步 → 15:55返程",stops:["d12_1"]}
 ];
@@ -547,9 +612,9 @@ const POI_EXTRA = {
   "d6_1":{hours:"周二–周日 10:00–18:00（周一闭馆）",duration:"2–3 小时",address:"134 Quai de Bacalan, 33300 Bordeaux",tips:"门票含一杯免费品酒；沉浸式展厅建议租语音导览。"},
   "d7_1":{hours:"需预约导览约 1.5 小时（周二–周六）",duration:"半天",address:"Aéroport de Toulouse-Blagnac",tips:"A350/A380 装配线必看；需提前 2 周预约，带护照。"},
   "d8_1":{hours:"城堡免费进入；伯爵城堡 10:00–18:00",duration:"2–3 小时",address:"Carcassonne, 11000",tips:"52 座塔楼可登；城内石板路滑，穿舒适鞋。"},
-  "d9_1":{hours:"每日 9:00–19:00（冬季至 17:00）",duration:"1–1.5 小时",address:"Arènes de Nîmes, 1 Pl. des Arènes, 30000 Nîmes",tips:"比罗马斗兽场保存更完整；可买 Nîmes 通票含嘉德水道桥。"},
-  "d9_2":{hours:"园区全天开放（博物馆 10:00–18:00）",duration:"1.5–2 小时",address:"Pont du Gard, 30210 Vers-Pont-du-Gard",tips:"河岸可游泳/皮划艇；夏季防晒；停车另收费。"},
-  "d9_3":{hours:"每日 9:00–19:00（冬季至 17:30）",duration:"2–3 小时",address:"Palais des Papes, 84000 Avignon",tips:"买通票含断桥（Pont Saint-Bénézet）；屋顶视野好。"},
+  "d8_2":{hours:"每日 9:00–19:00（冬季至 17:00）",duration:"约 2 小时",address:"Arènes de Nîmes, 1 Pl. des Arènes, 30000 Nîmes",tips:"新版行程安排在卡尔卡松之后；停车与进场要计入紧凑时间。"},
+  "d8_3":{hours:"园区全天开放（博物馆 10:00–18:00）",duration:"约 20–40 分钟",address:"Pont du Gard, 30210 Vers-Pont-du-Gard",tips:"本次为前往里昂途中的短停，避免展开长距离河岸活动。"},
+  "d9_1":{hours:"全天自由安排",duration:"完整一天",address:"Lyon, France",tips:"新版表尚未指定第 9 天的固定景点，可从里昂老城、富维耶山或美食市场中选择。"},
   "d10_1":{hours:"老城全天；Traboule 通道白天开放",duration:"2–3 小时",address:"Vieux Lyon, 69005 Lyon",tips:"寻找隐藏 Traboule 入口（如 54 Rue Saint-Jean）；里昂老城免费。"},
   "d11_1":{hours:"周二–周五 11:00–18:00；周六 10:00–18:00（周日周一闭馆）",duration:"1.5–2 小时",address:"Rue des Vieux-Grenadiers 7, 1208 Genève",tips:"钟表迷朝圣；珍藏品需预约，官网购票。"},
   "d11_2":{hours:"导览团 工作日 10:30 / 14:30（需预约）",duration:"1–1.5 小时",address:"Palais des Nations, 14 Av. de la Paix, Genève",tips:"带护照；如逢会议可入口申请旁听席位（先到先得）。"},
@@ -714,24 +779,6 @@ const EVENT_CANDIDATES = [
     note:"演出地点分散在都会区，订票前先核对与住宿地、酒庄之间的交通时间。"
   },
   {
-    id:"ev_montpellier_frac",
-    name:"《失衡》当代艺术项目",
-    nameEn:"En déséquilibre — FRAC Occitanie",
-    city:"蒙彼利埃", day:8,
-    coords:[43.6108,3.8767],
-    dateText:"9月26日 – 10月31日",
-    dateStart:"9/26", dateEnd:"10/31",
-    category:"特展",
-    desc:"FRAC Occitanie Montpellier 举办的地中海文化季当代艺术项目。",
-    why:"10月2日抵达蒙彼利埃时仍在展期，可作为老城之外的小众文化备选。",
-    reservation:"以场馆当日安排为准",
-    inviteOnly:false,
-    price:"以官网为准",
-    website:"https://saisonmediterranee2026.culture.gouv.fr/programmation/temps-forts-en-france",
-    bookingUrl:"",
-    note:"若当天从卡尔卡松抵达较晚，优先核对闭馆时间后再安排。"
-  },
-  {
     id:"ev_montmartre",
     name:"蒙马特葡萄丰收节",
     nameEn:"Fête des Vendanges de Montmartre",
@@ -753,19 +800,19 @@ const EVENT_CANDIDATES = [
     id:"ev_nimes_expo",
     name:"尼姆奇趣特展 (Expo de Ouf!)",
     nameEn:"Expo de Ouf!",
-    city:"尼姆", day:9,
+    city:"尼姆", day:8,
     coords:[43.8347,4.3600],
     dateText:"9月 – 12月（长期特展）",
     dateStart:"9/1", dateEnd:"12/31",
     category:"特展",
     desc:"尼姆竞技场举办的沉浸式大型特展（第14届），适合家庭与好奇者。",
-    why:"在古罗马竞技场内部体验特展，行程第9天经停尼姆时可顺道参观。",
+    why:"在古罗马竞技场内部体验特展，新版行程第8天经停尼姆时可顺道参观。",
     reservation:"需购票",
     inviteOnly:false,
     price:"以官网为准",
     website:"https://nimes-tourisme.com",
     bookingUrl:"",
-    note:"对应尼姆行程第9天。展期覆盖整个秋季，可与行程日期重合。"
+    note:"对应尼姆行程第8天。展期覆盖整个秋季，可与行程日期重合。"
   },
   {
     id:"ev_patrimoine",
@@ -929,9 +976,8 @@ const RESTAURANTS = [
   {id:"rest_d5_chambord",day:5,name:"Le Grand Saint-Michel",city:"香波尔",coords:[47.6176,1.5138],type:"现代法餐 / 城堡景观餐厅",meal:"香波尔城堡午餐",price:"约45–70€ / 人",specialties:"卢瓦尔河谷时令菜、河鱼、当地禽肉与精致甜点",near:"Relais de Chambord内，露台正对香波尔城堡",fit:"参观结束后直接午餐，再开车前往波尔多；位置最省绕路。",reservation:"建议提前预约并控制午餐时长",website:"https://relaisdechambord.com/le-grand-saint-michel/"},
   {id:"rest_d6_tupina",day:6,name:"La Tupina",city:"波尔多",coords:[44.8309,-0.5664],type:"法国西南菜 / 柴火料理",meal:"波尔多晚餐",price:"午市23€；正餐约50–90€ / 人",specialties:"鸭胸、油封鸭、柴火烤肉、鹅肝、卡纳蕾",near:"圣米歇尔区，距水镜广场约20分钟步行",fit:"葡萄酒城与酒庄之后品尝最有代表性的西南菜；官网经典套餐70€。",reservation:"建议预约",website:"https://www.latupina.com/menu"},
   {id:"rest_d7_genty",day:7,name:"Genty Magre",city:"图卢兹",coords:[43.6001,1.4438],type:"传统法餐 / 图卢兹地方菜",meal:"图卢兹晚餐",price:"约40–60€ / 人",specialties:"图卢兹砂锅豆焖肉 Cassoulet、鸭肉、法国西南葡萄酒",near:"老城中心，距卡皮托广场约7分钟步行",fit:"航空行程结束后进城用餐；其Cassoulet获2023图卢兹最佳称号。",reservation:"座位有限，建议提前预约",website:"https://guide.michelin.com/fr/fr/occitanie/toulouse/restaurant/genty-magre"},
-  {id:"rest_d8_comte",day:8,name:"Comte Roger",city:"卡尔卡松",coords:[43.2069,2.3628],type:"传统 / 现代奥克西塔尼菜",meal:"卡尔卡松城内午餐",price:"约40–60€ / 人",specialties:"招牌Cassoulet、当地羊肉、时令南法菜",near:"中世纪城墙内，距伯爵城堡约5分钟步行",fit:"参观古城途中直接午餐，之后继续开车去蒙彼利埃。",reservation:"周五午餐建议预约",website:"https://guide.michelin.com/us/en/occitanie/carcassonne/restaurant/comte-roger"},
-  {id:"rest_d8_jardin",day:8,name:"Le Petit Jardin",city:"蒙彼利埃",coords:[43.6110,3.8731],type:"地中海创意菜 / 花园餐厅",meal:"抵达蒙彼利埃晚餐",price:"约45–75€ / 人",specialties:"时令鱼类、地中海蔬菜、法式创意套餐",near:"老城中心，紧邻圣皮埃尔大教堂",fit:"抵达后不再开车，在老城花园环境中吃晚餐；也可选择同址较轻松的Bistrot。",reservation:"建议预约花园座位",website:"https://www.petit-jardin.com/"},
-  {id:"rest_d9_bibendum",day:9,name:"Bibendum",city:"阿维尼翁",coords:[43.9456,4.7991],type:"现代南法菜 / 米其林必比登",meal:"教皇宫后午餐",price:"约35–55€ / 人",specialties:"海鲷Ceviche、阿尔代什鳟鱼、南法时令菜",near:"老城内，距教皇宫约10分钟步行",fit:"第9天车程较长，建议在阿维尼翁安排正式午餐，再直达里昂。",reservation:"周六建议预约",website:"https://guide.michelin.com/fr/fr/provence-alpes-cote-dazur/avignon/restaurant/bibendum"},
+  {id:"rest_d8_comte",day:8,name:"Comte Roger",city:"卡尔卡松",coords:[43.2069,2.3628],type:"传统 / 现代奥克西塔尼菜",meal:"卡尔卡松城内午餐",price:"约40–60€ / 人",specialties:"招牌Cassoulet、当地羊肉、时令南法菜",near:"中世纪城墙内，距伯爵城堡约5分钟步行",fit:"参观古城途中直接午餐，之后继续开车前往尼姆、嘉德水道桥和里昂；当天车程长，需严格控制午餐时长。",reservation:"周五午餐建议预约",website:"https://guide.michelin.com/us/en/occitanie/carcassonne/restaurant/comte-roger"},
+  {id:"rest_d8_jardin",day:8,name:"Le Bouchon des Filles",city:"里昂",coords:[45.7689,4.8310],type:"里昂Bouchon / 家常菜",meal:"抵达里昂晚餐",price:"约30–45€ / 人",specialties:"里昂沙拉、肉酱、炖肉和甜点拼盘",near:"里昂市中心，距老城约15分钟步行",fit:"新版行程约20:00抵达里昂；只在确认实际抵达时间和餐厅末轮入座时间后预约。",reservation:"周五晚餐建议预约，并确认可接待晚到",website:"https://www.bouchondesfilles.fr/"},
   {id:"rest_d10_georges",day:10,name:"Brasserie Georges",city:"里昂",coords:[45.7484,4.8280],type:"历史啤酒馆 / 里昂与阿尔萨斯菜",meal:"里昂早午餐或午餐",price:"约30–50€ / 人",specialties:"里昂香肠、酸菜炖肉、海鲜拼盘、自酿啤酒",near:"Perrache车站旁，老城南侧",fit:"周日仍适合安排，午餐后可直接取车前往博若莱与日内瓦。",reservation:"大厅很大但周日仍建议预约",website:"https://www.brasseriegeorges.com/"},
   {id:"rest_d10_armures",day:10,name:"Restaurant Les Armures",city:"日内瓦",coords:[46.2015,6.1472],type:"瑞士传统菜",meal:"抵达日内瓦晚餐",price:"约45–75 CHF / 人",specialties:"奶酪火锅、Raclette、Rösti、瑞士肉类料理",near:"日内瓦老城，圣彼得大教堂旁",fit:"抵达日内瓦后一次吃齐典型瑞士菜，步行逛老城也方便。",reservation:"晚餐建议预约",website:"https://www.hotel-les-armures.ch/en/restaurant/"},
   {id:"rest_d11_dumas",day:11,name:"Bistrot Dumas",city:"日内瓦",coords:[46.1922,6.1515],type:"法式小酒馆 / 米其林必比登",meal:"博物馆前后午餐或晚餐",price:"约40–65 CHF / 人",specialties:"传统法餐、时令肉类、全手工小酒馆菜",near:"Champel区，距百达翡丽博物馆约15分钟公共交通",fit:"周一营业，适合补足许多餐厅周一休息的空档；联合国/CERN行程紧时更建议晚餐。",reservation:"经常满座，建议预约",website:"https://guide.michelin.com/en/geneve-region/geneve/restaurant/bistrot-dumas"},
@@ -947,8 +993,7 @@ const RESTAURANTS = [
   {id:"rest_d7_panorama",day:7,name:"Le Panorama – Toulouse Blagnac",city:"图卢兹",coords:[43.6291,1.3677],type:"机场全景餐厅",meal:"早餐 / 午餐",price:"早餐约4–12€；午餐约18–30€ / 人",specialties:"可颂咖啡、图卢兹香肠、简餐",near:"图卢兹机场航站区，靠近空客与Aeroscopia",fit:"空客参观前后最省路的用餐选择，可看跑道与飞机。",reservation:"早餐通常现场即可",website:"https://www.toulouse.aeroport.fr/shopping-et-services/le-panorama"},
   {id:"rest_d7_perlette",day:7,name:"Perlette",city:"图卢兹",coords:[43.6008,1.4423],type:"甜品茶室 / 早午餐",meal:"下午茶 / 轻晚餐",price:"约15–30€ / 人",specialties:"自制蛋糕、咸派、早午餐和咖啡",near:"图卢兹历史中心 Bourse 区",fit:"进城后先休息吃轻食，再决定是否吃正式Cassoulet晚餐。",reservation:"热门下午时段可能候位",website:"https://www.toulouse-tourisme.com/en/restaurant/perlette/"},
   {id:"rest_d8_perlette_breakfast",day:8,name:"Perlette – 早餐备选",city:"图卢兹",coords:[43.6008,1.4423],type:"咖啡馆 / 甜点",meal:"早餐",price:"约12–25€ / 人",specialties:"咖啡、糕点、鸡蛋与轻食",near:"图卢兹老城，出发去卡尔卡松前可顺路",fit:"第8天早晨在新城市补早餐后再驾车前往卡尔卡松。",reservation:"早到通常无需预约",website:"https://www.toulouse-tourisme.com/en/restaurant/perlette/"},
-  {id:"rest_d9_halles",day:9,name:"Les Halles de Nîmes",city:"尼姆",coords:[43.8375,4.3597],type:"室内市场 / 多摊位早餐",meal:"早餐",price:"约10–25€ / 人",specialties:"可颂咖啡、Brandade鳕鱼泥、奶酪和熟食",near:"尼姆老城，距竞技场步行约7分钟",fit:"参观竞技场前快速解决早餐，还能采购当天车程零食。",reservation:"无需预约，建议早到",website:"https://www.leshallesdenimes.fr/"},
-  {id:"rest_d9_bouchon",day:9,name:"Le Bouchon des Filles",city:"里昂",coords:[45.7689,4.8310],type:"里昂Bouchon / 家常菜",meal:"抵达里昂晚餐",price:"约30–45€ / 人",specialties:"里昂沙拉、肉酱、炖肉和甜点拼盘",near:"里昂市中心，距老城约15分钟步行",fit:"抵达里昂后补一顿传统地方菜；与第10天大型啤酒馆形成不同风格。",reservation:"周六晚餐建议预约并复查营业",website:"https://www.bouchondesfilles.fr/"},
+  {id:"rest_d9_bouchon",day:9,name:"Le Bouchon des Filles",city:"里昂",coords:[45.7689,4.8310],type:"里昂Bouchon / 家常菜",meal:"里昂深度日晚餐",price:"约30–45€ / 人",specialties:"里昂沙拉、肉酱、炖肉和甜点拼盘",near:"里昂市中心，距老城约15分钟步行",fit:"第9天整天留在里昂，可把这顿传统Bouchon作为当天正式晚餐；与第10天大型啤酒馆形成不同风格。",reservation:"周六晚餐建议预约并复查营业",website:"https://www.bouchondesfilles.fr/"},
   {id:"rest_d10_halles",day:10,name:"Les Halles de Lyon Paul Bocuse",city:"里昂",coords:[45.7616,4.8505],type:"美食市场 / 多摊位",meal:"早餐 / 早午餐",price:"约15–40€ / 人",specialties:"里昂熟食、奶酪、生蚝、面包甜点",near:"里昂Part-Dieu区",fit:"周日早晨先吃当地特色并采购路上食品，再开始老城与博若莱行程。",reservation:"市场无需预约，具体摊位各异",website:"https://www.halles-de-lyon-paulbocuse.com/"},
   {id:"rest_d11_bains",day:11,name:"Buvette des Bains des Pâquis",city:"日内瓦",coords:[46.2107,6.1524],type:"湖畔公共餐厅 / 瑞士简餐",meal:"早餐",price:"早餐约12 CHF / 人",specialties:"完整早餐、面包咖啡、湖景与当日套餐",near:"日内瓦湖右岸，正对大喷泉",fit:"第11天文化行程前吃早餐；环境有特色且价格相对友好。",reservation:"早餐通常现场即可",website:"https://www.bains-des-paquis.ch/"},
   {id:"rest_d11_cottage",day:11,name:"Cottage Café",city:"日内瓦",coords:[46.2048,6.1384],type:"花园小酒馆 / 时令菜",meal:"午餐",price:"约30–50 CHF / 人",specialties:"每日变化的时令主菜、沙拉和甜点",near:"勃朗峰桥西侧，靠近市中心与湖边",fit:"百达翡丽博物馆之后安排午餐，再前往联合国或CERN。",reservation:"工作日午餐建议预约",website:"https://www.cottagecafe.ch/"},
@@ -980,6 +1025,35 @@ let allDayRoutes = {};
 let interDayRoutes = {};
 let eventMarkers = {};
 let currentRestaurantDay = 'all';
+const DAY_CONTENT_FILTERS = {
+  source:{planned:true,recommended:true},
+  theme:{attraction:true,restaurant:true}
+};
+
+function filterAllows(source, theme) {
+  return Boolean(DAY_CONTENT_FILTERS.source[source] && DAY_CONTENT_FILTERS.theme[theme]);
+}
+
+function poiTheme(poi) {
+  return poi && poi.type === '餐饮' ? 'restaurant' : 'attraction';
+}
+
+function applyDayFilters() {
+  document.querySelectorAll('.day-card [data-source][data-theme]').forEach(el => {
+    const visible = filterAllows(el.dataset.source, el.dataset.theme);
+    el.classList.toggle('filtered-out', !visible);
+  });
+}
+
+function refreshDayFilters() {
+  applyDayFilters();
+  if (currentMode === 'day') {
+    const sidebar = document.getElementById('sidebar');
+    const wasOpen = sidebar.classList.contains('open');
+    showDay(currentDay);
+    if (wasOpen) sidebar.classList.add('open');
+  }
+}
 
 // ============================================================
 // INIT MAP
@@ -1105,12 +1179,13 @@ function clearMap() {
 function addMarker(id, poi, idx, total, compact) {
   const color = DAY_COLORS[poi.day];
   let cls = 'poi-marker';
-  if (idx === 0 && total > 1) cls += ' start';
+  const isStart = idx === 0;
+  if (isStart && total > 1) cls += ' start';
   else if (idx === total - 1 && total > 1) cls += ' end';
 
-  const size = compact ? 20 : 26;
-  const fontSize = compact ? 8 : 10;
-  const label = compact ? String(poi.day) : String(idx + 1);
+  const size = compact ? 20 : (isStart ? 34 : 26);
+  const fontSize = compact ? 8 : (isStart ? 9 : 10);
+  const label = compact ? String(poi.day) : (isStart ? `周${DAY_WEEK[poi.day]}` : String(idx + 1));
 
   const icon = L.divIcon({
     className: '',
@@ -1178,19 +1253,25 @@ function showDay(dayNum) {
   document.getElementById('itineraryList').style.display = 'block';
   document.getElementById('eventsList').style.display = 'none';
   clearMap();
-  dayData.stops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, dayData.stops.length, false));
-  if (allDayRoutes[dayNum]) addRoute(dayNum, allDayRoutes[dayNum]);
+  const visibleStops = dayData.stops.filter(id => filterAllows('planned', poiTheme(POI_DATA[id])));
+  visibleStops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, visibleStops.length, false));
+  if (DAY_CONTENT_FILTERS.source.planned && DAY_CONTENT_FILTERS.theme.attraction && allDayRoutes[dayNum]) {
+    addRoute(dayNum, allDayRoutes[dayNum]);
+  }
 
   // Events for this day (nearby-time focus) — shown as pink 🎪 markers
-  const dayEvents = EVENTS.filter(e => e.day === dayNum);
+  const dayEvents = EVENTS.filter(e => e.day === dayNum && filterAllows('recommended', 'attraction'));
   dayEvents.forEach(addEventMarker);
-  const dayRestaurants = RESTAURANTS.filter(r => r.day === dayNum);
+  const dayRestaurants = RESTAURANTS.filter(r => r.day === dayNum && filterAllows(r.planned ? 'planned' : 'recommended', 'restaurant'));
   dayRestaurants.forEach(addRestaurantMarker);
+  const dayExtras = EXTRA_POIS.filter(p => p.day === dayNum && filterAllows('recommended', 'attraction'));
+  dayExtras.forEach(addExtraMarker);
 
-  if (dayData.stops.length > 0) {
-    const allCoords = dayData.stops.map(id => POI_DATA[id].coords);
+  if (visibleStops.length || dayEvents.length || dayRestaurants.length || dayExtras.length) {
+    const allCoords = visibleStops.map(id => POI_DATA[id].coords);
     dayEvents.forEach(e => allCoords.push(e.coords));
     dayRestaurants.forEach(r => allCoords.push(r.coords));
+    dayExtras.forEach(p => allCoords.push(p.coords));
     map.fitBounds(L.latLngBounds(allCoords), { padding: [50, 50], maxZoom: 14 });
   }
 
@@ -1201,6 +1282,7 @@ function showDay(dayNum) {
   document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
   const card = document.getElementById(`day-card-${dayNum}`);
   if (card) card.classList.add('active');
+  applyDayFilters();
 }
 
 // ============================================================
@@ -1902,11 +1984,49 @@ function hideChangelog() {
   overlay.setAttribute('aria-hidden', 'true');
 }
 
+const MEAL_SLOT_CONFIG = {
+  breakfast:{label:'早餐',icon:'☕',keywords:['早餐','早午餐']},
+  lunch:{label:'午餐',icon:'🥗',keywords:['午餐','早午餐','简餐']},
+  dinner:{label:'晚餐',icon:'🍽️',keywords:['晚餐','轻晚餐']}
+};
+
+function renderMealSlot(dayNum, slotName) {
+  const config = MEAL_SLOT_CONFIG[slotName];
+  const options = RESTAURANTS
+    .filter(r => r.day === dayNum && config.keywords.some(keyword => r.meal.includes(keyword)))
+    .sort((a, b) => Number(Boolean(b.planned)) - Number(Boolean(a.planned)));
+  const restaurant = options[0];
+
+  if (!restaurant) {
+    return `<li class="meal-slot missing ai-recommended" data-source="recommended" data-theme="restaurant">
+      <div class="meal-slot-icon">${config.icon}</div>
+      <div class="meal-slot-main">
+        <div class="meal-slot-title">${config.label} · 待安排</div>
+        <div class="meal-slot-meta">当天尚未选定合适餐厅，建议提前补充或预留现场选择时间。</div>
+      </div>
+      <span class="meal-slot-tag" style="background:#d99a17">提醒</span>
+    </li>`;
+  }
+
+  const alternatives = options.length > 1 ? ` · 另有 ${options.length - 1} 个备选` : '';
+  const source = restaurant.planned ? 'planned' : 'recommended';
+  return `<li class="meal-slot ${restaurant.planned ? '' : 'ai-recommended'}" data-source="${source}" data-theme="restaurant" onclick="focusRestaurant('${restaurant.id}')">
+    <div class="meal-slot-icon">${config.icon}</div>
+    <div class="meal-slot-main">
+      <div class="meal-slot-title">${config.label} · ${restaurant.planned ? '已写入行程' : '沿途推荐'}</div>
+      <div class="meal-slot-name">${restaurant.name}</div>
+      <div class="meal-slot-meta">${restaurant.specialties} · ${restaurant.price}${alternatives}</div>
+    </div>
+    <span class="meal-slot-tag ${restaurant.planned ? 'planned' : ''}">${restaurant.planned ? '已定' : '推荐'}</span>
+  </li>`;
+}
+
 // ============================================================
 // BUILD SIDEBAR
 // ============================================================
 function buildSidebar() {
   const tabsContainer = document.getElementById('dayTabs');
+  const overviewTabsContainer = document.getElementById('overviewTabs');
   const functionTabsContainer = document.getElementById('functionTabs');
   const listContainer = document.getElementById('itineraryList');
 
@@ -1915,13 +2035,13 @@ function buildSidebar() {
   overviewTab.className = 'day-tab overview-tab';
   overviewTab.textContent = '🗺️ 总览';
   overviewTab.onclick = showOverview;
-  functionTabsContainer.appendChild(overviewTab);
+  overviewTabsContainer.appendChild(overviewTab);
 
   const summaryTab = document.createElement('div');
   summaryTab.className = 'day-tab summary-tab';
   summaryTab.textContent = '📊 汇总';
   summaryTab.onclick = showSummary;
-  functionTabsContainer.appendChild(summaryTab);
+  overviewTabsContainer.appendChild(summaryTab);
 
   const eventTab = document.createElement('div');
   eventTab.className = 'day-tab event-tab';
@@ -1946,7 +2066,7 @@ function buildSidebar() {
     const tab = document.createElement('div');
     tab.className = 'day-tab';
     tab.dataset.day = day.day;
-    tab.textContent = `第${day.day}天`;
+    tab.innerHTML = `第${day.day}天<span class="tab-week">周${DAY_WEEK[day.day]}</span>`;
     tab.onclick = () => showDay(day.day);
     tabsContainer.appendChild(tab);
   });
@@ -1957,9 +2077,13 @@ function buildSidebar() {
     card.className = 'day-card';
     card.id = `day-card-${day.day}`;
 
-    let stopsHtml = '';
-    let prevTime = null;
+    let stopsHtml = renderMealSlot(day.day, 'breakfast');
+    let lunchInserted = false;
     day.stops.forEach((id, idx) => {
+      if (idx === Math.ceil(day.stops.length / 2)) {
+        stopsHtml += renderMealSlot(day.day, 'lunch');
+        lunchInserted = true;
+      }
       const p = POI_DATA[id];
       if (!p) return;
 
@@ -1968,7 +2092,7 @@ function buildSidebar() {
         const arrTime = p.time || '—';
         const eta = p.depart ? `（出发${p.depart} → 预计${arrTime}抵达）` : '';
         stopsHtml += `
-        <div class="transit-item">
+        <div class="transit-item" data-source="planned" data-theme="attraction">
           <div class="transit-arrow">↓</div>
           <div class="transit-info">
             <strong>🚗 ${p.name}</strong><br>
@@ -1993,7 +2117,7 @@ function buildSidebar() {
       } else if (p.price && p.price.includes('免费')) {
         badge = '<span class="stop-badge badge-free">免费</span>';
       }
-      stopsHtml += `<li class="stop-item" onclick="showDetail('${id}')">
+      stopsHtml += `<li class="stop-item" data-source="planned" data-theme="${pType === '餐饮' ? 'restaurant' : 'attraction'}" onclick="showDetail('${id}')">
         <div class="stop-name">
           <span style="display:inline-block;background:${typeColor};color:#fff;border-radius:4px;padding:0 5px;font-size:10px;margin-right:4px">${typeIcon} ${pType}</span>
           ${idx+1}. ${p.name}
@@ -2001,12 +2125,14 @@ function buildSidebar() {
         <div class="stop-time">${p.time}${p.nameEn ? ' · '+p.nameEn : ''} ${badge}</div>
       </li>`;
     });
+    if (!lunchInserted) stopsHtml += renderMealSlot(day.day, 'lunch');
+    stopsHtml += renderMealSlot(day.day, 'dinner');
 
     // Events for this day (also shown on map as pink markers)
     let evBlock = '';
     const dayEvents = EVENTS.filter(e => e.day === day.day);
     if (dayEvents.length) {
-      evBlock = `<div class="event-day-block"><div class="event-day-title">🎪 当日活动（${dayEvents.length}）</div>`;
+      evBlock = `<div class="event-day-block ai-recommended" data-source="recommended" data-theme="attraction"><div class="event-day-title">🎪 当日活动（${dayEvents.length}）</div>`;
       dayEvents.forEach(ev => {
         const t = eventTiming(ev);
         const tag = t === 'during' ? '<span class="ev-tag during">行程内</span>' : (t === 'after' ? '<span class="ev-tag after">行程后</span>' : '<span class="ev-tag before">行程前</span>');
@@ -2015,22 +2141,26 @@ function buildSidebar() {
       evBlock += `</div>`;
     }
 
-    let restaurantBlock = '';
-    const dayRestaurants = RESTAURANTS.filter(r => r.day === day.day);
-    if (dayRestaurants.length) {
-      restaurantBlock = `<div class="event-day-block" style="background:#fff5f1;border-color:#f1d7cc"><div class="event-day-title" style="color:#e05d35">🍽️ 当日餐厅（${dayRestaurants.length}）</div>`;
-      dayRestaurants.forEach(r => {
-        const statusColor=r.planned?'#ff9500':'#e05d35';
-        restaurantBlock += `<div class="event-day-item" style="border-left-color:${statusColor}" onclick="focusRestaurant('${r.id}')">${r.planned?'✓':'🍽️'} ${r.name}<span class="ev-tag" style="background:${statusColor};color:#fff">${r.planned?'已定':'推荐'}</span><span class="ev-when">${r.meal} · ${r.price}</span></div>`;
+    let extraBlock = '';
+    const dayExtras = EXTRA_POIS.filter(p => p.day === day.day);
+    if (dayExtras.length) {
+      extraBlock = `<div class="daily-extra-block ai-recommended" data-source="recommended" data-theme="attraction">
+        <div class="daily-extra-title">✨ 沿途可加 <span>${dayExtras.length} 个可进入地点</span></div>`;
+      dayExtras.forEach(p => {
+        extraBlock += `<div class="daily-extra-item" onclick="focusExtra('${p.id}')">
+          <div class="daily-extra-name">${p.name}</div>
+          <div class="daily-extra-meta">${p.category} · ${p.duration} · ${p.price}</div>
+          <div class="daily-extra-fit">${p.fit}</div>
+        </div>`;
       });
-      restaurantBlock += `</div>`;
+      extraBlock += `</div>`;
     }
 
     card.innerHTML = `
-      <h3>📅 第${day.day}天 · ${day.title}</h3>
+      <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
       <div class="day-sub">${day.date}</div>
       <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
-      <ul class="stop-list">${stopsHtml}</ul>${restaurantBlock}${evBlock}`;
+      <ul class="stop-list">${stopsHtml}</ul>${extraBlock}${evBlock}`;
     listContainer.appendChild(card);
   });
 }
@@ -2041,6 +2171,19 @@ function buildSidebar() {
 document.addEventListener('DOMContentLoaded', () => {
   initMap();
   buildSidebar();
+
+  document.querySelectorAll('#dayFilterBar input[data-filter-source]').forEach(input => {
+    input.addEventListener('change', () => {
+      DAY_CONTENT_FILTERS.source[input.dataset.filterSource] = input.checked;
+      refreshDayFilters();
+    });
+  });
+  document.querySelectorAll('#dayFilterBar input[data-filter-theme]').forEach(input => {
+    input.addEventListener('change', () => {
+      DAY_CONTENT_FILTERS.theme[input.dataset.filterTheme] = input.checked;
+      refreshDayFilters();
+    });
+  });
 
   // Close summary modal
   document.getElementById('summaryCloseBtn').onclick = hideSummary;
