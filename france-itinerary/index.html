@@ -34,12 +34,15 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .tab-group-label{font-size:10px;font-weight:700;color:#86868b;letter-spacing:.6px;margin-bottom:5px}
 .day-tabs{display:flex;flex-wrap:wrap;gap:5px;padding:0 0 5px}
 .function-tabs .day-tab{flex:1 1 calc(33.333% - 4px);text-align:center}
-.itinerary-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
-.itinerary-tabs .day-tab{min-width:0;text-align:center;padding:5px 3px;line-height:1.15}
-.day-tab .tab-week{display:block;font-size:9px;font-weight:500;opacity:.72;margin-top:2px}
+.itinerary-tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.calendar-weekday{text-align:center;font-size:8px;font-weight:700;color:#8a8a90;padding:1px 0 2px}
+.itinerary-tabs .day-tab{min-width:0;text-align:center;padding:5px 1px;line-height:1.15;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.day-tab .tab-day{display:block;font-size:9px;font-weight:750;color:inherit}
+.day-tab .tab-meta{display:block;margin-top:3px;font-size:8px;font-weight:600;opacity:.78}
+.day-tab .tab-date{font-variant-numeric:tabular-nums}
 .day-tab{white-space:nowrap;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:500;border:1px solid #d1d1d6;background:#fff;color:#555;cursor:pointer;transition:all .15s}
-.day-tab:hover{background:#f0f0f5}
-.day-tab.active{background:#007aff;color:#fff;border-color:#007aff}
+.day-tab:hover{background:#f4f7ff;border-color:#a9c9f7;transform:translateY(-1px)}
+.day-tab.active{background:linear-gradient(135deg,#1478ee,#0062c9);color:#fff;border-color:#006fe6;box-shadow:0 3px 8px rgba(0,122,255,.22)}
 .day-tab.overview-tab{background:#e8f0fe;border-color:#007aff;color:#007aff;font-weight:600}
 .day-tab.overview-tab.active{background:#007aff;color:#fff}
 .day-tab.summary-tab{background:#fef3e0;border-color:#ff9500;color:#ff9500;font-weight:600}
@@ -71,9 +74,10 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .badge-free{background:#34c759}
 
 /* Meal suggestions live inside the daily timeline */
-.meal-slot{display:flex;gap:8px;align-items:flex-start;padding:7px 9px;margin:5px 0;border:1px solid #f0d7cc;border-left:3px solid #e05d35;border-radius:8px;background:#fff8f5;cursor:pointer}
+.meal-slot{display:block;padding:7px 9px;margin:5px 0;border:1px solid #f0d7cc;border-left:3px solid #e05d35;border-radius:8px;background:#fff8f5}
 .meal-slot:hover{background:#fff1eb}
 .meal-slot.missing{border-style:dashed;border-left-style:solid;border-color:#e2c078;border-left-color:#d99a17;background:#fffaf0;cursor:default}
+.meal-slot-head{display:flex;gap:8px;align-items:flex-start}
 .meal-slot-icon{width:25px;height:25px;border-radius:7px;background:#ffe7de;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
 .meal-slot.missing .meal-slot-icon{background:#fff0c9}
 .meal-slot-main{min-width:0;flex:1}
@@ -83,9 +87,31 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .meal-slot-meta{font-size:10px;color:#777;line-height:1.4;margin-top:1px}
 .meal-slot-tag{font-size:9px;color:#fff;background:#e05d35;border-radius:3px;padding:1px 5px;white-space:nowrap}
 .meal-slot-tag.planned{background:#ff9500}
-.ai-recommended{margin-left:18px;position:relative}
-.ai-recommended::before{content:'AI';position:absolute;left:-18px;top:8px;width:14px;height:14px;border-radius:4px;background:#7a5af8;color:#fff;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center}
-@media(min-width:520px) and (max-width:900px){.itinerary-tabs{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.meal-options{margin-top:6px;display:grid;gap:5px}
+.meal-option{display:flex;align-items:flex-start;gap:6px;background:#fff;border:1px solid #f0ddd5;border-radius:7px;padding:6px 7px;cursor:pointer}
+.meal-option:hover{background:#fff3ed}
+.meal-option-main{min-width:0;flex:1}
+.meal-option-name{font-size:11px;font-weight:700;color:#1d1d1f}
+.meal-option-tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:2px}
+.meal-option-tags span{font-size:8px;border-radius:3px;background:#f2f2f7;color:#555;padding:1px 4px}
+.meal-option-tags .price-low{background:#e8f8ed;color:#248345}
+.meal-option-tags .price-mid{background:#fff5d9;color:#9b6900}
+.meal-option-tags .price-high{background:#ffe9e5;color:#b14331}
+.meal-option-note{font-size:9px;color:#777;margin-top:2px;line-height:1.4}
+.meal-search-option{border-style:dashed;color:#6842c2}
+.meal-search-more{display:flex;align-items:center;justify-content:center;margin-top:6px;padding:6px 8px;border:1px dashed #8b78d1;border-radius:7px;color:#6842c2;background:#faf8ff;text-decoration:none;font-size:10px;font-weight:700}
+.meal-search-more:hover{background:#f1edff}
+.ai-recommended{margin-left:28px;position:relative}
+.ai-recommended::before{content:'AI';position:absolute;left:-28px;top:8px;width:23px;height:16px;border-radius:5px;background:#7a5af8;color:#fff;font-size:7px;font-weight:800;display:flex;align-items:center;justify-content:center;letter-spacing:-.2px}
+.ai-recommended.ai-restaurant::before{content:'AI餐';background:#e05d35}
+.ai-recommended.ai-attraction::before{content:'AI景';background:#00a887}
+.ai-recommended.ai-activity::before{content:'活动';background:#ff2d55}
+@media(max-width:360px){
+  .itinerary-tabs{gap:3px}
+  .itinerary-tabs .day-tab{padding:5px 1px}
+  .day-tab .tab-day{font-size:8px}
+  .day-tab .tab-meta{font-size:7px}
+}
 
 /* Nearby optional stops shown inside each day */
 .daily-extra-block{margin-top:10px;padding:8px;background:#f2fbf8;border:1px solid #d3eee6;border-radius:9px}
@@ -127,9 +153,17 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 
 /* Map legend */
 .map-legend{position:absolute;bottom:20px;right:10px;background:rgba(255,255,255,.95);border-radius:8px;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:11px;z-index:1000;max-width:170px}
-.map-legend h4{font-size:11px;font-weight:600;margin-bottom:4px}
+.legend-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:0;background:transparent;color:#1d1d1f;font-size:11px;font-weight:700;cursor:pointer;text-align:left}
+.legend-toggle::after{content:'−';font-size:13px;color:#777}
+.map-legend.collapsed .legend-toggle::after{content:'+'}
+.legend-items{margin-top:5px}
+.map-legend.collapsed .legend-items{display:none}
 .legend-item{display:flex;align-items:center;gap:5px;margin-bottom:2px}
 .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.map-type-marker{position:relative;width:32px;height:32px;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px rgba(0,0,0,.35);font-size:16px;box-sizing:border-box}
+.map-type-marker .marker-source-badge{position:absolute;right:-7px;bottom:-5px;min-width:20px;height:13px;padding:0 3px;border:1px solid #fff;border-radius:6px;background:#1d1d1f;color:#fff;font-size:7px;font-weight:800;line-height:12px;text-align:center;white-space:nowrap}
+.legend-marker{width:24px;height:24px;box-shadow:none;font-size:12px;flex-shrink:0}
+.legend-marker .marker-source-badge{right:-8px;bottom:-4px;transform:scale(.9)}
 
 /* Markers */
 .poi-marker{background:#007aff;border:2px solid #fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}
@@ -186,8 +220,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .summary-modal-header h2{font-size:16px;font-weight:700}
 .summary-modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:#86868b;padding:4px}
 .summary-modal-close:hover{color:#333}
+.summary-tabs{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid #e5e5ea;background:#fafafa;flex-shrink:0}
+.summary-tab-btn{border:1px solid #d1d1d6;background:#fff;color:#555;border-radius:16px;padding:5px 13px;font-size:11px;font-weight:600;cursor:pointer}
+.summary-tab-btn.active{background:#1d1d1f;color:#fff;border-color:#1d1d1f}
 .summary-modal-body{overflow:auto;padding:0;flex:1}
-.summary-table{width:100%;border-collapse:collapse;font-size:11px}
+.summary-table{width:100%;min-width:1160px;border-collapse:collapse;font-size:11px}
 .summary-table thead{position:sticky;top:0;z-index:1}
 .summary-table th{background:#f5f5f7;padding:6px 6px;text-align:left;font-weight:600;color:#555;border-bottom:2px solid #e5e5ea;font-size:10px;white-space:nowrap}
 .summary-table td{padding:5px 6px;border-bottom:1px solid #f0f0f0;vertical-align:middle;word-break:break-word}
@@ -196,14 +233,27 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .summary-table .tag-time{color:#86868b;font-size:10px}
 .summary-table .tag-price{font-weight:500;font-size:10px}
 .summary-table .tag-cat{display:inline-block;background:#f0f0f5;border-radius:3px;padding:1px 5px;font-size:9px;color:#555}
-.summary-table .tag-reserve{font-size:10px}
+.summary-table .tag-reserve{display:inline-block;font-size:10px;white-space:nowrap}
 .summary-table .tag-reserve.need{color:#e65100}
 .summary-table .tag-reserve.free{color:#555}
+.summary-table .col-source{min-width:78px;white-space:nowrap}
+.summary-table .col-day{min-width:50px;white-space:nowrap;text-align:center}
+.summary-table .col-reserve{min-width:72px;white-space:nowrap}
+.summary-table .col-pass{min-width:68px;white-space:nowrap;text-align:center}
+.pass-tag{display:inline-block;border-radius:4px;padding:2px 5px;font-size:9px;font-weight:700;white-space:nowrap}
+.pass-tag.yes{background:#e8f8ed;color:#207a3d}
+.pass-tag.free{background:#e8f3ff;color:#1769aa}
+.pass-tag.partial{background:#fff5d9;color:#946400}
+.pass-tag.no{background:#f1f1f4;color:#666}
+.pass-tag.na{color:#aaa;background:transparent}
 .summary-table .link-btn{display:inline-block;padding:1px 6px;border-radius:3px;font-size:9px;color:#007aff;border:1px solid #007aff;text-decoration:none;cursor:pointer;white-space:nowrap}
 .summary-table .link-btn:hover{background:#e8f0fe}
 .summary-table .closed-warn{color:#e65100;font-size:10px}
 .summary-table .closed-ok{color:#34c759;font-size:10px}
 .summary-table .adv-info{font-size:10px;color:#555;line-height:1.4}
+.source-tag{display:inline-block;border-radius:3px;padding:1px 5px;font-size:9px;font-weight:700;white-space:nowrap}
+.source-tag.planned{background:#e8f0fe;color:#0066cc}
+.source-tag.extra{background:#eee9ff;color:#6842c2}
 
 .summary-stats{padding:10px 16px;background:#fafafe;border-bottom:1px solid #e5e5ea;display:flex;gap:16px;flex-wrap:wrap;font-size:12px;flex-shrink:0}
 .summary-stats span{color:#555}
@@ -300,6 +350,34 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .summary-transport .tr-item b{font-size:13px;color:#1d1d1f}
 .summary-transport .tr-note{font-size:10px;color:#777;line-height:1.5}
 .summary-transport .tr-total{font-size:13px;font-weight:700;color:#1d6b1d;margin-top:4px}
+.transport-editor{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:8px 0}
+.transport-field{background:#fff;border:1px solid #dce9dc;border-radius:8px;padding:6px 9px}
+.transport-field label{display:block;font-size:9px;color:#6f8170;margin-bottom:3px}
+.transport-field input{width:100%;border:1px solid #d1d1d6;border-radius:5px;padding:4px 6px;font-size:12px;font-weight:600}
+.transport-presets{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.transport-presets button{border:1px solid #8fb68f;background:#fff;color:#356b35;border-radius:12px;padding:3px 8px;font-size:10px;cursor:pointer}
+.transport-presets button:hover{background:#e4f3e4}
+.car-compare-page{display:none;overflow:auto;padding:14px 18px;flex:1;background:#f7f8fa}
+.car-compare-page.active{display:block}
+.car-page-intro{background:#eef4ff;border:1px solid #d9e5ff;border-radius:10px;padding:10px 12px;font-size:11px;line-height:1.55;color:#40516f;margin-bottom:10px}
+.car-platform-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px}
+.car-platform{background:#fff;border:1px solid #e5e5ea;border-radius:10px;padding:11px}
+.car-platform h4{font-size:13px;margin-bottom:4px}
+.car-platform p{font-size:10px;color:#666;line-height:1.5;margin-bottom:7px}
+.car-platform a{display:inline-block;color:#007aff;border:1px solid #86bfff;border-radius:6px;padding:4px 8px;font-size:10px;text-decoration:none}
+.car-table-wrap{overflow-x:auto;background:#fff;border:1px solid #e5e5ea;border-radius:10px;margin:10px 0}
+.car-price-table{width:100%;border-collapse:collapse;min-width:940px;font-size:10px}
+.car-price-table th{background:#f0f4fb;color:#40516f;text-align:left;padding:8px;white-space:nowrap;border-bottom:1px solid #d9e2f0}
+.car-price-table td{padding:8px;vertical-align:top;border-bottom:1px solid #eee;line-height:1.45}
+.car-price-table tr:last-child td{border-bottom:0}
+.car-price-table a{color:#007aff;text-decoration:none;font-weight:600;white-space:nowrap}
+.quote-public,.quote-live{display:inline-block;border-radius:10px;padding:1px 6px;font-size:9px}
+.quote-public{background:#e8f5e9;color:#247533}.quote-live{background:#fff3df;color:#8a5a00}
+.car-cost-note{font-size:10px;color:#666;line-height:1.6;margin:7px 2px}
+.car-subtitle{font-size:13px;margin:13px 0 6px}
+.car-checklist{margin-top:11px;background:#fff7e8;border:1px solid #f1dfbb;border-radius:10px;padding:10px 12px}
+.car-checklist h4{font-size:12px;margin-bottom:5px}
+.car-checklist ul{padding-left:17px;font-size:10px;color:#665b45;line-height:1.65}
 .museum-pass{padding:12px 20px;background:#f0f4ff;border-bottom:1px solid #d7e2ff;font-size:12px;flex-shrink:0}
 .museum-pass h3{font-size:13px;font-weight:700;color:#1d1d1f;margin-bottom:7px}
 .pass-compare{display:grid;grid-template-columns:repeat(3,minmax(130px,1fr));gap:8px;margin-bottom:7px}
@@ -310,10 +388,85 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .pass-option.best b{color:#16833a}
 .pass-covered{font-size:10px;color:#555;line-height:1.55}
 .pass-covered strong{color:#1d1d1f}
+.budget-details{margin-top:10px;border:1px solid #e5e5ea;border-radius:10px;background:#fff;overflow:hidden}
+.budget-details summary{cursor:pointer;list-style:none;padding:10px 12px;font-size:11px;font-weight:700;color:#1d1d1f;background:#f7f7fa;display:flex;align-items:center;justify-content:space-between}
+.budget-details summary::-webkit-details-marker{display:none}
+.budget-details summary::after{content:'展开 ▾';font-size:9px;font-weight:600;color:#6e6e73}
+.budget-details[open] summary::after{content:'收起 ▴'}
+.budget-details-body{padding:0 10px 10px}
 @media(max-width:640px){.pass-compare{grid-template-columns:1fr}.museum-pass{padding:10px 14px}}
 
 /* Desktop detail panel */
 @media(min-width:901px){.detail-panel{max-width:400px;left:auto;right:20px;bottom:20px;border-radius:16px;box-shadow:0 4px 28px rgba(0,0,0,.18)}}
+
+/* Mobile layout: compact chrome, larger touch targets and contained overlays */
+@media(max-width:640px){
+  body{height:100dvh}
+  header{min-height:52px;padding:6px max(10px,env(safe-area-inset-right)) 6px max(8px,env(safe-area-inset-left));gap:6px}
+  .sidebar-toggle{width:40px;height:40px;padding:0;border-radius:10px;font-size:23px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .sidebar-toggle:active{background:rgba(255,255,255,.14)}
+  .brand{gap:6px}
+  .brand-logo{display:none}
+  .brand-text h1{font-size:14px;letter-spacing:0}
+  .brand-text .subtitle{font-size:9px;max-width:100%;margin-top:1px}
+  .version-badge{padding:5px 7px;font-size:9px}
+  .version-badge .v-dot{width:5px;height:5px}
+  .sidebar{height:100%;padding-bottom:env(safe-area-inset-bottom)}
+  .sidebar-header{padding:8px 12px 5px}
+  .tab-group{padding-left:10px;padding-right:10px}
+  .function-tabs .day-tab{min-height:32px;display:flex;align-items:center;justify-content:center;padding:5px 4px}
+  .itinerary-tabs .day-tab{min-height:38px}
+  .day-filter-bar{padding:7px 10px 9px}
+  .filter-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .filter-row-label{width:auto;grid-column:1/-1;font-size:9px}
+  .filter-check{min-height:32px;padding:5px 7px;border:1px solid #e2e2e7;border-radius:8px;background:#fff;font-size:10px;line-height:1.2}
+  .filter-check input{width:15px;height:15px;flex-shrink:0}
+  .itinerary-list{padding:9px 10px 18px}
+  .ai-recommended{margin-left:25px}
+  .ai-recommended::before{left:-25px;width:21px}
+  .meal-slot-head{flex-wrap:wrap}
+  .meal-slot-main{min-width:calc(100% - 34px)}
+  .meal-slot-tag{margin-left:33px}
+  .daily-extra-title{align-items:flex-start;gap:6px}
+  .daily-extra-title span{white-space:nowrap}
+  .map-legend{right:8px;bottom:max(12px,env(safe-area-inset-bottom));max-width:165px;padding:7px 9px}
+  .map-legend.collapsed{width:auto;min-width:66px}
+  .leaflet-control-zoom a{width:36px!important;height:36px!important;line-height:36px!important}
+  .marker-label{font-size:9px!important;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+  .detail-panel{max-height:86dvh;border-radius:18px 18px 0 0}
+  .detail-header{padding:10px 12px 8px}
+  .detail-title{font-size:15px}
+  .detail-sub{font-size:10px;overflow-wrap:anywhere}
+  .detail-ico-btn{width:40px;height:40px;border-radius:10px;font-size:17px}
+  .detail-content{padding:10px 12px calc(18px + env(safe-area-inset-bottom))}
+  .detail-info-grid{grid-template-columns:1fr}
+  .detail-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .changelog-overlay,.summary-modal-overlay{align-items:stretch}
+  .changelog-modal,.summary-modal{width:100%;max-width:none;height:100dvh;max-height:none;border-radius:0;padding-top:env(safe-area-inset-top)}
+  .changelog-header,.summary-modal-header{padding:10px 12px}
+  .changelog-close,.summary-modal-close{width:40px;height:40px;font-size:22px}
+  .changelog-body{padding:12px}
+  .summary-tabs{padding:7px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .summary-tab-btn{flex:0 0 auto;min-height:34px}
+  .summary-stats,.summary-filter,.summary-total{padding-left:10px;padding-right:10px;gap:8px}
+  .summary-modal-body,.car-table-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  .summary-table{min-width:1050px}
+  .summary-transport,.museum-pass{padding:10px}
+  .transport-editor{grid-template-columns:1fr 1fr}
+  .car-compare-page{padding:10px}
+  .car-platform-grid{grid-template-columns:1fr}
+  .car-price-table{min-width:850px}
+  .events-filter{padding:8px 10px;flex-wrap:wrap}
+  .events-filter select{min-height:34px;max-width:100%}
+  .event-item{margin:6px 8px;padding:9px 10px}
+}
+
+@media(max-width:360px){
+  .brand-text .subtitle{display:none}
+  .filter-row{gap:4px}
+  .filter-check{font-size:9px;padding:4px 5px}
+  .transport-editor{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -328,7 +481,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.8.0</span>
+    <span class="v-dot"></span><span>v1.9.16</span>
   </div>
 </header>
 
@@ -356,14 +509,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 </div>
 <div class="day-filter-bar" id="dayFilterBar">
   <div class="filter-row">
-    <span class="filter-row-label">内容来源</span>
+    <span class="filter-row-label">显示内容</span>
     <label class="filter-check"><input type="checkbox" data-filter-source="planned" checked>已制定</label>
-    <label class="filter-check recommend"><input type="checkbox" data-filter-source="recommended" checked>AI 推荐</label>
-  </div>
-  <div class="filter-row">
-    <span class="filter-row-label">主题</span>
-    <label class="filter-check"><input type="checkbox" data-filter-theme="attraction" checked>景点 / 活动</label>
-    <label class="filter-check"><input type="checkbox" data-filter-theme="restaurant" checked>餐厅</label>
+    <label class="filter-check recommend"><input type="checkbox" data-filter-ai="attraction" checked>AI 推荐景点</label>
+    <label class="filter-check recommend"><input type="checkbox" data-filter-ai="activity" checked>AI 推荐活动</label>
+    <label class="filter-check recommend"><input type="checkbox" data-filter-ai="restaurant" checked>AI 推荐餐厅</label>
   </div>
 </div>
 <div class="itinerary-list" id="itineraryList"></div>
@@ -390,10 +540,145 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.8.0</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.16</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.16</span><span class="version-date">2026-07-31</span>
+<div class="version-title">📱 移动端布局优化</div>
+<ul class="version-items">
+<li>顶部、导航、筛选栏和触控按钮适配手机宽度，避免文字与控件溢出</li>
+<li>地图图例在手机端默认收起，详情、汇总和更新日志改为更适合小屏的弹层</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.15</span><span class="version-date">2026-07-30</span>
+<div class="version-title">🎟️ 修正免费项目的通票表述</div>
+<ul class="version-items">
+<li>免费开放项目改为“免费·无需通票”，不再错误显示“不含通票”</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.14</span><span class="version-date">2026-07-30</span>
+<div class="version-title">🎪 独立活动筛选</div>
+<ul class="version-items">
+<li>“显示内容”新增 AI 推荐活动开关，可独立控制左侧活动和地图活动标记</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.13</span><span class="version-date">2026-07-30</span>
+<div class="version-title">🍽️ 统一餐厅来源与地图标识</div>
+<ul class="version-items">
+<li>左侧与地图统一使用同一套餐厅数据，明确区分已订、表内候选和 AI 推荐</li>
+<li>餐厅统一显示餐具图标及来源角标；AI 景点改用地标图标，活动保留马戏团图标</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.12</span><span class="version-date">2026-07-30</span>
+<div class="version-title">✈️ 修正抵达日用餐安排</div>
+<ul class="version-items">
+<li>第1天早晨仍在航班上，删除早餐推荐，并在时间线开头标明抵达巴黎机场</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.11</span><span class="version-date">2026-07-30</span>
+<div class="version-title">📅 精简日历按钮</div>
+<ul class="version-items">
+<li>按钮仅保留“第X天”和日期，星期统一由日历表头展示，减少重复和溢出</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.10</span><span class="version-date">2026-07-29</span>
+<div class="version-title">🗓️ 周历式日程与完整日期标签</div>
+<ul class="version-items">
+<li>12天行程改为周一至周日的日历式网格，并按真实星期位置排列</li>
+<li>日期标签统一显示“第X天 · 周X”和“X月X日”，小屏幕同步适配</li>
+<li>行程汇总表新增“通票”列，区分可用、部分覆盖、不含和不适用</li>
+<li>每日推荐改用“AI餐”和“AI景”标签，详情日期删除重复星期</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.8</span><span class="version-date">2026-07-29</span>
+<div class="version-title">🚗 同路线实时租车价 + 欧元人民币统一换算</div>
+<ul class="version-items">
+<li>用浏览器按9月30日戴高乐机场取车、10月6日日内瓦机场法国区还车重新查询</li>
+<li>加入 Enterprise 5款自动挡 SUV 的6天含税费总价，并统一折算为欧元和人民币</li>
+<li>Klook、Booking 与 SIXT 单列实际查询状态，不再拿其他城市均价冒充本次路线报价</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.7</span><span class="version-date">2026-07-29</span>
+<div class="version-title">🍴 原表优先 + 具体餐厅推荐</div>
+<ul class="version-items">
+<li>按最新版 Excel 的 H 列重新归类候选餐厅和日期，已预订餐次仍只显示已订餐厅</li>
+<li>原表无餐厅时直接显示具体店名，并按10以下、10–20、20以上三个价格档推荐</li>
+<li>每个未预订餐次增加“搜索附近更多餐厅”按钮</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.6</span><span class="version-date">2026-07-29</span>
+<div class="version-title">◇ 候选餐厅分类优化</div>
+<ul class="version-items">
+<li>候选来源统一简化为“候选餐厅”，地图改用菱形符号标记</li>
+<li>候选餐厅继续使用紫色，与已定餐饮和 AI 推荐清楚区分</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.5</span><span class="version-date">2026-07-29</span>
+<div class="version-title">🍽️ 已预订餐次与餐饮预算</div>
+<ul class="version-items">
+<li>已完成预订的餐次只显示已订餐厅，不再混入 AI 餐厅备选</li>
+<li>整体预算加入已定餐饮费用，并可展开查看逐日、逐餐价格与预约状态</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.4</span><span class="version-date">2026-07-29</span>
+<div class="version-title">🚙 里昂还车 vs 日内瓦跨境还车</div>
+<ul class="version-items">
+<li>区分里昂法国境内还车、日内瓦机场法国区还车和日内瓦机场瑞士区跨国还车</li>
+<li>增加异地还车、跨境许可、瑞士高速票和里昂—日内瓦火车费用的可编辑预算</li>
+<li>新增四套方案对比，并说明里昂换第二辆车通常不如直接乘火车或法国区还车</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.3</span><span class="version-date">2026-07-29</span>
+<div class="version-title">🍽️ 新版餐厅候选同步到地图</div>
+<ul class="version-items">
+<li>补齐新版 Excel 中巴黎、凡尔赛与塞纳河晚餐游船候选，并按实际行程日期重新归类</li>
+<li>餐厅地图新增“候选餐厅”紫色标记，与已定餐饮和 AI 推荐分开显示</li>
+<li>详情卡补充平均人均、价格区间、推荐菜、预约要求、官网及与当天路线的关系</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.2</span><span class="version-date">2026-07-29</span>
+<div class="version-title">🗓️ 新版巴黎行程 + 预约状态校正</div>
+<ul class="version-items">
+<li>按《法国深度13天自由行 (2)》重排巴黎前4天：奥赛移至9月25日、蒙马特经典线移至9月26日、卢浮宫与凯旋门移至9月28日</li>
+<li>卢浮宫9月28日时段改为“现已开放，立即预约”</li>
+<li>凯旋门改为普通个人无需预约；提前购票仅用于减少现场排队，7人以上团队才需提前预约</li>
+<li>补充10月5日 Nico、Bonnie 下午返程提示</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.1</span><span class="version-date">2026-07-26</span>
+<div class="version-title">🚙 SUV 精确价格表与 6 天预算</div>
+<ul class="version-items">
+<li>按9月30日巴黎取车、10月6日日内瓦机场法国区还车重做比价条件</li>
+<li>增加车型、原币公开价、欧元换算、6天基础租金、最低行车预算和预订入口</li>
+<li>单列油费、高速费、瑞士年票及只能在结算页确认的附加费用</li>
+</ul>
+</div>
+<div class="version-entry">
+<span class="version-tag">v1.9.0</span><span class="version-date">2026-07-26</span>
+<div class="version-title">🍽️ 多价位餐厅 + 分页汇总 + SUV 比价</div>
+<ul class="version-items">
+<li>早餐、午餐、晚餐限定合理用餐时段，每餐提供三个不同价位或菜系的选择</li>
+<li>汇总拆分为行程表、整体预算和5人SUV租车比价，并明确区分原定行程与AI附加项</li>
+<li>自驾预算改为可编辑参数，新增紧凑型、中大型和大空间SUV预设</li>
+<li>增加 Booking、Klook、Avis、SIXT、Enterprise 与 Europcar 查询入口</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.8.0</span><span class="version-date">2026-07-26</span>
 <div class="version-title">🦁 新版里昂行程 + 每日内容筛选</div>
@@ -519,12 +804,18 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <h2 id="summaryTitle">📍 全部景点汇总</h2>
 <button class="summary-modal-close" id="summaryCloseBtn" aria-label="关闭景点汇总">✕</button>
 </div>
+<div class="summary-tabs">
+  <button class="summary-tab-btn active" data-summary-tab="itinerary" onclick="switchSummaryTab('itinerary')">🗓️ 行程表</button>
+  <button class="summary-tab-btn" data-summary-tab="budget" onclick="switchSummaryTab('budget')">💰 整体预算</button>
+  <button class="summary-tab-btn" data-summary-tab="car" onclick="switchSummaryTab('car')">🚙 SUV 租车比价</button>
+</div>
 <div class="summary-stats" id="summaryStats"></div>
 <div class="museum-pass" id="museumPassSummary"></div>
 <div class="summary-filter" id="summaryFilter"></div>
 <div class="summary-transport" id="summaryTransport"></div>
 <div class="summary-modal-body" id="summaryBody"></div>
 <div class="summary-total" id="summaryTotal"></div>
+<div class="car-compare-page" id="summaryCar"></div>
 </div>
 </div>
 
@@ -536,21 +827,23 @@ const DAY_COLORS = ['#007AFF','#34C759','#FF9500','#FF3B30','#AF52DE','#5856D6',
 
 const POI_DATA = {
   "d1_1":{name:"巴黎航空航天博物馆",nameEn:"Musée de l'Air et de l'Espace",coords:[48.9472,2.4344],day:1,desc:"欧洲最大、世界最古老的航空博物馆之一，坐落在勒布尔热机场。",why:"镇馆之宝包括协和式超音速客机、波音747、二战与冷战战机、阿丽亚娜火箭与卫星实物。Paris Museum Pass 含常设展、临展以及波音747、Dakota和两架协和客机内部参观。",reservation:"持Paris Museum Pass无需预约",price:"17€；4日博物馆通票已包含",reserveUrl:"https://www.museeairespace.fr",advanceBooking:"无需预约",time:"09:00",category:"博物馆",closed:"周一闭馆",website:"https://www.museeairespace.fr",reserveChannels:"Paris Museum Pass 直接入场；天文馆5€、控制塔4€、儿童Planète Pilote 5€需另付费"},
-  "d1_2":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:1,desc:"世界四大博物馆之首，坐落于塞纳河畔。",why:"藏品涵盖从古埃及到19世纪的40万件艺术品，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。建议周五夜场参观至21:45，人少体验更佳。",reservation:"持Paris Museum Pass仍必须预约免费时段",price:"32€（非欧洲经济区游客）；4日博物馆通票已包含",reserveUrl:"https://www.ticketlouvre.fr",advanceBooking:"建议提前2-4周预约，旺季需更早",time:"17:00",category:"博物馆",closed:"周二闭馆",website:"https://www.louvre.fr",reserveChannels:"官网 ticket.louvre.fr 选择 Paris Museum Pass 持有者免费时段"},
+  "d1_2":{name:"奥赛博物馆",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:1,desc:"巴黎19世纪艺术圣殿，由奥赛火车站改建而成。",why:"收藏全世界最丰富的印象派和后印象派作品，必看梵高、莫奈、马奈、米勒作品与顶楼巨型大钟。",reservation:"持Paris Museum Pass仍须预约时段",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"现在查看官网可预约日期",time:"15:30",category:"博物馆",closed:"周一闭馆",website:"https://www.musee-orsay.fr",reserveChannels:"官网选择 Paris Museum Pass 免费预约时段"},
   "d1_3":{name:"Le Cafe Marly (晚餐)",nameEn:"Le Cafe Marly",coords:[48.8610,2.3370],day:1,desc:"位于卢浮宫黎塞留通道内的法式餐厅，正对卢浮宫金字塔。",why:"在卢浮宫享用晚餐后，出门就是玻璃金字塔夜景，位置绝佳，氛围满分。",reservation:"已通过Google预约，3位21:30",price:"中高档",reserveUrl:"",advanceBooking:"已预约",time:"21:30",category:"餐饮",type:"餐饮"},
-  "d2_1":{name:"奥赛博物馆",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:2,desc:"巴黎19世纪艺术圣殿，由奥赛火车站改建而成。",why:"收藏全世界最丰富的印象派和后印象派作品；Paris Museum Pass 已包含常规门票。",reservation:"持Paris Museum Pass仍须预约时段",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"建议提前2-3周",time:"09:00",category:"博物馆",closed:"周一闭馆",website:"https://www.musee-orsay.fr",reserveChannels:"官网选择 Paris Museum Pass 免费预约时段"},
-  "d2_2":{name:"杜乐丽花园",nameEn:"Jardin des Tuileries",coords:[48.8637,2.3260],day:2,desc:"巴黎最经典的法式花园，连接卢浮宫和协和广场。",why:"漫步在雕塑点缀的法式花园中，水池边的绿色椅子是经典法式生活场景。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:00",category:"公园"},
-  "d2_3":{name:"橘园美术馆",nameEn:"Musée de l'Orangerie",coords:[48.8636,2.3220],day:2,desc:"位于杜乐丽花园西端，以莫奈《睡莲》闻名。",why:"核心一层两大椭圆形展厅，展示8幅莫奈巨幅《睡莲》全景壁画；Paris Museum Pass 已包含。",reservation:"持Paris Museum Pass仍须预约时段",price:"网购12.5€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orangerie.fr",advanceBooking:"建议提前2周",time:"13:00",category:"博物馆",closed:"周二闭馆"},
-  "d2_4":{name:"香榭丽舍大街",nameEn:"Avenue des Champs-Élysées",coords:[48.8698,2.3075],day:2,desc:"巴黎最著名的大道，全长1.8km。",why:"东段林荫绿地适合散步，西段汇集奢侈品总店、咖啡馆、剧院，是感受巴黎繁华的必到之处。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"14:30",category:"地标"},
-  "d2_5":{name:"凯旋门",nameEn:"Arc de Triomphe",coords:[48.8738,2.2950],day:2,desc:"拿破仑为纪念奥斯特里茨战役胜利而建。",why:"可以登顶俯瞰香榭丽舍大街和巴黎全景12条放射状大道。",reservation:"持Paris Museum Pass直接入场",price:"22€；4日博物馆通票已包含",reserveUrl:"https://www.paris-arc-de-triomphe.fr",advanceBooking:"通票无需预约",time:"16:00",category:"地标"},
+  "d2_1":{name:"蒙马特高地",nameEn:"Montmartre",coords:[48.8867,2.3431],day:2,desc:"巴黎北部艺术区，含Rue Lamarck、葡萄园、圣心堂、蒙马特博物馆和画家广场。",why:"新版行程安排周六上午完整步行约2.5km，串联铁塔隐藏机位、巴黎市区葡萄园、圣心堂和雷诺阿花园。",reservation:"圣心堂无需预约；博物馆可提前购票",price:"圣心堂免费，登顶约8€，博物馆16€",reserveUrl:"https://museedemontmartre.fr",advanceBooking:"教堂无需预约；博物馆可提前购票",time:"09:00",category:"街区"},
+  "d2_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:2,desc:"拿破仑三世时期的新巴洛克式歌剧院，可参观大楼梯、夏加尔穹顶和大休息厅。",why:"新版行程放在蒙马特之后，随后向东前往蓬皮杜、圣母院与拉丁区。",reservation:"白天参观建议预约；演出必须购票",price:"自助参观约25€",reserveUrl:"https://www.operadeparis.fr/visits/palais-garnier",advanceBooking:"参观票开放后尽早购买",time:"13:00",category:"剧院"},
+  "d2_3":{name:"蓬皮杜艺术中心（外观）",nameEn:"Centre Pompidou",coords:[48.8606,2.3522],day:2,desc:"欧洲重要现代艺术中心，主馆目前因全面改造关闭。",why:"本次只能参观彩色管道建筑外观，或查看蓬皮杜在巴黎其他场地的临时项目。",reservation:"主馆闭馆，无需预约",price:"外观免费",reserveUrl:"https://www.centrepompidou.fr",advanceBooking:"无需",time:"14:30",category:"建筑地标",closed:"主馆改造关闭至预计2030年"},
+  "d2_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:2,desc:"修复后重新开放的哥特式大教堂。",why:"位于蓬皮杜、莎士比亚书店和先贤祠之间，适合顺路衔接。",reservation:"免费入内可预约时段；也可现场排队",price:"教堂免费，珍宝馆另付费",reserveUrl:"https://www.notredamedeparis.fr",advanceBooking:"官网开放时尽早选择免费时段",time:"15:30",category:"教堂"},
+  "d2_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:2,desc:"塞纳河畔传奇英文书店。",why:"从圣母院步行即达，二楼可看圣母院景观。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
+  "d2_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:2,desc:"伏尔泰、卢梭、雨果、居里夫人等法国伟人安葬地。",why:"新版行程安排在拉丁区步行线末段，注意18:00前入场。",reservation:"个人无需预约；可提前购票",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.paris-pantheon.fr",advanceBooking:"无需预约",time:"17:00",category:"纪念馆"},
+  "d2_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:2,desc:"从战神广场近距离观看埃菲尔铁塔。",why:"晚上作为巴黎市区行程收尾，整点灯光闪烁约5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:30",category:"地标"},
   "d3_1":{name:"凡尔赛宫",nameEn:"Château de Versailles",coords:[48.8049,2.1204],day:3,desc:"路易十四'太阳王'打造的欧洲顶级皇家宫殿，世界文化遗产。",why:"Paris Museum Pass 覆盖主宫殿、大小特里亚农宫和王后农庄；9月27日为周日音乐喷泉日，花园不含在通票内，需另买15€花园票。",reservation:"持通票仍须预约宫殿时段",price:"单买高峰期Passport 35€；持4日通票另付花园15€",reserveUrl:"https://www.chateauversailles.fr",advanceBooking:"建议提前2-4周，旺季至少一个月",time:"09:00",category:"宫殿",transport:"RER C线至 Versailles Château Rive Gauche，车程30-40min，单程约4€",closed:"周一闭馆",website:"https://www.chateauversailles.fr",reserveChannels:"官网选择 Paris Museum Pass/免费票预约宫殿时段；另购 Musical Fountains 花园票15€"},
   "d3_2":{name:"塞纳河游船晚餐",nameEn:"Seine River Cruise Dinner",coords:[48.8589,2.3468],day:3,desc:"乘游船沿塞纳河航行，一边享用法式晚餐一边欣赏两岸古迹。",why:"夜游塞纳河，经过巴黎圣母院、卢浮宫、埃菲尔铁塔等标志性建筑。",reservation:"需要预约",price:"70-130€/人（依套餐）",reserveUrl:"",advanceBooking:"建议提前2-3周",time:"18:00",category:"体验",type:"体验"},
-  "d4_1":{name:"蒙马特高地",nameEn:"Montmartre",coords:[48.8867,2.3431],day:4,desc:"巴黎北部艺术区，含圣心堂、画家广场、葡萄园等。",why:"Rue Lamarck是铁塔隐藏机位→Clos Montmartre葡萄园→登顶圣心堂360°俯瞰全城→蒙马特博物馆（雷诺阿故居）→Place du Tertre看街头画家。",reservation:"教堂免费，穹顶登顶约8€，博物馆16€",price:"圣心堂免费，登顶8€，博物馆16€",reserveUrl:"",advanceBooking:"无需预约（教堂），博物馆可提前购票",time:"09:00",category:"街区"},
-  "d4_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:4,desc:"拿破仑三世下令建造的新巴洛克式歌剧院。9月28日19:30演出芭蕾《曼侬的故事》，现场管弦乐演奏马斯内作品，全长约2小时45分。",why:"当天是《曼侬的故事》开幕场，官方目前显示售罄，可持续关注官方转售平台。白天自助参观可看大楼梯、夏加尔穹顶和大休息厅，但不保证开放观众厅。",reservation:"演出必须购票；白天参观建议预约",price:"自助参观25€（非欧洲经济区成人）；演出约71–175€",reserveUrl:"https://www.operadeparis.fr/en/season-26-27/ballet/lhistoire-de-manon",advanceBooking:"演出票立即关注官方转售；参观票提前30天开放",time:"13:00",category:"剧院",reserveChannels:"演出仅从巴黎歌剧院官网或官方转售平台购买；Paris Museum Pass 不包含歌剧院"},
-  "d4_3":{name:"蓬皮杜艺术中心（外观）",nameEn:"Centre Pompidou",coords:[48.8606,2.3522],day:4,desc:"欧洲最大的现代艺术中心之一，目前主馆因全面改造关闭。" ,why:"主馆已进入长期闭馆改造，预计2030年重新开放；本次只能参观建筑外观或改看蓬皮杜在巴黎其他场地的临时项目。",reservation:"主馆闭馆，无需购票",price:"外观免费",reserveUrl:"https://www.centrepompidou.fr",advanceBooking:"无需",time:"14:30",category:"建筑地标",closed:"主馆改造关闭至预计2030年",website:"https://www.centrepompidou.fr"},
-  "d4_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:4,desc:"哥特式建筑的巅峰之作。",why:"修复后重新开放，内部修复效果令人惊叹。免费参观但需预约。",reservation:"教堂免费但需预约，珍宝馆付费",price:"教堂免费（需预约），珍宝馆另付费",reserveUrl:"https://www.notredamedeparis.fr",advanceBooking:"免费入内需提前预约时段",time:"15:30",category:"教堂",website:"https://www.notredamedeparis.fr",reserveChannels:"官方App（Notre-Dame de Paris）或官网在线预约；免费入内需预约时段，珍宝馆现场购票"},
-  "d4_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:4,desc:"塞纳河畔传奇英文书店。",why:"海明威等'迷惘一代'聚集地，二楼可看到圣母院，店里还有猫。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
-  "d4_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:4,desc:"法国伟大灵魂的安息之地。",why:"伏尔泰、卢梭、雨果、居里夫人长眠地；Paris Museum Pass 已包含常规参观。",reservation:"持通票无需预约",price:"16€；4日博物馆通票已包含（全景平台另加3.5€）",reserveUrl:"https://www.paris-pantheon.fr",advanceBooking:"无需预约",time:"17:00",category:"纪念馆"},
+  "d4_1":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:4,desc:"世界重要博物馆，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。",why:"新版 Excel 改为9月28日上午参观，而不是抵达当天夜场。",reservation:"持Paris Museum Pass仍须预约免费时段",price:"32€（非欧洲经济区游客）；4日博物馆通票已包含",reserveUrl:"https://ticket.louvre.fr/billetterie/3313",advanceBooking:"9月28日时段现已开放，立即预约",time:"09:00",category:"博物馆",closed:"周二闭馆",website:"https://www.louvre.fr",reserveChannels:"官网 ticket.louvre.fr 选择9月28日及 Paris Museum Pass 持有者免费时段"},
+  "d4_2":{name:"杜乐丽花园",nameEn:"Jardin des Tuileries",coords:[48.8637,2.3260],day:4,desc:"连接卢浮宫和协和广场的法式花园。",why:"卢浮宫结束后向西步行前往橘园和香榭丽舍。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:30",category:"公园"},
+  "d4_3":{name:"大皇宫 / 小皇宫（可选）",nameEn:"Grand Palais / Petit Palais",coords:[48.8661,2.3130],day:4,desc:"香榭丽舍附近的玻璃穹顶展馆和美术馆。",why:"新版 Excel 明确列为可选项，只有当天进度允许时加入。",reservation:"视具体展览决定",price:"外观免费；展览另购票",reserveUrl:"https://www.grandpalais.fr",advanceBooking:"如决定看特展再预约",time:"13:30",category:"可选景点",type:"行程"},
+  "d4_4":{name:"橘园美术馆",nameEn:"Musée de l'Orangerie",coords:[48.8636,2.3220],day:4,desc:"以莫奈8幅巨型《睡莲》全景壁画闻名。",why:"新版行程安排约1小时参观，位于杜乐丽花园西端。",reservation:"持Paris Museum Pass仍须预约时段",price:"网购12.5€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orangerie.fr",advanceBooking:"官网开放后尽早预约",time:"14:30",category:"博物馆",closed:"周二闭馆"},
+  "d4_5":{name:"香榭丽舍大街",nameEn:"Avenue des Champs-Élysées",coords:[48.8698,2.3075],day:4,desc:"从协和广场通往凯旋门的巴黎中轴线大道。",why:"橘园结束后一路向西前往凯旋门。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"16:00",category:"地标"},
+  "d4_6":{name:"凯旋门",nameEn:"Arc de Triomphe",coords:[48.8738,2.2950],day:4,desc:"可登顶俯瞰巴黎12条放射状大道。",why:"新版行程把凯旋门放在9月28日巴黎行程末段。",reservation:"普通个人无需预约；可提前购票",price:"9月28日票价22€；4日博物馆通票已包含",reserveUrl:"https://tickets.monuments-nationaux.fr/en-GB/families?site=2032863779450400197",advanceBooking:"无需预约；为减少现场排队可提前购票",time:"17:30",category:"地标",reserveChannels:"官网仅要求7人以上团队至少提前4周预约；个人和通票持有人无需预约时段"},
   "d4_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:4,desc:"从大草坪仰望埃菲尔铁塔的最佳位置。",why:"傍晚在草坪上看铁塔灯光秀，每小时整点闪烁5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:00",category:"地标"},
   "d4_8":{name:"法国国民议会（波旁宫）",nameEn:"Assemblée nationale · Palais Bourbon",coords:[48.8600,2.3188],day:4,desc:"法国国民议会（下议院）所在地。现已开放个人免费预约，可选导览或语音导览，参观约1小时30分。",why:"不在开会时可参观庆典画廊、会议厅、图书馆等；开会时可能旁听辩论。一次最多登记5人，只有收到确认邮件才代表获准入内。",reservation:"必须提前免费预约并等待确认",price:"免费",reserveUrl:"https://www.assemblee-nationale.fr/dyn/visite/visites-individuelles",advanceBooking:"现在开始关注9月28日时段",time:"—",category:"见学/机构",type:"见学",transport:"按电子票注明入口准时抵达；14岁以上携带有效护照原件",website:"https://www.assemblee-nationale.fr",reserveChannels:"在线预约需填写每位访客姓名、出生日期与出生地；参观可能因议程或安保临时调整",studyTour:true},
   "d4_9":{name:"法国参议院（卢森堡宫）",nameEn:"Sénat · Palais du Luxembourg",coords:[48.8555,2.3370],day:4,desc:"法国参议院（上议院）所在地，位于卢森堡花园内。普通个人周六参观目前暂停，常规入内通常需参议员邀请或担保团体。",why:"你们到访期间建议参观外观和免费开放的卢森堡花园，不应把进入宫殿列为确定项目。2026年欧洲遗产日开放在9月19–20日，早于抵达日期。",reservation:"普通个人不能直接预约；花园无需预约",price:"宫殿常规不对个人售票；花园免费",reserveUrl:"https://www.senat.fr/le-senat-et-vous/visiter-le-senat.html",advanceBooking:"如必须入内，需联系参议员争取邀请",time:"—",category:"见学/机构",type:"见学",transport:"地铁10号线 Odéon / RER B Luxembourg 站",closed:"个人周六参观暂停；团体依议事安排",website:"https://www.senat.fr",reserveChannels:"参议员担保团体通常安排周一、周五或周六；欧洲遗产日9月19–20日无需预约但不在本次行程内",studyTour:true},
@@ -576,17 +869,17 @@ const POI_DATA = {
 };
 
 const ITINERARY = [
-  {day:1,date:"9月25日 (五)",title:"抵达巴黎",summary:"上午航空博物馆 → 民宿入住 → 傍晚卢浮宫夜场 → Cafe Marly晚餐",stops:["d1_1","d1_2","d1_3"]},
-  {day:2,date:"9月26日 (六)",title:"巴黎艺术日",summary:"奥赛博物馆 → 杜乐丽花园 → 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d2_1","d2_2","d2_3","d2_4","d2_5"]},
+  {day:1,date:"9月25日 (五)",title:"抵达巴黎",summary:"航班抵达巴黎机场 → 航空博物馆 → 民宿入住 → 下午奥赛博物馆 → Cafe Marly晚餐",stops:["d1_1","d1_2","d1_3"]},
+  {day:2,date:"9月26日 (六)",title:"蒙马特与巴黎经典线",summary:"蒙马特高地 → 巴黎歌剧院 → 蓬皮杜外观 → 圣母院 → 莎士比亚书店 → 先贤祠 → 战神广场夜景",stops:["d2_1","d2_2","d2_3","d2_4","d2_5","d2_6","d2_7"]},
   {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
-  {day:4,date:"9月28日 (一)",title:"巴黎全景日",summary:"蒙马特高地 → 歌剧院 → 蓬皮杜 → 圣母院 → 莎翁书店 → 先贤祠 → 战神广场 → 国民议会 → 参议院",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6","d4_7","d4_8","d4_9"]},
+  {day:4,date:"9月28日 (一)",title:"卢浮宫与香榭丽舍",summary:"上午卢浮宫 → 杜乐丽花园 → 大/小皇宫（可选）→ 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6"]},
   {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
   {day:6,date:"9月30日 (三)",title:"波尔多红酒日",summary:"葡萄酒城(上午) → 酒庄品酒(下午)",stops:["d6_1","d6_2"]},
   {day:7,date:"10月1日 (四)",title:"图卢兹航空日",summary:"波尔多→图卢兹(2h40) → 空客工厂 → 协和博物馆",stops:["d7_1","d7_2","d7_3"]},
   {day:8,date:"10月2日 (五)",title:"南法古城→里昂",summary:"图卢兹→卡尔卡松城堡(2h) → 尼姆竞技场(2h10) → 嘉德水道桥(35min) → 里昂(2h40，约20:00抵达)",stops:["d8_1","d8_2","d8_3","d8_4"]},
   {day:9,date:"10月3日 (六)",title:"里昂深度日",summary:"里昂整天自由安排，不再前往尼姆或阿维尼翁",stops:["d9_1"]},
   {day:10,date:"10月4日 (日)",title:"里昂深度→日内瓦",summary:"里昂老城与Traboule → 博若莱酒区/丝绸酒窖品酒 → 晚上前往日内瓦",stops:["d10_1","d10_2","d10_3"]},
-  {day:11,date:"10月5日 (一)",title:"日内瓦文化日",summary:"百达翡丽博物馆 → 联合国 → CERN粒子加速器",stops:["d11_1","d11_2","d11_3"]},
+  {day:11,date:"10月5日 (一)",title:"日内瓦文化日",summary:"百达翡丽博物馆 → 联合国 → CERN粒子加速器；Nico、Bonnie 下午返程",stops:["d11_1","d11_2","d11_3"]},
   {day:12,date:"10月6日 (二)",title:"日内瓦返程",summary:"日内瓦湖晨间漫步 → 15:55返程",stops:["d12_1"]}
 ];
 
@@ -598,16 +891,21 @@ const ITINERARY = [
 // ============================================================
 const POI_EXTRA = {
   "d1_1":{hours:"周二–周日 10:00–18:00（周一闭馆）",duration:"2–3 小时",address:"Aéroport de Paris-Le Bourget, 93350 Le Bourget",tips:"镇馆之宝协和号/A380需另购登机牌；建议预留时间登机参观。"},
-  "d1_2":{hours:"周三、周五 至 21:45；其余日 9:00–18:00（周二闭馆）",duration:"半天（3–4 小时）",address:"Rue de Rivoli, 75001 Paris",tips:"周五夜场人少体验佳；可从 Pyramid 或 Carrousel 入口避开主队。"},
-  "d2_1":{hours:"周二 9:30–18:00；周四 至 21:45（周一闭馆）",duration:"2–3 小时",address:"1 Rue de la Légion d'Honneur, 75007 Paris",tips:"顶楼大钟与印象派厅必看；周四夜场较空。"},
-  "d2_2":{hours:"每日 7:00–21:00（夏季至 23:00）",duration:"0.5–1 小时",address:"Jardin des Tuileries, 75001 Paris",tips:"免费；水池边绿椅是经典法式休闲。"},
-  "d2_3":{hours:"周三 9:00–21:00；其余日 9:00–18:00（周二闭馆）",duration:"1–1.5 小时",address:"Jardin des Tuileries, 75001 Paris",tips:"莫奈《睡莲》8 幅在椭圆形厅；建议早到避人流。"},
-  "d2_5":{hours:"屋顶 10:00–23:00（旺季）",duration:"1–1.5 小时",address:"Place Charles de Gaulle, 75008 Paris",tips:"博物馆通票免排队；登顶看 12 条放射状大道。"},
+  "d1_2":{hours:"周二、周三、周五至周日 9:30–18:00；周四至21:45（周一闭馆）",duration:"2–3 小时",address:"1 Rue de la Légion d'Honneur, 75007 Paris",tips:"顶楼大钟与印象派厅必看；航空博物馆后需预留跨城交通时间。"},
+  "d2_1":{hours:"圣心堂 6:00–22:30；蒙马特博物馆约10:00–19:00",duration:"3.5–4 小时",address:"Montmartre, 75018 Paris",tips:"按 Rue Lamarck—葡萄园—圣心堂—蒙马特博物馆—画家广场顺序步行。"},
+  "d2_2":{hours:"自助参观时段随演出安排变化",duration:"1–1.5 小时",address:"Place de l'Opéra, 75009 Paris",tips:"先核对当天观众厅是否开放；参观票不包含演出。"},
+  "d2_3":{hours:"主馆改造关闭",duration:"外观约20–30分钟",address:"Place Georges Pompidou, 75004 Paris",tips:"不要为主馆购买旧票；只看外观或临时场地项目。"},
+  "d2_4":{hours:"教堂每日开放；免费时段以官网为准",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"预约不是唯一入内方式，但预约免费时段可减少现场等待。"},
+  "d2_5":{hours:"通常每日开放，可能排队",duration:"约30分钟",address:"37 Rue de la Bûcherie, 75005 Paris",tips:"店内通常禁止拍照，门口高峰时段可能排队。"},
+  "d2_6":{hours:"通常10:00–18:00，最后入场提前",duration:"1–1.5 小时",address:"Place du Panthéon, 75005 Paris",tips:"新版表要求注意18:00闭馆，前序景点不要拖延。"},
+  "d2_7":{hours:"广场全天开放",duration:"约1小时",address:"Champ de Mars, 75007 Paris",tips:"等整点灯光闪烁约5分钟；夜间注意随身物品。"},
   "d3_1":{hours:"周二–周日 9:00–18:30（周一闭馆）",duration:"全天（宫殿+花园 5–6 小时）",address:"Place d'Armes, 78000 Versailles",tips:"建议买 Passport 通票含花园；花园音乐喷泉日需另购票；RER C 直达。"},
-  "d4_1":{hours:"圣心堂 6:00–22:30；登顶 8:30–20:00",duration:"2–3 小时",address:"Montmartre, 75018 Paris",tips:"Rue Lamarck 是拍铁塔的隐藏机位；山顶看日落极佳，注意扒手。"},
-  "d4_2":{hours:"导览团 10:00 起（演出日不同）",duration:"1–1.5 小时",address:"Place de l'Opéra, 75009 Paris",tips:"参观需购票；正厅与夏加尔穹顶是精华。"},
-  "d4_3":{hours:"每日 11:00–21:00（周二闭馆）",duration:"2–3 小时",address:"Place Georges Pompidou, 75004 Paris",tips:"顶层露台俯瞰巴黎全景；彩色管道外立面本身就是展品。"},
-  "d4_4":{hours:"教堂 7:45–19:00（参观 9:30 起）；免费入内需预约时段",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"修复后重新开放，免费但必须官网/App 预约时段；珍宝馆可现场购票。"},
+  "d4_1":{hours:"周一 9:00–18:00；周二闭馆",duration:"3–4 小时",address:"Rue de Rivoli, 75001 Paris",tips:"9月28日时段现已开放，立即在官方票务选择通票持有人免费时段。"},
+  "d4_2":{hours:"每日开放，随季节调整",duration:"0.5–1 小时",address:"Jardin des Tuileries, 75001 Paris",tips:"从卢浮宫向西步行，不需预约。"},
+  "d4_3":{hours:"随展览项目变化",duration:"可选约0.5–1.5小时",address:"Avenue Winston Churchill, 75008 Paris",tips:"仅在卢浮宫按时结束且已查到合适展览时加入。"},
+  "d4_4":{hours:"周一 9:00–18:00；周二闭馆",duration:"约1小时",address:"Jardin des Tuileries, 75001 Paris",tips:"《睡莲》展厅是核心；持通票仍建议预约时段。"},
+  "d4_5":{hours:"街区全天开放",duration:"约1小时",address:"Avenue des Champs-Élysées, 75008 Paris",tips:"从协和广场一路向西前往凯旋门。"},
+  "d4_6":{hours:"9月周一10:00–23:00，末次入场提前45分钟",duration:"1–1.5 小时",address:"Place Charles de Gaulle, 75008 Paris",tips:"普通个人无需预约；官网购票只是减少现场排队。通票持有人直接按现场规则入场。"},
   "d5_1":{hours:"每日 9:00–18:00（旺季至 17:00）",duration:"2–3 小时",address:"Château de Chambord, 41250 Chambord",tips:"达芬奇双螺旋楼梯与屋顶露台是精华；园区很大，留足停车步行时间。"},
   "d6_1":{hours:"周二–周日 10:00–18:00（周一闭馆）",duration:"2–3 小时",address:"134 Quai de Bacalan, 33300 Bordeaux",tips:"门票含一杯免费品酒；沉浸式展厅建议租语音导览。"},
   "d7_1":{hours:"需预约导览约 1.5 小时（周二–周六）",duration:"半天",address:"Aéroport de Toulouse-Blagnac",tips:"A350/A380 装配线必看；需提前 2 周预约，带护照。"},
@@ -650,7 +948,7 @@ const EVENT_CANDIDATES = [
     price:"部分免费/以官网为准",
     website:"https://saisonmediterranee2026.culture.gouv.fr/programmation/temps-forts-en-france",
     bookingUrl:"",
-    note:"优先查看9月25–27日的具体时间；若与卢浮宫夜场冲突，可放在第2或第3天下午。"
+    note:"优先查看9月25–27日的具体时间；地点更贴近第2天圣母院与拉丁区路线，可在确认单场时段后再加入。"
   },
   {
     id:"ev_pfw",
@@ -968,11 +1266,14 @@ const EVENTS = EVENT_CANDIDATES.filter(ev => {
 
 // 沿途餐厅推荐：价格为2026年参考人均（不含酒水），菜单与营业时间以餐厅官网为准
 const RESTAURANTS = [
-  {id:"rest_d1_fumoir",day:1,name:"Le Fumoir",city:"巴黎",coords:[48.8608,2.3401],type:"法式小酒馆 / 欧陆菜",meal:"卢浮宫前简餐或晚餐",price:"约35–55€ / 人",specialties:"鸭胸、时令鱼、法式甜点与鸡尾酒",near:"卢浮宫东侧，步行约3分钟",fit:"适合航空博物馆返回市区后、卢浮宫夜场之前；若保留21:30 Cafe Marly，可只在这里喝咖啡或吃轻食。",reservation:"晚餐建议预约",website:"https://www.lefumoir.com/"},
-  {id:"rest_d2_entrecote",day:2,name:"Le Relais de l’Entrecôte – Marbeuf",city:"巴黎",coords:[48.8695,2.3041],type:"经典法式牛排馆",meal:"香榭丽舍晚餐",price:"约35–45€ / 人",specialties:"核桃沙拉、牛排薯条与秘制酱汁",near:"香榭丽舍大街南侧，距凯旋门约15分钟步行",fit:"第2天登完凯旋门后顺路用餐；餐单集中，适合想省去点菜选择的人。",reservation:"通常不接受预约，建议错峰排队",website:"https://www.relaisentrecote.fr/"},
+  {id:"rest_d1_fumoir",day:1,name:"Le Fumoir",city:"巴黎",coords:[48.8608,2.3401],type:"法式小酒馆 / 欧陆菜",meal:"奥赛后简餐或晚餐",price:"约35–55€ / 人",specialties:"鸭胸、时令鱼、法式甜点与鸡尾酒",near:"卢浮宫东侧，靠近晚餐地点 Café Marly",fit:"适合奥赛参观结束后回到卢浮宫一带；若保留21:30 Cafe Marly，可只在这里喝咖啡或吃轻食。",reservation:"晚餐建议预约",website:"https://www.lefumoir.com/"},
+  {id:"rest_d2_entrecote",day:4,name:"Le Relais de l’Entrecôte – Marbeuf",city:"巴黎",coords:[48.8695,2.3041],type:"经典法式牛排馆",meal:"香榭丽舍晚餐",price:"约35–45€ / 人",specialties:"核桃沙拉、牛排薯条与秘制酱汁",near:"香榭丽舍大街南侧，距凯旋门约15分钟步行",fit:"第4天登完凯旋门后顺路用餐；餐单集中，适合想省去点菜选择的人。",reservation:"通常不接受预约，建议错峰排队",website:"https://www.relaisentrecote.fr/"},
   {id:"rest_d3_venise",day:3,name:"La Petite Venise",city:"凡尔赛",coords:[48.8055,2.1167],type:"意大利餐厅 / 宫苑餐厅",meal:"凡尔赛宫午餐",price:"约35–50€ / 人",specialties:"松露Pinsa、意面、牛颊肉Pappardelle、提拉米苏",near:"凡尔赛宫花园内，大运河与阿波罗喷泉之间",fit:"不用离开宫苑即可午餐，适合宫殿与花园之间休息；2026菜单平均价约46€。",reservation:"周末与音乐喷泉日建议预约",website:"https://www.restaurant-lapetitevenise.com/"},
-  {id:"rest_d4_pigalle",day:4,name:"Bouillon Pigalle",city:"巴黎",coords:[48.8823,2.3370],type:"大众法式食堂 / Bouillon",meal:"蒙马特早午餐或午餐",price:"约18–28€ / 人",specialties:"法式洋葱汤、蜗牛、油封鸭、焦糖布丁",near:"蒙马特山脚 Pigalle，距圣心堂约15分钟步行",fit:"适合蒙马特下山后用一顿高性价比传统法餐，再前往歌剧院。",reservation:"可在线预约；无预约可能排队",website:"https://bouillonlesite.com/bouillon-pigalle"},
-  {id:"rest_d4_breizh",day:4,name:"Breizh Café – Le Marais",city:"巴黎",coords:[48.8611,2.3610],type:"布列塔尼可丽饼店",meal:"圣母院 / 蓬皮杜之间简餐",price:"约20–35€ / 人",specialties:"荞麦咸可丽饼、黄油焦糖甜可丽饼、苹果酒",near:"玛黑区，距蓬皮杜约10分钟步行",fit:"第4天景点密集，适合控制在一小时内的轻量午餐或下午茶。",reservation:"建议预约，亦可现场候位",website:"https://breizhcafe.com/"},
+  {id:"rest_d4_pigalle",day:2,name:"Bouillon Pigalle",city:"巴黎",coords:[48.8823,2.3370],type:"大众法式食堂 / Bouillon",meal:"蒙马特早午餐或午餐",price:"约18–28€ / 人",specialties:"法式洋葱汤、蜗牛、油封鸭、焦糖布丁",near:"蒙马特山脚 Pigalle，距圣心堂约15分钟步行",fit:"适合蒙马特下山后用一顿高性价比传统法餐，再前往歌剧院。",reservation:"可在线预约；无预约可能排队",website:"https://bouillonlesite.com/bouillon-pigalle"},
+  {id:"rest_d4_breizh",day:2,name:"Breizh Café – Le Marais",city:"巴黎",coords:[48.8611,2.3610],type:"布列塔尼可丽饼店",meal:"圣母院 / 蓬皮杜之间简餐",price:"约20–35€ / 人",specialties:"荞麦咸可丽饼、黄油焦糖甜可丽饼、苹果酒",near:"玛黑区，距蓬皮杜约10分钟步行",fit:"第2天景点密集，适合控制在一小时内的轻量午餐或下午茶。",reservation:"建议预约，亦可现场候位",website:"https://breizhcafe.com/"},
+  {id:"rest_d2_escargot",day:4,name:"L’Escargot Montorgueil",city:"巴黎",coords:[48.8647,2.3461],type:"经典法餐 / 百年蜗牛老店",meal:"午餐",price:"约40–65€ / 人",averagePrice:"平均约52€ / 人",specialties:"勃艮第焗蜗牛（传统、黑松露或鹅肝口味）、洋葱汤、鹅肝、牛肋排",near:"蒙托格伊街，距卢浮宫约20分钟步行",fit:"原表第4天午餐候选；卢浮宫结束后前往用餐，再向西继续杜乐丽与橘园行程。",reservation:"建议提前预约，约提前1个月关注座位",website:"https://www.escargotmontorgueil.com/",sheetSuggested:true},
+  {id:"rest_d4_gloria",day:2,name:"Gloria Osteria Paris",city:"巴黎",coords:[48.8571,2.3287],type:"高端意大利菜",meal:"午餐",price:"约45–70€ / 人",averagePrice:"平均约58€ / 人",specialties:"普利亚水牛芝士、白松露意面、松露奶油帕玛森轮烩饭、意式海鲷",near:"41 Rue de Lille，靠近奥赛与塞纳河左岸",fit:"原表第2天午餐候选；位置偏奥赛一带，与蒙马特—歌剧院路线不完全顺路，选择时需预留交通时间。",reservation:"官网接受预约，也接待 walk-in；周六午餐建议提前锁定，8人以上使用团体菜单",website:"https://gloria-osteria.com/fr/gloria-osteria-paris",sheetSuggested:true},
+  {id:"rest_d4_antiquaires",day:2,name:"Les Antiquaires",city:"巴黎",coords:[48.8568,2.3254],type:"传统法式小酒馆",meal:"午餐",price:"约35–55€ / 人",averagePrice:"平均约45€ / 人",specialties:"法式洋葱汤、油封鸭、牛肉塔塔、时令鱼、焦糖布丁",near:"13 Rue du Bac，奥赛博物馆东侧步行约5分钟",fit:"原表第2天午餐候选；位置偏奥赛一带，与当天蒙马特—歌剧院路线不完全顺路。",reservation:"官网可预约；周六午餐和5人同行建议提前预订",website:"https://lesantiquaires.net/reservation/",sheetSuggested:true},
   {id:"rest_d5_chambord",day:5,name:"Le Grand Saint-Michel",city:"香波尔",coords:[47.6176,1.5138],type:"现代法餐 / 城堡景观餐厅",meal:"香波尔城堡午餐",price:"约45–70€ / 人",specialties:"卢瓦尔河谷时令菜、河鱼、当地禽肉与精致甜点",near:"Relais de Chambord内，露台正对香波尔城堡",fit:"参观结束后直接午餐，再开车前往波尔多；位置最省绕路。",reservation:"建议提前预约并控制午餐时长",website:"https://relaisdechambord.com/le-grand-saint-michel/"},
   {id:"rest_d6_tupina",day:6,name:"La Tupina",city:"波尔多",coords:[44.8309,-0.5664],type:"法国西南菜 / 柴火料理",meal:"波尔多晚餐",price:"午市23€；正餐约50–90€ / 人",specialties:"鸭胸、油封鸭、柴火烤肉、鹅肝、卡纳蕾",near:"圣米歇尔区，距水镜广场约20分钟步行",fit:"葡萄酒城与酒庄之后品尝最有代表性的西南菜；官网经典套餐70€。",reservation:"建议预约",website:"https://www.latupina.com/menu"},
   {id:"rest_d7_genty",day:7,name:"Genty Magre",city:"图卢兹",coords:[43.6001,1.4438],type:"传统法餐 / 图卢兹地方菜",meal:"图卢兹晚餐",price:"约40–60€ / 人",specialties:"图卢兹砂锅豆焖肉 Cassoulet、鸭肉、法国西南葡萄酒",near:"老城中心，距卡皮托广场约7分钟步行",fit:"航空行程结束后进城用餐；其Cassoulet获2023图卢兹最佳称号。",reservation:"座位有限，建议提前预约",website:"https://guide.michelin.com/fr/fr/occitanie/toulouse/restaurant/genty-magre"},
@@ -982,15 +1283,27 @@ const RESTAURANTS = [
   {id:"rest_d10_armures",day:10,name:"Restaurant Les Armures",city:"日内瓦",coords:[46.2015,6.1472],type:"瑞士传统菜",meal:"抵达日内瓦晚餐",price:"约45–75 CHF / 人",specialties:"奶酪火锅、Raclette、Rösti、瑞士肉类料理",near:"日内瓦老城，圣彼得大教堂旁",fit:"抵达日内瓦后一次吃齐典型瑞士菜，步行逛老城也方便。",reservation:"晚餐建议预约",website:"https://www.hotel-les-armures.ch/en/restaurant/"},
   {id:"rest_d11_dumas",day:11,name:"Bistrot Dumas",city:"日内瓦",coords:[46.1922,6.1515],type:"法式小酒馆 / 米其林必比登",meal:"博物馆前后午餐或晚餐",price:"约40–65 CHF / 人",specialties:"传统法餐、时令肉类、全手工小酒馆菜",near:"Champel区，距百达翡丽博物馆约15分钟公共交通",fit:"周一营业，适合补足许多餐厅周一休息的空档；联合国/CERN行程紧时更建议晚餐。",reservation:"经常满座，建议预约",website:"https://guide.michelin.com/en/geneve-region/geneve/restaurant/bistrot-dumas"},
   {id:"rest_d12_philippe",day:12,name:"Chez Philippe",city:"日内瓦",coords:[46.2042,6.1456],type:"柴火牛排 / 国际菜",meal:"返程前午餐",price:"约45–75 CHF / 人",specialties:"柴火烤牛排、当日鱼类、芝士蛋糕",near:"Rue du Rhône，距日内瓦湖步行约5分钟",fit:"湖边晨间散步后吃较早午餐，再取行李前往机场；务必预留返程时间。",reservation:"建议预约11:30左右早午餐",website:"https://guide.michelin.com/us/en/geneve-region/geneve/restaurant/chez-philippe"},
-  {id:"rest_d1_marly",day:1,name:"Café Marly",city:"巴黎",coords:[48.8610,2.3370],type:"卢浮宫景观法餐",meal:"晚餐 · 21:30",price:"约55–90€ / 人",specialties:"法式海鲜、牛肉、时令主菜与精致甜点",near:"卢浮宫黎塞留通道，正对金字塔",fit:"已写入第1天正式日程，保留原定预约。",reservation:"已通过 Google 预约，3位21:30",website:"https://cafe-marly.com/",planned:true},
-  {id:"rest_d2_angelina",day:2,name:"Angelina Rivoli",city:"巴黎",coords:[48.8651,2.3285],type:"经典巴黎茶室",meal:"早餐 / 早午餐",price:"约20–35€ / 人",specialties:"老式热巧克力、Mont-Blanc栗子蛋糕、法式早餐",near:"杜乐丽花园北侧，距奥赛约15分钟步行",fit:"第2天博物馆行程前补充早餐，也可作为橘园之后的下午茶。",reservation:"热门时段常排队，建议早到",website:"https://www.angelina-paris.fr/adresses/paris-rivoli"},
-  {id:"rest_d2_campana",day:2,name:"Café Campana",city:"巴黎",coords:[48.8600,2.3264],type:"博物馆咖啡厅 / 现代法式",meal:"午餐",price:"约25–40€ / 人",specialties:"时令沙拉、法式炖菜、甜点和冰淇淋",near:"奥赛博物馆5层，大钟旁",fit:"不离开奥赛即可吃午餐，节省第2天景点之间的交通时间。",reservation:"不接受个人预约，现场排队",website:"https://www.musee-orsay.fr/fr/visite/restauration"},
+  {id:"rest_d1_marly",day:1,name:"Café Marly",city:"巴黎",coords:[48.8610,2.3370],type:"卢浮宫景观法餐",meal:"晚餐 · 21:30",price:"约55–90€ / 人",averagePrice:"平均约72€ / 人",specialties:"烤鱼、烤肉、Beaumarly 招牌菜、红莓 Pavlova",near:"卢浮宫黎塞留通道，正对金字塔",fit:"已写入第1天正式日程，保留原定预约。",reservation:"已通过 Google 预约，3位21:30",website:"https://cafe-marly.com/",planned:true},
+  {id:"rest_d2_angelina",day:1,name:"Angelina Rivoli",city:"巴黎",coords:[48.8651,2.3285],type:"经典巴黎茶室",meal:"早餐 / 早午餐",price:"约20–35€ / 人",specialties:"老式热巧克力、Mont-Blanc栗子蛋糕、法式早餐",near:"杜乐丽花园北侧，距奥赛约15分钟步行",fit:"第1天下午奥赛前后可作为茶点备选。",reservation:"热门时段常排队，建议早到",website:"https://www.angelina-paris.fr/adresses/paris-rivoli"},
+  {id:"rest_d2_campana",day:1,name:"Café Campana",city:"巴黎",coords:[48.8600,2.3264],type:"博物馆咖啡厅 / 现代法式",meal:"午餐 / 下午简餐",price:"约25–40€ / 人",specialties:"时令沙拉、法式炖菜、甜点和冰淇淋",near:"奥赛博物馆5层，大钟旁",fit:"不离开奥赛即可用餐，适合第1天抵达后的紧凑行程。",reservation:"不接受个人预约，现场排队",website:"https://www.musee-orsay.fr/fr/visite/restauration"},
   {id:"rest_d3_ore",day:3,name:"Ore – Ducasse au Château de Versailles",city:"凡尔赛",coords:[48.8048,2.1202],type:"宫殿法式餐厅",meal:"早餐 / 午餐",price:"早餐约35€；午餐套餐约58€起",specialties:"法式早餐、烤肉主菜、凡尔赛主题甜点",near:"凡尔赛宫杜福尔翼内",fit:"适合作为入宫前早餐，或参观主宫殿后正式午餐。",reservation:"建议提前预约",website:"https://www.ducasse-chateauversailles.com/"},
-  {id:"rest_d3_cruise",day:3,name:"塞纳河游船晚餐",city:"巴黎",coords:[48.8589,2.3468],type:"观光游船 / 法式套餐",meal:"晚餐 · 18:00",price:"约70–130€ / 人",specialties:"船上法式套餐、塞纳河两岸夜景",near:"塞纳河登船点，以最终船票为准",fit:"已写入第3天正式日程；凡尔赛返程后直接前往登船。",reservation:"已定行程，必须提前购票确认码头",website:"https://parisjetaime.com/eng/tickets/seine-river-dinner-cruise-c9000633",planned:true},
-  {id:"rest_d4_hardware",day:4,name:"The Hardware Société Paris",city:"巴黎",coords:[48.8864,2.3431],type:"澳式早午餐 / 咖啡馆",meal:"早餐 / 早午餐",price:"约20–35€ / 人",specialties:"烤蛋、法式吐司、可颂和精品咖啡",near:"圣心堂旁，蒙马特山顶",fit:"第4天从蒙马特开始时先吃早餐，之后步行游览圣心堂与画家广场。",reservation:"周末可能排队，建议开门前后到",website:"https://www.hardwaresociete.com/paris"},
+  {id:"rest_d3_limousin",day:3,name:"Le Limousin",city:"凡尔赛",coords:[48.8011,2.1255],type:"高档法式小酒馆",meal:"午餐",price:"约35–45€ / 人",averagePrice:"平均约40€ / 人",specialties:"招牌烤羊腿、牛肉 Carpaccio、牛肾、传统法式甜点",near:"1 Rue de Satory，凡尔赛宫正门步行约7分钟",fit:"第3天候选餐厅；若上午先参观主宫殿，可离宫后在市区午餐，但需确认票种能否重新入园。",reservation:"接受预约；周日午餐与5人同行建议提前预约",website:"https://lelimousin-restaurant.fr/",sheetSuggested:true},
+  {id:"rest_d3_royal",day:3,name:"Le Royal Brasserie",city:"凡尔赛",coords:[48.8018,2.1281],type:"法式 Brasserie",meal:"午餐",price:"约20–35€ / 人",averagePrice:"平均约26€ / 人",specialties:"鸭肉酱、热山羊奶酪沙拉、牛排、当日法式主菜",near:"1 Rue Georges Clemenceau，靠近 Versailles Château Rive Gauche 车站",fit:"第3天候选餐厅；返程搭 RER C 前用餐最方便，价格也较温和。",reservation:"官网可提交预约；周日营业至晚间，建议提前预约5人桌",website:"https://www.leroyalbrasserie.fr/reservations",sheetSuggested:true},
+  {id:"rest_d3_latour",day:3,name:"La Tour",city:"凡尔赛",coords:[48.8067,2.1250],type:"传统法式肉类餐厅",meal:"午餐",price:"约25–50€ / 人",averagePrice:"平均约38€ / 人",specialties:"Salers、Aubrac 与 Normande 牛肉、当日套餐、传统法式家常菜",near:"6 Rue Carnot，凡尔赛宫北侧市中心",fit:"第3天候选餐厅；离宫后步行可达，适合想吃牛肉且不赶花园行程的一组。",reservation:"可电话预约；周日午餐建议提前订位",website:"https://www.destination-yvelines.fr/restaurants/la-tour/",sheetSuggested:true},
+  {id:"rest_d3_vous",day:3,name:"Vous Restaurant",city:"凡尔赛",coords:[48.8015,2.1259],type:"现代法餐 / 时令菜",meal:"午餐",price:"约40–70€ / 人",averagePrice:"平均约55€ / 人",specialties:"每月更换的本地时令菜单、现代法式主菜、精致甜点与鸡尾酒",near:"5 Rue du Vieux Versailles，凡尔赛宫南侧步行约8分钟",fit:"第3天候选餐厅；氛围和摆盘更精致，适合作为当天正式午餐。",reservation:"官网可预约；座位有限，建议现在查看9月27日5人桌",website:"https://www.vous.restaurant/",sheetSuggested:true},
+  {id:"rest_d3_cruise",day:3,name:"塞纳河游船晚餐",city:"巴黎",coords:[48.8589,2.3468],type:"观光游船 / 法式套餐",meal:"晚餐 · 18:00",price:"约89–139€ / 人",averagePrice:"预算平均约115€ / 人",specialties:"船上法式套餐、塞纳河两岸夜景",near:"塞纳河登船点，以最终船票为准",fit:"已写入第3天正式日程；凡尔赛返程后直接前往登船。",reservation:"已定行程，必须提前购票确认码头",website:"https://parisjetaime.com/eng/tickets/seine-river-dinner-cruise-c9000633",planned:true},
+  {id:"rest_d3_calife",day:3,name:"Le Calife / L’Estello",city:"巴黎",coords:[48.8571,2.3376],type:"历史船餐厅 / 法式晚餐游船",meal:"晚餐游船",price:"97–219€ / 人；L’Estello 95–125€",averagePrice:"常规晚餐平均约118€ / 人",specialties:"迎宾鸡尾酒、法式前菜、主菜与甜点；高阶套餐含葡萄酒、香槟与奶酪",near:"艺术桥对面 Place de l’Institut 登船",fit:"晚餐游船候选；凡尔赛返程后需直接前往码头，Le Calife 20:30出发、L’Estello 18:30出发。",reservation:"必须提前在线购票；5人座位与9月27日班次需尽早确认",website:"https://calife.com/en/caliph-dinner-cruise-packages/",sheetSuggested:true},
+  {id:"rest_d3_parisiens",day:3,name:"Bateaux Parisiens",city:"巴黎",coords:[48.8600,2.2930],type:"大型观光餐船 / 法式套餐",meal:"晚餐游船",price:"99–245€ / 人",averagePrice:"主流套餐平均约139€ / 人",specialties:"前菜、主菜、甜点；高阶套餐含香槟、葡萄酒、奶酪与临窗座位",near:"埃菲尔铁塔附近 Port de la Bourdonnais 登船",fit:"18:15班次较容易衔接凡尔赛返程；20:30班次游览2.5小时并有现场音乐。",reservation:"必须提前在线购票并选择座位等级；临窗座位需购买对应套餐",website:"https://www.bateauxparisiens.com/en/meal-cruise/dinner-cruise.html",sheetSuggested:true},
+  {id:"rest_d3_mouches",day:3,name:"Bateaux Mouches",city:"巴黎",coords:[48.8640,2.3067],type:"经典塞纳河餐船",meal:"晚餐游船",price:"90–170€ / 人",averagePrice:"主流套餐平均约124€ / 人",specialties:"法式前菜、鸭胸或鱼类主菜、甜点；高阶套餐含香槟与葡萄酒",near:"Pont de l’Alma 登船",fit:"18:00早班最适合控制返程时间；20:30 Discovery 套餐约2小时15分钟。",reservation:"必须提前购票；正式着装，普通套餐不保证临窗位",website:"https://www.bateaux-mouches.fr/en/restaurant",sheetSuggested:true},
+  {id:"rest_d3_diamant",day:3,name:"Le Diamant Bleu",city:"巴黎",coords:[48.8535,2.2792],type:"现代派对餐船 / 法式套餐",meal:"晚餐游船",price:"89€起 / 人；高级选项另加",averagePrice:"基础套餐平均约89€ / 人",specialties:"法式前菜、主菜、甜点、矿泉水与现场音乐；可加香槟或临窗选项",near:"Port de Passy / 2 Rue du Ranelagh 一带登船，以船票为准",fit:"候选餐厅中价格较低、气氛更热闹；适合重视夜景和音乐的一组。",reservation:"必须提前在线购票；5人同行需同时选定班次、桌位和附加选项",website:"https://www.le-diamant-bleu.fr/en/dinner-cruise/",sheetSuggested:true},
+  {id:"rest_d4_hardware",day:2,name:"The Hardware Société Paris",city:"巴黎",coords:[48.8864,2.3431],type:"澳式早午餐 / 咖啡馆",meal:"早餐 / 早午餐",price:"约20–35€ / 人",specialties:"烤蛋、法式吐司、可颂和精品咖啡",near:"圣心堂旁，蒙马特山顶",fit:"第2天从蒙马特开始时先吃早餐，之后步行游览圣心堂与画家广场。",reservation:"周末可能排队，建议开门前后到",website:"https://www.hardwaresociete.com/paris"},
+  {id:"rest_d4_sens",day:2,name:"Le Sens Unique",city:"巴黎",coords:[48.8702,2.3078],type:"现代法餐",meal:"晚餐",price:"约35–60€ / 人",averagePrice:"平均约47€ / 人",specialties:"熟成 Salers 牛排、朗德油封鸭、香辣龙虾汁大虾 Linguine、马达加斯加香草焦糖布丁",near:"47 Rue de Ponthieu，距凯旋门步行约15分钟",fit:"原表第2天晚餐候选；从战神广场返回香榭丽舍一带用餐。",reservation:"官网可预约；周六晚餐和5人桌建议提前锁定",website:"https://www.restaurant-lesensunique.paris/en/booking",sheetSuggested:true},
+  {id:"rest_d4_aubrac",day:2,name:"La Maison de l’Aubrac",city:"巴黎",coords:[48.8705,2.3063],type:"法国奥布拉克牛肉餐厅",meal:"晚餐",price:"约45–80€ / 人",averagePrice:"平均约62€ / 人",specialties:"奥布拉克牛排、牛肋排、Aligot 奶酪土豆泥、时令配菜与法国葡萄酒",near:"37 Rue Marbeuf，距凯旋门步行约17分钟",fit:"原表第2天正式晚餐候选，适合想吃牛排的一组。",reservation:"官网可预约；5人晚餐和热门时间建议提前预订",website:"https://www.maison-aubrac.com/en/",sheetSuggested:true},
+  {id:"rest_d4_gabrielle",day:2,name:"Chez Gabrielle",city:"巴黎",coords:[48.8762,2.2958],type:"法式小酒馆",meal:"晚餐 / 宵夜",price:"约35–60€ / 人",averagePrice:"平均约48€ / 人",specialties:"传统法餐、牛肉、鸭肉与时令菜",near:"凯旋门附近小街",fit:"原表第2天凯旋门附近晚餐或宵夜候选；需注意厨房与末轮入座时间。",reservation:"建议预约并确认最晚入座时间，约22:00关门",website:"https://www.google.com/maps/search/?api=1&query=Chez%20Gabrielle%20Paris",sheetSuggested:true},
   {id:"rest_d5_noailles",day:5,name:"Brasserie Le Noailles",city:"波尔多",coords:[44.8421,-0.5758],type:"传统法式海鲜餐厅",meal:"抵达波尔多晚餐",price:"约35–60€ / 人",specialties:"生蚝、海鲜拼盘、牛排和法式甜点",near:"波尔多大剧院与金三角附近",fit:"香波尔长途驾驶后在市中心用餐，适合抵达时间有波动的晚餐。",reservation:"建议预约晚间座位",website:"https://www.brasserie-le-noailles.fr/"},
   {id:"rest_d6_latitude",day:6,name:"Latitude20 Brasserie",city:"波尔多",coords:[44.8627,-0.5497],type:"葡萄酒主题小酒馆",meal:"午餐 / 简餐",price:"约25–40€ / 人",specialties:"时令小酒馆菜、奶酪冷肉拼盘、世界葡萄酒",near:"葡萄酒城内",fit:"参观葡萄酒城后直接午餐，再出发前往酒庄。",reservation:"建议查看当天时段",website:"https://www.laciteduvin.com/fr/restaurants-boutiques/latitude20-brasserie"},
   {id:"rest_d7_panorama",day:7,name:"Le Panorama – Toulouse Blagnac",city:"图卢兹",coords:[43.6291,1.3677],type:"机场全景餐厅",meal:"早餐 / 午餐",price:"早餐约4–12€；午餐约18–30€ / 人",specialties:"可颂咖啡、图卢兹香肠、简餐",near:"图卢兹机场航站区，靠近空客与Aeroscopia",fit:"空客参观前后最省路的用餐选择，可看跑道与飞机。",reservation:"早餐通常现场即可",website:"https://www.toulouse.aeroport.fr/shopping-et-services/le-panorama"},
+  {id:"rest_d7_grands_buffets",day:7,name:"Les Grands Buffets",city:"纳博讷",coords:[43.1696,2.9872],type:"高端法式自助餐",meal:"午餐",price:"约67.50€ / 人，饮料另计",averagePrice:"平均约67.50€ / 人",specialties:"古典法餐、海鲜、烤肉、鹅肝、甜点与大型奶酪区",near:"纳博讷 Espace de Liberté，明显偏离波尔多—图卢兹直达路线",fit:"原表第7天午餐候选；餐厅位于纳博讷，并不在空客工厂附近，必须接受较大绕行才适合加入。",reservation:"官网强烈建议预约，热门日期经常满位",website:"https://www.lesgrandsbuffets.com/en/practical-info/booking",sheetSuggested:true},
   {id:"rest_d7_perlette",day:7,name:"Perlette",city:"图卢兹",coords:[43.6008,1.4423],type:"甜品茶室 / 早午餐",meal:"下午茶 / 轻晚餐",price:"约15–30€ / 人",specialties:"自制蛋糕、咸派、早午餐和咖啡",near:"图卢兹历史中心 Bourse 区",fit:"进城后先休息吃轻食，再决定是否吃正式Cassoulet晚餐。",reservation:"热门下午时段可能候位",website:"https://www.toulouse-tourisme.com/en/restaurant/perlette/"},
   {id:"rest_d8_perlette_breakfast",day:8,name:"Perlette – 早餐备选",city:"图卢兹",coords:[43.6008,1.4423],type:"咖啡馆 / 甜点",meal:"早餐",price:"约12–25€ / 人",specialties:"咖啡、糕点、鸡蛋与轻食",near:"图卢兹老城，出发去卡尔卡松前可顺路",fit:"第8天早晨在新城市补早餐后再驾车前往卡尔卡松。",reservation:"早到通常无需预约",website:"https://www.toulouse-tourisme.com/en/restaurant/perlette/"},
   {id:"rest_d9_bouchon",day:9,name:"Le Bouchon des Filles",city:"里昂",coords:[45.7689,4.8310],type:"里昂Bouchon / 家常菜",meal:"里昂深度日晚餐",price:"约30–45€ / 人",specialties:"里昂沙拉、肉酱、炖肉和甜点拼盘",near:"里昂市中心，距老城约15分钟步行",fit:"第9天整天留在里昂，可把这顿传统Bouchon作为当天正式晚餐；与第10天大型啤酒馆形成不同风格。",reservation:"周六晚餐建议预约并复查营业",website:"https://www.bouchondesfilles.fr/"},
@@ -1003,8 +1316,8 @@ const RESTAURANTS = [
 // 可实际预约/购票/公开入内的沿途加项；不收录仅能看外观或开放不确定的地点
 const EXTRA_POIS = [
   {id:"extra_sewers",name:"巴黎下水道博物馆",nameEn:"Musée des Égouts de Paris",city:"巴黎",day:4,coords:[48.8627,2.3029],category:"城市工程",price:"9€",duration:"45–75分钟",reservation:"可在线购票预约时段",website:"https://musee-egouts.paris.fr/en/",bookingUrl:"https://billetterie-egouts.paris.fr/fr-FR/accueil",why:"进入真实运行体系旁的地下参观线，了解巴黎2600公里排水网络与奥斯曼城市工程；就在阿尔玛桥，距战神广场很近。",fit:"适合替换已闭馆的蓬皮杜主馆，或接在埃菲尔铁塔之前。"},
-  {id:"extra_metiers",name:"巴黎工艺与技术博物馆",nameEn:"Musée des Arts et Métiers",city:"巴黎",day:4,coords:[48.8669,2.3554],category:"工业科技",price:"Paris Museum Pass 已包含",duration:"1.5–2小时",reservation:"可购票入内，通票持有者可进入",website:"https://www.arts-et-metiers.net",bookingUrl:"https://www.arts-et-metiers.net/musee/tarifs",why:"收藏早期计算机、机械、交通和科学仪器，是巴黎最适合工程与工业爱好者的小众博物馆。",fit:"距蓬皮杜约步行15分钟，是其长期闭馆期间最合适的替代项。"},
-  {id:"extra_marine",name:"海军府",nameEn:"Hôtel de la Marine",city:"巴黎",day:2,coords:[48.8662,2.3239],category:"国家机构旧址",price:"9–17€；Paris Museum Pass 已包含",duration:"1–1.5小时",reservation:"可预约购票",website:"https://www.hotel-de-la-marine.paris/en/",bookingUrl:"https://www.hotel-de-la-marine.paris/en/",why:"法国王室家具库与海军部旧址，内部保存国务会议厅、公寓和俯瞰协和广场的柱廊，属于可进入参观的制度建筑。",fit:"紧邻橘园美术馆和协和广场，可加在第2天下午。"},
+  {id:"extra_metiers",name:"巴黎工艺与技术博物馆",nameEn:"Musée des Arts et Métiers",city:"巴黎",day:2,coords:[48.8669,2.3554],category:"工业科技",price:"Paris Museum Pass 已包含",duration:"1.5–2小时",reservation:"可购票入内，通票持有者可进入",website:"https://www.arts-et-metiers.net",bookingUrl:"https://www.arts-et-metiers.net/musee/tarifs",why:"收藏早期计算机、机械、交通和科学仪器，是巴黎最适合工程与工业爱好者的小众博物馆。",fit:"距第2天蓬皮杜约步行15分钟，是其长期闭馆期间最合适的替代项。"},
+  {id:"extra_marine",name:"海军府",nameEn:"Hôtel de la Marine",city:"巴黎",day:4,coords:[48.8662,2.3239],category:"国家机构旧址",price:"9–17€；Paris Museum Pass 已包含",duration:"1–1.5小时",reservation:"可预约购票",website:"https://www.hotel-de-la-marine.paris/en/",bookingUrl:"https://www.hotel-de-la-marine.paris/en/",why:"法国王室家具库与海军部旧址，内部保存国务会议厅、公寓和俯瞰协和广场的柱廊，属于可进入参观的制度建筑。",fit:"紧邻第4天的橘园美术馆和协和广场，可作为当天下午加项。"},
   {id:"extra_bassins",name:"光影池数字艺术中心",nameEn:"Bassins des Lumières",city:"波尔多",day:6,coords:[44.8717,-0.5592],category:"工业遗产/数字艺术",price:"16€",duration:"1–1.5小时",reservation:"强烈建议在线预约",website:"https://www.bassins-lumieres.com/en",bookingUrl:"https://www.bassins-lumieres.com/en/plan-visit/opening-times-rates",why:"由二战潜艇基地改造，是全球规模最大的沉浸式数字艺术中心之一，工业空间本身就很有看点。",fit:"距葡萄酒城不远，可在第6天上午二选一或作为傍晚加项。"},
   {id:"extra_space",name:"图卢兹太空城",nameEn:"Cité de l’espace",city:"图卢兹",day:7,coords:[43.5867,1.4933],category:"航天科技",price:"官网按日期售票",duration:"3–4小时",reservation:"可在线购票",website:"https://www.cite-espace.com",bookingUrl:"https://www.cite-espace.com",why:"可看全尺寸阿丽亚娜5号火箭、和平号空间站模型、火星地形与LuneXplorer月球任务体验。",fit:"与空客工厂、Aeroscopia主题高度一致，但至少需要半天；建议延长图卢兹停留或三选二。"},
   {id:"extra_machine",name:"机器大厅",nameEn:"Halle de La Machine",city:"图卢兹",day:7,coords:[43.5724,1.4802],category:"机械装置",price:"可在线购票",duration:"1.5–2小时",reservation:"可购票入内，乘坐机械装置需另选票",website:"https://www.halledelamachine.fr",bookingUrl:"https://www.halledelamachine.fr",why:"展示会运动、喷气、演奏甚至载人的巨型机械装置，包括14米高的米诺陶；比传统博物馆更具互动性。",fit:"靠近太空城，适合喜欢机械制造但时间不足以参观整座太空城时选择。"},
@@ -1026,12 +1339,13 @@ let interDayRoutes = {};
 let eventMarkers = {};
 let currentRestaurantDay = 'all';
 const DAY_CONTENT_FILTERS = {
-  source:{planned:true,recommended:true},
-  theme:{attraction:true,restaurant:true}
+  planned:true,
+  ai:{attraction:true,activity:true,restaurant:true}
 };
 
 function filterAllows(source, theme) {
-  return Boolean(DAY_CONTENT_FILTERS.source[source] && DAY_CONTENT_FILTERS.theme[theme]);
+  if (source === 'planned') return DAY_CONTENT_FILTERS.planned;
+  return Boolean(DAY_CONTENT_FILTERS.ai[theme]);
 }
 
 function poiTheme(poi) {
@@ -1066,7 +1380,24 @@ function initMap() {
   
   // Build legend (all routes are blue now)
   const legend = document.getElementById('mapLegend');
-  legend.innerHTML = '<h4>📌 图例</h4><div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>景点标记</span></div><div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#ff2d55;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>🎪 行程内活动</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#00a887;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>✨ 可预约加项</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#ff9500;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>✓ 已定餐饮</span></div><div class="legend-item"><div style="width:14px;height:14px;background:#e05d35;border:2px solid #fff;border-radius:50%;flex-shrink:0"></div><span>🍽️ 额外推荐</span></div>';
+  legend.innerHTML = `<button class="legend-toggle" type="button" onclick="toggleMapLegend()" aria-expanded="true">📌 图例</button><div class="legend-items">
+    <div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>已制定景点</span></div>
+    <div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div>
+    <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#ff2d55">🎪<span class="marker-source-badge">AI</span></div><span>AI 推荐活动</span></div>
+    <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#00a887">🏛️<span class="marker-source-badge">AI</span></div><span>AI 推荐景点</span></div>
+    <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#ff9500">🍽️<span class="marker-source-badge">已订</span></div><span>已预订餐厅</span></div>
+    <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#7a5af8">🍽️<span class="marker-source-badge">表内</span></div><span>表内候选餐厅</span></div>
+    <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#e05d35">🍽️<span class="marker-source-badge">AI</span></div><span>AI 推荐餐厅</span></div></div>`;
+  if (window.matchMedia('(max-width:640px)').matches) {
+    legend.classList.add('collapsed');
+    legend.querySelector('.legend-toggle')?.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function toggleMapLegend() {
+  const legend = document.getElementById('mapLegend');
+  const collapsed = legend.classList.toggle('collapsed');
+  legend.querySelector('.legend-toggle')?.setAttribute('aria-expanded', String(!collapsed));
 }
 
 // ============================================================
@@ -1254,15 +1585,18 @@ function showDay(dayNum) {
   document.getElementById('eventsList').style.display = 'none';
   clearMap();
   const visibleStops = dayData.stops.filter(id => filterAllows('planned', poiTheme(POI_DATA[id])));
-  visibleStops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, visibleStops.length, false));
-  if (DAY_CONTENT_FILTERS.source.planned && DAY_CONTENT_FILTERS.theme.attraction && allDayRoutes[dayNum]) {
+  const visibleAttractionStops = visibleStops.filter(id => poiTheme(POI_DATA[id]) !== 'restaurant');
+  visibleAttractionStops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, visibleAttractionStops.length, false));
+  if (DAY_CONTENT_FILTERS.planned && allDayRoutes[dayNum]) {
     addRoute(dayNum, allDayRoutes[dayNum]);
   }
 
   // Events for this day (nearby-time focus) — shown as pink 🎪 markers
-  const dayEvents = EVENTS.filter(e => e.day === dayNum && filterAllows('recommended', 'attraction'));
+  const dayEvents = EVENTS.filter(e => e.day === dayNum && filterAllows('recommended', 'activity'));
   dayEvents.forEach(addEventMarker);
-  const dayRestaurants = RESTAURANTS.filter(r => r.day === dayNum && filterAllows(r.planned ? 'planned' : 'recommended', 'restaurant'));
+  const dayRestaurants = RESTAURANTS
+    .filter(r => r.day === dayNum && filterAllows(r.planned ? 'planned' : 'recommended', 'restaurant'))
+    .filter(restaurantVisibleAfterBookings);
   dayRestaurants.forEach(addRestaurantMarker);
   const dayExtras = EXTRA_POIS.filter(p => p.day === dayNum && filterAllows('recommended', 'attraction'));
   dayExtras.forEach(addExtraMarker);
@@ -1322,8 +1656,8 @@ function addEventMarker(ev) {
   const color = '#FF2D55';
   const icon = L.divIcon({
     className: '',
-    html: `<div style="background:${color};border:2px solid #fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.35);font-size:13px">🎪</div>`,
-    iconSize: [28, 28], iconAnchor: [14, 14], popupAnchor: [0, -16]
+    html: `<div class="map-type-marker" style="background:${color}">🎪<span class="marker-source-badge">AI</span></div>`,
+    iconSize: [32, 32], iconAnchor: [16, 16], popupAnchor: [0, -18]
   });
   const marker = L.marker(ev.coords, { icon }).addTo(map);
   const timing = eventTiming(ev);
@@ -1443,11 +1777,11 @@ function showEventDetail(id) {
 function addExtraMarker(p) {
   const icon = L.divIcon({
     className:'',
-    html:'<div style="background:#00a887;border:2px solid #fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.35);font-size:13px">✨</div>',
-    iconSize:[28,28],iconAnchor:[14,14],popupAnchor:[0,-16]
+    html:'<div class="map-type-marker" style="background:#00a887">🏛️<span class="marker-source-badge">AI</span></div>',
+    iconSize:[32,32],iconAnchor:[16,16],popupAnchor:[0,-18]
   });
   const marker=L.marker(p.coords,{icon}).addTo(map);
-  marker.bindPopup(`<div style="min-width:200px"><strong>✨ ${p.name}</strong><div style="font-size:11px;color:#86868b">${p.city} · ${p.category}</div><p style="font-size:12px;line-height:1.5;margin:5px 0">${p.why}</p><p style="font-size:12px"><b>🎟️</b> ${p.reservation}</p></div>`,{maxWidth:270});
+  marker.bindPopup(`<div style="min-width:200px"><strong>🏛️ ${p.name}</strong><div style="font-size:11px;color:#00a887">AI 推荐景点 · ${p.city} · ${p.category}</div><p style="font-size:12px;line-height:1.5;margin:5px 0">${p.why}</p><p style="font-size:12px"><b>🎟️</b> ${p.reservation}</p></div>`,{maxWidth:270});
   marker.bindTooltip(p.name,{permanent:true,direction:'top',offset:[0,-16],className:'marker-label'});
   marker.on('click',()=>showExtraDetail(p.id));
   eventMarkers[p.id]=marker;
@@ -1458,7 +1792,7 @@ function showExtras() {
   clearMap();
   Object.values(POI_DATA).forEach(poi=>{
     const dayData=ITINERARY.find(d=>d.day===poi.day);
-    if(!dayData)return;
+    if(!dayData || poiTheme(poi)==='restaurant')return;
     const idx=dayData.stops.findIndex(id=>POI_DATA[id]===poi);
     addMarker(`ov_${poi.day}_${idx}`,poi,idx,dayData.stops.length,true);
   });
@@ -1474,10 +1808,10 @@ function showExtras() {
 
 function renderExtrasList() {
   const list=document.getElementById('eventsList');
-  let html=`<div class="events-note" style="background:#effbf7;color:#356b60;border-color:#d5eee7">✨ 只收录可预约、可购票或明确公开入内的地点；不列仅能看外观或开放不确定的项目。绿色标记为可加项。</div>`;
+  let html=`<div class="events-note" style="background:#effbf7;color:#356b60;border-color:#d5eee7">🏛️ 只收录可预约、可购票或明确公开入内的景点；不列仅能看外观或开放不确定的项目。绿色地标为 AI 推荐景点。</div>`;
   EXTRA_POIS.slice().sort((a,b)=>a.day-b.day).forEach(p=>{
     html+=`<div class="event-item" style="border-left-color:#00a887" onclick="focusExtra('${p.id}')">
-      <div class="ev-name">✨ ${p.name}</div>
+      <div class="ev-name">🏛️ ${p.name} <span class="ev-tag" style="background:#00a887;color:#fff">AI 景点</span></div>
       <div class="ev-meta">${p.city} · 对应第${p.day}天 · ${p.category}</div>
       <div><span class="ev-badge reserve">${p.reservation}</span></div>
       <div class="ev-note" style="color:#356b60">${p.fit}</div>
@@ -1496,7 +1830,7 @@ function focusExtra(id) {
 function showExtraDetail(id) {
   const p=EXTRA_POIS.find(x=>x.id===id);
   if(!p)return;
-  const headerHtml=`<div class="detail-head-main"><div class="detail-title">✨ ${p.name}</div><div class="detail-sub">${p.nameEn} · ${p.category} · <a href="${p.website}" target="_blank">官网</a></div></div><div class="detail-head-actions"><span class="badge-reserve badge-need">可进入</span><button class="detail-ico-btn" onclick="hideDetail()" title="关闭" aria-label="关闭景点详情">✕</button></div>`;
+  const headerHtml=`<div class="detail-head-main"><div class="detail-title">🏛️ ${p.name}</div><div class="detail-sub">AI 推荐景点 · ${p.nameEn} · ${p.category} · <a href="${p.website}" target="_blank">官网</a></div></div><div class="detail-head-actions"><span class="badge-reserve badge-need">可进入</span><button class="detail-ico-btn" onclick="hideDetail()" title="关闭" aria-label="关闭景点详情">✕</button></div>`;
   const bodyHtml=`
     <div class="detail-card"><div class="detail-card-h">⭐ 为什么值得加</div><div class="detail-card-b">${p.why}</div></div>
     <div class="detail-info-grid"><div><span>💶 费用</span><b>${p.price}</b></div><div><span>⏱️ 建议时长</span><b>${p.duration}</b></div></div>
@@ -1508,16 +1842,46 @@ function showExtraDetail(id) {
 // ============================================================
 // RESTAURANTS MODE: daily recommendations along the itinerary
 // ============================================================
+function restaurantStatus(r) {
+  if (r.planned) return {label:'已预订 / 已写入正式日程',short:'已订',color:'#ff9500',badge:'已订'};
+  if (r.sheetSuggested) return {label:'原表内候选餐厅',short:'表内候选',color:'#7a5af8',badge:'表内'};
+  return {label:'表外系统 AI 推荐餐厅',short:'AI 推荐',color:'#e05d35',badge:'AI'};
+}
+
+function restaurantIsBooked(r) {
+  return Boolean(r.planned && /已预约|已通过|已预订|已付款|已购票/.test(r.reservation || ''));
+}
+
+function restaurantMealSlots(r) {
+  const meal = r.meal || '';
+  const slots = [];
+  if (/早餐|早午餐/.test(meal)) slots.push('breakfast');
+  if (/午餐|简餐/.test(meal)) slots.push('lunch');
+  if (/晚餐|轻晚餐|宵夜/.test(meal)) slots.push('dinner');
+  return slots;
+}
+
+function restaurantVisibleAfterBookings(r) {
+  if (r.planned || r.sheetSuggested) return true;
+  const slots = restaurantMealSlots(r);
+  if (!slots.length) return true;
+  return !RESTAURANTS.some(preferred =>
+    preferred.day === r.day &&
+    (restaurantIsBooked(preferred) || preferred.sheetSuggested) &&
+    restaurantMealSlots(preferred).some(slot => slots.includes(slot))
+  );
+}
+
 function addRestaurantMarker(r) {
-  const markerColor=r.planned?'#ff9500':'#e05d35';
-  const markerText=r.planned?'✓':'🍽️';
+  const status=restaurantStatus(r);
+  const markerColor=status.color;
   const icon = L.divIcon({
     className:'',
-    html:`<div style="background:${markerColor};color:#fff;border:2px solid #fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 7px rgba(0,0,0,.35);font-size:14px;font-weight:800">${markerText}</div>`,
-    iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-17]
+    html:`<div class="map-type-marker" style="background:${markerColor}">🍽️<span class="marker-source-badge">${status.badge}</span></div>`,
+    iconSize:[32,32],iconAnchor:[16,16],popupAnchor:[0,-18]
   });
   const marker=L.marker(r.coords,{icon}).addTo(map);
-  marker.bindPopup(`<div style="min-width:220px"><strong>${r.planned?'✓':'🍽️'} ${r.name}</strong><div style="font-size:11px;color:${r.planned?'#c66f00':'#86868b'}">${r.planned?'已写入正式日程':'额外推荐'} · ${r.city} · 第${r.day}天 · ${r.type}</div><p style="font-size:12px;line-height:1.5;margin:5px 0"><b>推荐：</b>${r.specialties}</p><p style="font-size:12px;margin:3px 0"><b>参考人均：</b>${r.price}</p></div>`,{maxWidth:280});
+  marker.bindPopup(`<div style="min-width:230px"><strong>🍽️ ${r.name}</strong><div style="font-size:11px;color:${markerColor}">${status.label} · ${r.city} · 第${r.day}天 · ${r.type}</div><p style="font-size:12px;line-height:1.5;margin:5px 0"><b>推荐菜：</b>${r.specialties}</p><p style="font-size:12px;margin:3px 0"><b>平均人均：</b>${r.averagePrice || r.price}</p><p style="font-size:11px;margin:3px 0"><b>预约：</b>${r.reservation}</p></div>`,{maxWidth:300});
   marker.bindTooltip(r.name,{direction:'top',offset:[0,-17],className:'marker-label'});
   marker.on('click',()=>showRestaurantDetail(r.id));
   eventMarkers[r.id]=marker;
@@ -1528,14 +1892,15 @@ function showRestaurants() {
   clearMap();
   Object.values(POI_DATA).forEach(poi=>{
     const dayData=ITINERARY.find(d=>d.day===poi.day);
-    if(!dayData)return;
+    if(!dayData || poiTheme(poi)==='restaurant')return;
     const idx=dayData.stops.findIndex(id=>POI_DATA[id]===poi);
     addMarker(`ov_${poi.day}_${idx}`,poi,idx,dayData.stops.length,true);
   });
   drawCompleteJourneyRoutes();
-  const shown=currentRestaurantDay==='all'
+  const shown=(currentRestaurantDay==='all'
     ? RESTAURANTS
-    : RESTAURANTS.filter(r=>r.day===Number(currentRestaurantDay));
+    : RESTAURANTS.filter(r=>r.day===Number(currentRestaurantDay)))
+    .filter(restaurantVisibleAfterBookings);
   shown.forEach(addRestaurantMarker);
   const fitCoords=shown.map(r=>r.coords);
   if(fitCoords.length) map.fitBounds(L.latLngBounds(fitCoords),{padding:[45,45],maxZoom:13});
@@ -1550,12 +1915,14 @@ function showRestaurants() {
 function renderRestaurantsList() {
   const list=document.getElementById('eventsList');
   const options=ITINERARY.map(d=>`<option value="${d.day}"${String(d.day)===String(currentRestaurantDay)?' selected':''}>第${d.day}天 · ${d.title}</option>`).join('');
-  const restaurants=currentRestaurantDay==='all'
+  const restaurants=(currentRestaurantDay==='all'
     ? RESTAURANTS.slice()
-    : RESTAURANTS.filter(r=>r.day===Number(currentRestaurantDay));
+    : RESTAURANTS.filter(r=>r.day===Number(currentRestaurantDay)))
+    .filter(restaurantVisibleAfterBookings);
   const plannedCount=restaurants.filter(r=>r.planned).length;
+  const sheetCount=restaurants.filter(r=>r.sheetSuggested).length;
   let html=`<div class="events-filter"><span>按行程筛选</span><select onchange="currentRestaurantDay=this.value;showRestaurants()"><option value="all"${currentRestaurantDay==='all'?' selected':''}>全部12天</option>${options}</select><span style="color:#86868b">共 ${restaurants.length} 家</span></div>
-    <div class="events-note" style="background:#fff5f1;color:#88442d;border-color:#f1d7cc">🍽️ 橙色「已定」为正式日程中的餐饮（${plannedCount}项）；珊瑚色为额外推荐，可按早/中/晚餐灵活选择。价格为2026年参考人均，不含酒水。</div>`;
+    <div class="events-note" style="background:#fff5f1;color:#88442d;border-color:#f1d7cc">🍽️ 所有餐厅都使用餐具图标：橙色“已订”（${plannedCount}项）、紫色“表内”（${sheetCount}项）、珊瑚色“AI”。平均价格为2026年参考人均，通常不含酒水。</div>`;
   let lastDay=null;
   restaurants.sort((a,b)=>a.day-b.day || Number(Boolean(b.planned))-Number(Boolean(a.planned)) || a.meal.localeCompare(b.meal,'zh-CN')).forEach(r=>{
     if(r.day!==lastDay){
@@ -1563,12 +1930,14 @@ function renderRestaurantsList() {
       html+=`<div style="padding:10px 14px 5px;font-size:12px;font-weight:700;color:#e05d35">第${r.day}天 · ${d?.date||''} · ${d?.title||''}</div>`;
       lastDay=r.day;
     }
-    const statusColor=r.planned?'#ff9500':'#e05d35';
+    const status=restaurantStatus(r);
+    const statusColor=status.color;
     html+=`<div class="event-item" style="border-left-color:${statusColor}" onclick="focusRestaurant('${r.id}')">
-      <div class="ev-name">${r.planned?'✓':'🍽️'} ${r.name} <span class="ev-tag" style="background:${statusColor};color:#fff">${r.planned?'已写入日程':'额外推荐'}</span></div>
+      <div class="ev-name">🍽️ ${r.name} <span class="ev-tag" style="background:${statusColor};color:#fff">${status.short}</span></div>
       <div class="ev-meta">${r.city} · ${r.meal} · ${r.type}</div>
-      <div style="margin-top:5px"><span class="ev-badge" style="background:${statusColor}">${r.price}</span></div>
-      <div class="ev-note" style="color:#6e4a3b"><b>推荐：</b>${r.specialties}</div>
+      <div style="margin-top:5px"><span class="ev-badge" style="background:${statusColor}">${r.averagePrice || r.price}</span></div>
+      <div class="ev-note" style="color:#6e4a3b"><b>推荐菜：</b>${r.specialties}</div>
+      <div class="ev-note" style="color:#6958a6"><b>预约：</b>${r.reservation}</div>
       <div class="ev-note" style="color:#86868b">${r.near}</div>
     </div>`;
   });
@@ -1585,11 +1954,12 @@ function focusRestaurant(id) {
 function showRestaurantDetail(id) {
   const r=RESTAURANTS.find(x=>x.id===id);
   if(!r)return;
-  const statusColor=r.planned?'#ff9500':'#e05d35';
-  const headerHtml=`<div class="detail-head-main"><div class="detail-title">${r.planned?'✓':'🍽️'} ${r.name}</div><div class="detail-sub">${r.planned?'已写入正式日程':'额外推荐'} · ${r.city} · 第${r.day}天 · ${r.type}</div></div><div class="detail-head-actions"><span class="badge-reserve" style="background:${statusColor};color:#fff">${r.meal}</span><button class="detail-ico-btn" onclick="hideDetail()" title="关闭" aria-label="关闭餐厅详情">✕</button></div>`;
+  const status=restaurantStatus(r);
+  const statusColor=status.color;
+  const headerHtml=`<div class="detail-head-main"><div class="detail-title">🍽️ ${r.name}</div><div class="detail-sub">${status.label} · ${r.city} · 第${r.day}天 · ${r.type}</div></div><div class="detail-head-actions"><span class="badge-reserve" style="background:${statusColor};color:#fff">${r.meal}</span><button class="detail-ico-btn" onclick="hideDetail()" title="关闭" aria-label="关闭餐厅详情">✕</button></div>`;
   const bodyHtml=`
-    <div class="detail-card"><div class="detail-card-h">😋 有什么好吃的</div><div class="detail-card-b">${r.specialties}</div></div>
-    <div class="detail-info-grid"><div><span>💶 参考人均</span><b>${r.price}</b></div><div><span>🏷️ 餐厅类型</span><b>${r.type}</b></div></div>
+    <div class="detail-card"><div class="detail-card-h">😋 推荐菜</div><div class="detail-card-b">${r.specialties}</div></div>
+    <div class="detail-info-grid"><div><span>💶 平均人均</span><b>${r.averagePrice || r.price}</b></div><div><span>📊 价格区间</span><b>${r.price}</b></div><div><span>🏷️ 餐厅类型</span><b>${r.type}</b></div><div><span>🍴 适合餐次</span><b>${r.meal}</b></div></div>
     <div class="detail-card"><div class="detail-card-h">📍 和当天行程的关系</div><div class="detail-card-b">${r.near}<br>${r.fit}</div></div>
     <div class="detail-card tip"><div class="detail-card-h">📅 预约建议</div><div class="detail-card-b">${r.reservation}</div></div>
     <div class="detail-card"><div class="detail-card-h">🔗 查询菜单 / 预约</div><div class="detail-card-b"><a href="${r.website}" target="_blank" style="color:#007aff">打开餐厅或参考页面 →</a><br><span style="font-size:11px;color:#86868b">出发前请再次确认当天营业时间和最新价格。</span></div></div>`;
@@ -1708,6 +2078,7 @@ const VISIT_DATES = {1:"9/25",2:"9/26",3:"9/27",4:"9/28",5:"9/29",6:"9/30",7:"10
 
 function calcEarliestBooking(dateStr, advanceStr) {
   if (!advanceStr || advanceStr.includes('无需') || advanceStr.includes('当天') || advanceStr.includes('已预约')) return null;
+  if (advanceStr.includes('现已开放') || advanceStr.includes('立即预约')) return '现已开放';
   const parts = dateStr.split('/');
   const visitDate = new Date(2026, parseInt(parts[0])-1, parseInt(parts[1]));
   
@@ -1745,6 +2116,20 @@ function parsePrice(str) {
 }
 
 // Build all row data once
+const MUSEUM_PASS_INCLUDED_IDS = new Set(['d1_1','d1_2','d2_6','d4_1','d4_4','d4_6','extra_metiers','extra_marine']);
+const MUSEUM_PASS_PARTIAL_IDS = new Set(['d3_1']);
+
+function museumPassInfo(id, item, type) {
+  if (type === '餐饮' || type === '行程') return {label:'—', cls:'na', note:'不适用'};
+  if (MUSEUM_PASS_PARTIAL_IDS.has(id)) return {label:'△ 部分', cls:'partial', note:'主宫殿可用；音乐喷泉花园另付费'};
+  if (MUSEUM_PASS_INCLUDED_IDS.has(id)) return {label:'✓ 可用', cls:'yes', note:'Paris Museum Pass 已包含'};
+  const text = `${item?.price || ''} ${item?.reservation || ''} ${item?.why || ''}`;
+  if (/免费|无需门票|免费开放|自由进入/.test(text)) return {label:'免费', cls:'free', note:'免费入场，无需使用通票'};
+  if (/通票不含|通票不包含|博物馆通票不含/.test(text)) return {label:'✕ 不含', cls:'no', note:'Paris Museum Pass 不包含'};
+  if ((item?.day || 99) <= 4 || item?.city === '巴黎') return {label:'✕ 不含', cls:'no', note:'不在本次通票覆盖项目内'};
+  return {label:'—', cls:'na', note:'非巴黎通票适用范围'};
+}
+
 function buildSummaryRows() {
   const rows = [];
   const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗','见学':'🎓'};
@@ -1776,13 +2161,13 @@ function buildSummaryRows() {
       }
 
       let linkCell = '<span style="color:#ccc;font-size:10px">—</span>';
-      if (p.reserveUrl) linkCell = `<a href="${p.reserveUrl}" target="_blank" class="link-btn">🔗 预约</a>`;
+      if (p.reserveUrl) linkCell = `<a href="${p.reserveUrl}" target="_blank" class="link-btn">${need ? '🔗 预约' : '🔗 官网/购票'}</a>`;
       else if (need) linkCell = '<span style="color:#e65100;font-size:9px">见备注</span>';
 
       const reserveTag = need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯</span>';
 
       // Sort key for booking urgency: earliest date, lower = more urgent
-      const sortKey = earliestDate ? earliestDate : '9999';
+      const sortKey = earliestDate === '现已开放' ? '0000' : (earliestDate || '9999');
 
       rows.push({
         day: day.day,
@@ -1801,8 +2186,37 @@ function buildSummaryRows() {
         sortKey,
         closedText,
         closedConflict,
-        linkCell
+        linkCell,
+        passInfo:museumPassInfo(id, p, pType),
+        source:'planned',
+        sourceLabel:'原定行程'
       });
+    });
+  });
+
+  EXTRA_POIS.forEach(p => {
+    const need = !p.reservation.includes('无需');
+    rows.push({
+      day:p.day,weekday:DAY_WEEK[p.day],time:'可加',name:p.name,nameEn:p.nameEn || '',
+      type:'景点',typeIcon:'🏛️',category:p.category,price:p.price,priceEur:parsePrice(p.price),
+      need,advanceBooking:p.reservation,earliestDate:null,sortKey:'9999',
+      closedText:'—',closedConflict:false,
+      linkCell:`<a href="${p.bookingUrl || p.website}" target="_blank" class="link-btn">🔗 查看</a>`,
+      passInfo:museumPassInfo(p.id, p, '景点'),
+      source:'extra',sourceLabel:'AI 景点'
+    });
+  });
+
+  RESTAURANTS.filter(r => !r.planned).forEach(r => {
+    const need = !r.reservation.includes('无需') && !r.reservation.includes('现场');
+    rows.push({
+      day:r.day,weekday:DAY_WEEK[r.day],time:r.meal,name:r.name,nameEn:'',
+      type:'餐饮',typeIcon:'🍽️',category:r.type,price:r.price,priceEur:parsePrice(r.price),
+      need,advanceBooking:r.reservation,earliestDate:null,sortKey:'9999',
+      closedText:'营业时间需复核',closedConflict:false,
+      linkCell:`<a href="${r.website}" target="_blank" class="link-btn">🔗 查看</a>`,
+      passInfo:museumPassInfo(r.id, r, '餐饮'),
+      source:'extra',sourceLabel:r.sheetSuggested?'候选餐厅':'AI 餐厅'
     });
   });
   return rows;
@@ -1811,14 +2225,16 @@ function buildSummaryRows() {
 let summaryRows = [];
 let summaryFilter = 'all'; // 'all' | 'need'
 let summarySort = 'day'; // 'day' | 'earliest'
+let summarySourceFilter = 'planned'; // 'all' | 'planned' | 'extra'
 
 function renderSummaryTable() {
   const body = document.getElementById('summaryBody');
   const totalEl = document.getElementById('summaryTotal');
 
   // Filter
-  let filtered = summaryRows;
+  let filtered = [...summaryRows];
   if (summaryFilter === 'need') filtered = summaryRows.filter(r => r.need);
+  if (summarySourceFilter !== 'all') filtered = filtered.filter(r => r.source === summarySourceFilter);
 
   // Sort
   if (summarySort === 'day') {
@@ -1833,17 +2249,19 @@ function renderSummaryTable() {
   }
 
   let html = `<table class="summary-table"><thead><tr>
-    <th>天</th><th>时间</th><th>景点</th><th>分类</th><th>价格</th><th>预约</th><th>提前多久</th><th>最早预约</th><th>闭馆日</th><th>预约链接</th>
+    <th class="col-source">来源</th><th class="col-day">天</th><th>时间</th><th>项目</th><th>分类</th><th>价格</th><th class="col-pass">通票</th><th class="col-reserve">预约</th><th>提前多久</th><th>最早预约</th><th>开放情况</th><th>链接</th>
   </tr></thead><tbody>`;
 
   filtered.forEach(r => {
     html += `<tr${r.closedConflict ? ' style="background:#fff5f5"' : ''}>
-      <td><span class="tag-day" style="background:${DAY_COLORS[r.day]}">D${r.day}</span></td>
+      <td class="col-source"><span class="source-tag ${r.source}">${r.sourceLabel}</span></td>
+      <td class="col-day"><span class="tag-day" style="background:${DAY_COLORS[r.day]}">D${r.day}</span></td>
       <td class="tag-time">${r.time}<br><span style="font-size:9px;color:#ccc">周${r.weekday}</span></td>
       <td><strong>${r.typeIcon} ${r.name}</strong><br><span style="font-size:9px;color:#86868b">${r.nameEn}</span></td>
       <td><span class="tag-cat">${r.category}</span></td>
       <td class="tag-price" style="font-weight:600;font-size:11px;color:#1d1d1f;white-space:nowrap">${r.price}</td>
-      <td>${r.need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯</span>'}</td>
+      <td class="col-pass"><span class="pass-tag ${r.passInfo.cls}" title="${r.passInfo.note}">${r.passInfo.label}</span></td>
+      <td class="col-reserve">${r.need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯</span>'}</td>
       <td class="adv-info">${r.advanceBooking}</td>
       <td class="adv-info" style="font-weight:${r.earliestDate ? '600' : '400'};color:${r.earliestDate ? '#e65100' : '#555'}">${r.earliestDate || '—'}</td>
       <td>${r.closedText}</td>
@@ -1853,6 +2271,8 @@ function renderSummaryTable() {
 
   html += '</tbody></table>';
   body.innerHTML = html;
+  const rowCountEl = document.getElementById('rowCount');
+  if (rowCountEl) rowCountEl.textContent = filtered.length;
 
   // Calculate totals
   let totalEur = 0;
@@ -1861,7 +2281,7 @@ function renderSummaryTable() {
     if (r.priceEur > 0) totalEur += r.priceEur;
     if (r.price.includes('免费')) freeCount++;
   });
-  const cnyRate = 7.5; // approximate EUR to CNY
+  const cnyRate = 7.6969; // ECB reference rate, 2026-07-28
   const totalCny = Math.round(totalEur * cnyRate);
 
   totalEl.innerHTML = `
@@ -1871,46 +2291,253 @@ function renderSummaryTable() {
   `;
 }
 
-function computeTransportCost() {
-  let totalKm = 0;
-  ITINERARY.forEach(day => {
-    day.stops.forEach(id => {
-      const p = POI_DATA[id];
-      if (p && p.type === '行程' && p.dist) totalKm += parseFloat(p.dist);
-    });
-  });
-  const rentalDays = 6;      // 第5天取车 → 第10天还车（波尔多→日内瓦）
-  const rentalPerDay = 45;   // 经济型手动挡约 €40-55/天
-  const rental = rentalDays * rentalPerDay;
-  const oneWayFee = 250;     // 异地还车费（Bordeaux 取 → Geneva 还）
-  const fuelLper100 = 6.5;   // 柴油轿车约 6.5L/100km
-  const dieselPrice = 1.65;  // €/L
-  const fuel = Math.round(totalKm * fuelLper100 / 100 * dieselPrice);
-  const tollPer100 = 13;     // 法国高速约 €13-15/100km
+function computeTransportCost(values = {}) {
+  const totalKm = Number(values.totalKm ?? 2200);
+  const rentalDays = Number(values.rentalDays ?? 6);
+  const rentalPerDay = Number(values.rentalPerDay ?? 125);
+  const oneWayFee = Number(values.oneWayFee ?? 132);
+  const crossBorderFee = Number(values.crossBorderFee ?? 34);
+  const vignette = Number(values.vignette ?? 43);
+  const transfer = Number(values.transfer ?? 0);
+  const fuelLper100 = Number(values.fuelLper100 ?? 8.5);
+  const fuelPrice = Number(values.fuelPrice ?? 2.03);
+  const tollPer100 = Number(values.tollPer100 ?? 13);
+  const rental = Math.round(rentalDays * rentalPerDay);
+  const fuel = Math.round(totalKm * fuelLper100 / 100 * fuelPrice);
   const toll = Math.round(totalKm * tollPer100 / 100);
-  const total = rental + oneWayFee + fuel + toll;
-  return { totalKm, rentalDays, rental, oneWayFee, fuel, toll, total };
+  const total = rental + oneWayFee + crossBorderFee + vignette + transfer + fuel + toll;
+  return { totalKm, rentalDays, rentalPerDay, rental, oneWayFee, crossBorderFee, vignette, transfer, fuelLper100, fuelPrice, tollPer100, fuel, toll, total };
+}
+
+function readTransportInputs() {
+  const val = id => Number(document.getElementById(id)?.value);
+  return {
+    totalKm:val('carKm'),rentalDays:val('carDays'),rentalPerDay:val('carDaily'),
+    oneWayFee:val('carOneWay'),fuelLper100:val('carFuelUse'),
+    fuelPrice:val('carFuelPrice'),tollPer100:val('carTollRate'),
+    crossBorderFee:val('carCrossBorder'),vignette:val('carVignette'),transfer:val('carTransfer')
+  };
+}
+
+function updateTransportEstimate() {
+  const tr = computeTransportCost(readTransportInputs());
+  const set = (id, value) => { const el=document.getElementById(id); if(el) el.textContent=value; };
+  set('carRentalOut',`€${tr.rental}`);
+  set('carFuelOut',`€${tr.fuel}`);
+  set('carTollOut',`€${tr.toll}`);
+  set('carExtrasOut',`€${Math.round(tr.oneWayFee+tr.crossBorderFee+tr.vignette+tr.transfer)}`);
+  set('carTotalOut',`€${tr.total}`);
+  set('carCnyOut',`约 ¥${Math.round(tr.total*7.6969)}`);
+  set('budgetCarTotal',`€${tr.total}`);
+  set('budgetCarTotal5',`€${tr.total}`);
+  return tr;
+}
+
+function setTransportPreset(daily) {
+  document.getElementById('carDaily').value = daily;
+  updateTransportEstimate();
+}
+
+function setTransportScenario(name) {
+  const scenarios = {
+    'gva-fr':{km:2200,days:6,oneWay:132,crossBorder:34,vignette:43,transfer:0},
+    'lyon-train':{km:2050,days:4,oneWay:132,crossBorder:0,vignette:0,transfer:125},
+    'gva-ch':{km:2200,days:6,oneWay:765,crossBorder:34,vignette:43,transfer:0}
+  };
+  const s=scenarios[name];
+  if(!s)return;
+  document.getElementById('carKm').value=s.km;
+  document.getElementById('carDays').value=s.days;
+  document.getElementById('carOneWay').value=s.oneWay;
+  document.getElementById('carCrossBorder').value=s.crossBorder;
+  document.getElementById('carVignette').value=s.vignette;
+  document.getElementById('carTransfer').value=s.transfer;
+  updateTransportEstimate();
+}
+
+function renderTransportEditor() {
+  const tr = computeTransportCost();
+  const trEl = document.getElementById('summaryTransport');
+  trEl.innerHTML = `
+    <h3>🚙 5人 SUV 自驾预算（所有数值均可修改）</h3>
+    <div class="transport-presets">
+      <button onclick="setTransportScenario('gva-fr')">巴黎 → 日内瓦法国区</button>
+      <button onclick="setTransportScenario('lyon-train')">里昂还车 + 5人火车</button>
+      <button onclick="setTransportScenario('gva-ch')">巴黎 → 日内瓦瑞士区</button>
+    </div>
+    <div class="transport-presets">
+      <button onclick="setTransportPreset(95)">紧凑型 SUV</button>
+      <button onclick="setTransportPreset(125)">中大型 SUV · 推荐</button>
+      <button onclick="setTransportPreset(165)">大空间 / 全险预算</button>
+    </div>
+    <div class="transport-editor">
+      <div class="transport-field"><label>预计总里程 km</label><input id="carKm" type="number" value="${tr.totalKm}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>租车天数</label><input id="carDays" type="number" value="${tr.rentalDays}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>SUV 每日租金 €</label><input id="carDaily" type="number" value="${tr.rentalPerDay}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>异地 / 跨国还车费 €</label><input id="carOneWay" type="number" value="${tr.oneWayFee}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>跨境许可费 €</label><input id="carCrossBorder" type="number" value="${tr.crossBorderFee}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>瑞士高速票 €</label><input id="carVignette" type="number" value="${tr.vignette}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>5人火车 / 接驳 €</label><input id="carTransfer" type="number" value="${tr.transfer}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>油耗 L/100km</label><input id="carFuelUse" type="number" step="0.1" value="${tr.fuelLper100}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>燃油价格 €/L</label><input id="carFuelPrice" type="number" step="0.05" value="${tr.fuelPrice}" oninput="updateTransportEstimate()"></div>
+      <div class="transport-field"><label>高速费 €/100km</label><input id="carTollRate" type="number" value="${tr.tollPer100}" oninput="updateTransportEstimate()"></div>
+    </div>
+    <div class="tr-grid">
+      <div class="tr-item"><span>租车</span><b id="carRentalOut">€${tr.rental}</b></div>
+      <div class="tr-item"><span>油费</span><b id="carFuelOut">€${tr.fuel}</b></div>
+      <div class="tr-item"><span>过路费</span><b id="carTollOut">€${tr.toll}</b></div>
+      <div class="tr-item"><span>还车 / 跨境 / 接驳</span><b id="carExtrasOut">€${Math.round(tr.oneWayFee+tr.crossBorderFee+tr.vignette+tr.transfer)}</b></div>
+    </div>
+    <div class="tr-total">合计：≈ <span id="carTotalOut">€${tr.total}</span> <span id="carCnyOut" style="font-weight:400;color:#777">约 ¥${Math.round(tr.total*7.6969)}</span></div>
+    <div class="tr-note">默认方案为巴黎取车、日内瓦机场法国区还车：属于不同法国门店的异地还车，同时需要确认车辆获准进入瑞士。若实际选择日内瓦机场瑞士区，才按真正的国际异地还车计算。</div>`;
+}
+
+function renderCarComparePage() {
+  const el = document.getElementById('summaryCar');
+  const eur = n => `€${n.toFixed(2)}`;
+  const cny = n => `¥${Math.round(n).toLocaleString('zh-CN')}`;
+  const scenarioRows = [
+    {
+      name:'巴黎 → 日内瓦机场法国区',
+      route:'9/30 巴黎取车 · 10/6 法国区还车',
+      rental:'6天 × €125 = €750',
+      extras:'法国异地 €132 + 跨境许可 €34 + 瑞士高速票 €43',
+      drive:'油费 €380 + 高速费 €286',
+      total:1625,
+      diff:'基准',
+      verdict:'推荐：保留全程用车；法国区还车不等于瑞士门店跨国还车'
+    },
+    {
+      name:'里昂还车 + 火车去日内瓦',
+      route:'9/30 巴黎取车 · 10/4 里昂还车 · 5人乘火车',
+      rental:'4天 × €125 = €500',
+      extras:'法国异地 €132 + 火车最低 €125',
+      drive:'约2,050km：油费 €354 + 高速费 €267',
+      total:1378,
+      diff:'−€247',
+      verdict:'预计最省；但须压缩里昂/博若莱用车，并预留还车、进站和行李时间'
+    },
+    {
+      name:'巴黎 → 日内瓦机场瑞士区',
+      route:'9/30 巴黎取车 · 10/6 瑞士区还车',
+      rental:'6天 × €125 = €750',
+      extras:'国际异地示例 €765 + 跨境许可 €34 + 瑞士高速票 €43',
+      drive:'油费 €380 + 高速费 €286',
+      total:2258,
+      diff:'+€633',
+      verdict:'通常最贵；只有实时含税总价明显更低时才考虑'
+    },
+    {
+      name:'里昂换车，再到瑞士区还车',
+      route:'里昂结束法国合同 · 新开第二份合同前往日内瓦',
+      rental:'两份合同、两次验车/押金',
+      extras:'第二次基础租金 + 保险 + 可能的国际异地费',
+      drive:'里昂至日内瓦约150km，节省的油路费很有限',
+      total:null,
+      diff:'通常高于法国区方案',
+      verdict:'不建议：行李转移和时间成本高，且不能消除国际异地还车费'
+    }
+  ];
+  const quoteRows = [
+    {site:'Enterprise',model:'Renault Captur 或同级 · Compact SUV Auto',raw:'US$613.15',eurTotal:539.41,cnyTotal:4152,status:'可下单总价 · 5人 / 3件行李',url:'https://www.enterprise.com/en/reserve.html'},
+    {site:'Enterprise',model:'Peugeot 3008 或同级 · Intermediate SUV Auto',raw:'US$626.75',eurTotal:551.38,cnyTotal:4244,status:'可下单总价 · 5人 / 3件行李',url:'https://www.enterprise.com/en/reserve.html'},
+    {site:'Enterprise',model:'Ford Kuga 或同级 · Standard SUV Auto',raw:'US$645.18',eurTotal:567.59,cnyTotal:4369,status:'可下单总价 · 5人 / 3件行李',url:'https://www.enterprise.com/en/reserve.html'},
+    {site:'Enterprise',model:'Volvo XC60 或同级 · Premium SUV Auto',raw:'US$743.93',eurTotal:654.46,cnyTotal:5037,status:'可下单总价 · 5人 / 3件行李',url:'https://www.enterprise.com/en/reserve.html'},
+    {site:'Enterprise',model:'Peugeot 5008 或同级 · 7 Seater SUV Auto',raw:'US$1,117.35',eurTotal:982.98,cnyTotal:7566,status:'可下单总价 · 7人 / 1件行李',url:'https://www.enterprise.com/en/reserve.html'},
+    {site:'Klook',model:'SUV · 平台只识别日内瓦机场瑞士主航站区',raw:'—',eurTotal:null,cnyTotal:null,status:'已录入相同租期，但未返回可预订车型；不能当作法国区报价',url:'https://www.klook.com/car-rentals/'},
+    {site:'Booking.com',model:'SUV · 戴高乐机场异地还车',raw:'—',eurTotal:null,cnyTotal:null,status:'地点联想未返回门店，当前无法形成可下单报价',url:'https://www.booking.com/cars/'},
+    {site:'SIXT',model:'SUV · Paris CDG → Geneva Airport French Sector',raw:'—',eurTotal:null,cnyTotal:null,status:'两家法国区门店均可选；最终车型价需在结算页重新生成',url:'https://www.sixt.com/'},
+    {site:'Avis',model:'中大型 SUV / 自动挡',raw:'—',eurTotal:null,cnyTotal:null,status:'需在官网按同一门店、租期和保险口径生成',url:'https://www.avis.fr/services-avis/services-de-location/location-voiture-aller-simple'},
+    {site:'Europcar',model:'中大型 SUV / 自动挡',raw:'—',eurTotal:null,cnyTotal:null,status:'需在官网按同一门店、租期和保险口径生成',url:'https://www.europcar.com/en-us/places/car-rental-france/paris'}
+  ];
+  el.innerHTML = `
+    <div class="car-page-intro"><strong>统一口径：</strong>2026/9/30 巴黎取车，5位乘客、中大型 SUV、自动挡、驾驶员30–65岁。以下先比较“里昂还车”“日内瓦机场法国区还车”和“日内瓦机场瑞士区还车”；同一时刻还车按24小时计费，超时可能多算1天。费用是可修改的行程预算，不冒充尚未完成驾驶员与保险选择的实时订单价。</div>
+    <h3 class="car-subtitle">还车地点与换车方案对比</h3>
+    <div class="car-table-wrap"><table class="car-price-table">
+      <thead><tr><th>方案</th><th>租期 / 路线</th><th>基础租金</th><th>异地、跨境与接驳</th><th>油费 / 高速费</th><th>每车预算</th><th>相对法国区</th><th>结论</th></tr></thead>
+      <tbody>${scenarioRows.map(r => `<tr>
+        <td><strong>${r.name}</strong></td>
+        <td>${r.route}</td>
+        <td>${r.rental}</td>
+        <td>${r.extras}</td>
+        <td>${r.drive}</td>
+        <td>${r.total == null ? '需分别实时询价' : `<strong>约 €${r.total}</strong>`}</td>
+        <td>${r.diff}</td>
+        <td>${r.verdict}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <div class="car-cost-note"><strong>关键区别：</strong>日内瓦机场“法国区”是法国租车门店，可从 Ferney-Voltaire 的海关道路进出；它通常按法国境内异地还车处理，但车辆仍需获得进入瑞士的许可。只有把法国车辆还到机场“瑞士区 / Swiss Sector”才是真正的国际异地还车。上表以 SIXT 法国公开条款中的法国异地 €132、瑞士国际异地 €765、跨境许可 €33.95/周作为可复算示例；各公司、车型和库存会改变最终金额。<br><a href="https://www.gva.ch/en/passengers/travel-preparation/services/our-services/car-Rental" target="_blank" rel="noopener">日内瓦机场官方租车说明</a> · <a href="https://car-rental.sixt.com/php/terms/view?language=en_US&liso=FR&rtar=000&style=&tlang=en_US&view=IP" target="_blank" rel="noopener">SIXT 法国公开条款</a> · <a href="https://www.sncf-connect.com/en-en/train/route/lyon/geneva" target="_blank" rel="noopener">SNCF 里昂—日内瓦班次与票价</a></div>
+    <div class="car-platform-grid">
+      <div class="car-platform"><h4>预算优先</h4><p><strong>里昂还车 + 火车</strong>预计约 €1,378/车，比法国区方案少约 €247。SNCF 当前公开信息显示里昂至日内瓦每天约13班、最低 €25/人、最快2小时31分；5人最低车票按 €125 计。</p></div>
+      <div class="car-platform"><h4>行程便利优先</h4><p><strong>日内瓦机场法国区还车</strong>预计约 €1,625/车，能保留里昂、博若莱到日内瓦的用车自由度。若里昂当天活动较满，这个方案通常比为省约 €247 而赶还车和火车更稳妥。</p></div>
+    </div>
+    <h3 class="car-subtitle">同路线实时查询与车型价格</h3>
+    <div class="car-table-wrap"><table class="car-price-table">
+      <thead><tr><th>网站</th><th>车型 / 级别</th><th>平台原币总价</th><th>6天欧元总价</th><th>约合人民币</th><th>欧元日均</th><th>查询状态 / 预订</th></tr></thead>
+      <tbody>${quoteRows.map(r => {
+        return `<tr>
+          <td><strong>${r.site}</strong></td>
+          <td>${r.model}</td>
+          <td>${r.raw}</td>
+          <td>${r.eurTotal==null?'—':`<strong>${eur(r.eurTotal)}</strong>`}</td>
+          <td>${r.cnyTotal==null?'—':cny(r.cnyTotal)}</td>
+          <td>${r.eurTotal==null?'—':`${eur(r.eurTotal/6)} / 天`}</td>
+          <td><span class="${r.eurTotal==null?'quote-live':'quote-public'}">${r.status}</span><br><a href="${r.url}" target="_blank" rel="noopener">重新查询 / 预订 →</a></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>
+    <div class="car-cost-note"><strong>查询时间与口径：</strong>2026-07-29；2026/9/30 10:00 巴黎戴高乐机场取车，2026/10/6 10:00 日内瓦机场法国区还车，驾驶员30岁以上。Enterprise 结果页明确显示价格包含 taxes &amp; fees，以上为未继续加选额外保险和设备时的车辆总价。换算使用欧洲央行 2026-07-28 参考汇率：€1 = US$1.1367、€1 = ¥7.6969；人民币四舍五入到元。<a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener">查看 ECB 汇率 →</a><br><strong>重要：</strong>Klook 当前下拉框显示的 Geneva Airport (GVA) 地址在瑞士 Le Grand-Saconnex，并非法国区 Ferney-Voltaire，所以没有把它和法国区报价混在一起。平台没有返回结果时只显示“未形成报价”，不再用其他城市均价替代。</div>
+    <h3 class="car-subtitle">附加费用拆分</h3>
+    <div class="car-table-wrap"><table class="car-price-table">
+      <thead><tr><th>项目</th><th>计费依据 / 比率</th><th>本行程计算</th><th>是否已计入上表</th><th>注意</th></tr></thead>
+      <tbody>
+        <tr><td><strong>油费</strong></td><td>2,200 km × 8.5 L/100km × €2.03/L</td><td>187 L · <strong>约 €380</strong></td><td>计入方案预算</td><td>按 SUV 估算；网页上方可修改里程、油耗和油价</td></tr>
+        <tr><td><strong>法国高速费</strong></td><td>预算率 €13 / 100km</td><td><strong>约 €286</strong></td><td>计入方案预算</td><td>实际随路线和收费站变化</td></tr>
+        <tr><td><strong>法国境内异地还车</strong></td><td>SIXT 法国公开条款示例 €132</td><td><strong>€132</strong></td><td>计入法国区 / 里昂方案</td><td>不是所有公司都相同，最终看结算页</td></tr>
+        <tr><td><strong>跨境许可</strong></td><td>SIXT 法国公开条款示例 €33.95 / 周</td><td><strong>约 €34</strong></td><td>计入驶入瑞士方案</td><td>需提前申报；这是跨境许可，不是异地还车费</td></tr>
+        <tr><td><strong>瑞士区国际异地还车</strong></td><td>SIXT 法国公开条款示例 €765</td><td><strong>€765</strong></td><td>仅计入瑞士区方案</td><td>费用会随门店、车型和库存变化</td></tr>
+        <tr><td><strong>瑞士高速年票</strong></td><td>官方固定 CHF40；预算折合 €43</td><td><strong>约 €43</strong></td><td>计入驶入瑞士方案</td><td>租车可能已贴票，取车时先确认</td></tr>
+        <tr><td><strong>里昂 → 日内瓦火车</strong></td><td>SNCF 公开最低 €25 / 人</td><td>5人最低 <strong>€125</strong></td><td>计入里昂方案</td><td>当天票价与行李条件需在购票页确认</td></tr>
+        <tr><td><strong>全险 / 降低免赔额</strong></td><td>按天、车型与承保方动态收取</td><td>结算页确认</td><td>未计入</td><td>比较时核对免赔额，不能只看租金</td></tr>
+        <tr><td><strong>第二驾驶员 / 设备</strong></td><td>按天或按租期收取</td><td>柜台或结算页确认</td><td>未计入</td><td>可能需要在取车时支付</td></tr>
+        <tr><td><strong>停车费</strong></td><td>按城市、酒店和停车场计费</td><td>尚未估算</td><td>未计入</td><td>与油费分开，订酒店时核对</td></tr>
+      </tbody>
+    </table></div>
+    <div class="car-platform-grid">
+      <div class="car-platform"><h4>里昂换车为什么通常不划算</h4><p>结束第一份合同后再开第二份合同，会重复取还车、验车、押金和保险流程；若第二辆仍从法国还到瑞士区，国际异地费并不会因为“换过车”而自动消失。</p></div>
+      <div class="car-platform"><h4>5人选车建议</h4><p>优先 Qashqai、Tiguan、3008 或更大级别；若每人都有大箱，建议 7 座 SUV / MPV，并检查后排展开后的行李容积。</p></div>
+    </div>
+    <div class="car-checklist"><h4>下单前必须核对</h4><ul>
+      <li>选择“Geneva Airport French Sector / Genève Aéroport Secteur France”时，确认订单门店国家显示为法国；开车从 Ferney-Voltaire 海关道路进入法国区。</li>
+      <li>若选里昂还车 + 火车，先确认当天活动结束时间、还车门店营业时间和车站距离；公开时刻显示最晚约20:38，不能把它当作随时都有车。</li>
+      <li>确认 5 个成人座位之外仍有足够后备箱空间；小型 SUV 通常不够放 5 人大件行李。</li>
+      <li>核对自动挡、第二驾驶员、基础/完整保险、道路救援、里程限制和押金额度。</li>
+      <li>确认车辆允许进入瑞士，并询问瑞士高速公路年票是否已随车提供。</li>
+    </ul></div>`;
 }
 
 function showSummary() {
   currentMode = 'summary';
   const overlay = document.getElementById('summaryModal');
 
+  // Rebuild on every open so newly added optional items are always included.
+  summaryRows = buildSummaryRows();
+
   // Build filter bar
   const filterBar = document.getElementById('summaryFilter');
   filterBar.innerHTML = `
     <label><input type="checkbox" id="filterNeed" onchange="summaryFilter=this.checked?'need':'all';renderSummaryTable()"> 仅看需预约</label>
+    <select onchange="summarySourceFilter=this.value;renderSummaryTable()">
+      <option value="all">全部来源</option>
+      <option value="planned" selected>仅原定行程</option>
+      <option value="extra">仅AI附加项</option>
+    </select>
     <select id="sortSelect" onchange="summarySort=this.value;renderSummaryTable()">
       <option value="day">按日期排序</option>
       <option value="earliest">按最早预约→最急</option>
     </select>
     <span style="color:#86868b;font-size:11px">共 <strong id="rowCount">${summaryRows.length}</strong> 项</span>
   `;
-
-  // Rebuild data if needed
-  if (summaryRows.length === 0) {
-    summaryRows = buildSummaryRows();
-  }
 
   // Stats
   const stats = document.getElementById('summaryStats');
@@ -1934,33 +2561,99 @@ function showSummary() {
       <div class="pass-option best"><span>4日通票 €105 + 凡尔赛音乐喷泉花园 €15</span><b>€120 / 人</b></div>
       <div class="pass-option"><span>通票方案节省</span><b>€30.50 / 人</b></div>
     </div>
-    <div class="pass-covered"><strong>通票覆盖：</strong>航空航天博物馆、卢浮宫、奥赛、橘园、凯旋门、凡尔赛宫及特里亚农、先贤祠。1–4人通票方案分别为 <strong>€120 / €240 / €360 / €480</strong>。建议9月25日上午首次入馆时激活，96小时可覆盖至9月29日上午。</div>
+    <div class="pass-covered"><strong>通票覆盖：</strong>航空航天博物馆、卢浮宫、奥赛、橘园、凯旋门、凡尔赛宫及特里亚农、先贤祠。1–5人通票方案分别为 <strong>€120 / €240 / €360 / €480 / €600</strong>。建议9月25日上午首次入馆时激活，96小时可覆盖至9月29日上午。</div>
     <div class="pass-covered"><strong>另付：</strong>凡尔赛周日音乐喷泉花园15€；歌剧院自助参观25€或演出票71–175€；塞纳河游船、埃菲尔铁塔、交通及各馆收费导览不包含。卢浮宫、奥赛、橘园和凡尔赛持通票仍要预约时段。</div>
   `;
 
-  // Transport cost estimate (car rental + fuel + tolls)
-  const tr = computeTransportCost();
-  const trEl = document.getElementById('summaryTransport');
-  trEl.innerHTML = `
-    <h3>🚗 自驾费用预估（租车 + 油费 + 过路费）</h3>
-    <div class="tr-grid">
-      <div class="tr-item"><span>总车程</span><b>${tr.totalKm} km</b></div>
-      <div class="tr-item"><span>租车 ${tr.rentalDays} 天</span><b>€${tr.rental}</b></div>
-      <div class="tr-item"><span>异地还车费</span><b>€${tr.oneWayFee}</b></div>
-      <div class="tr-item"><span>油费(估)</span><b>€${tr.fuel}</b></div>
-      <div class="tr-item"><span>过路费(估)</span><b>€${tr.toll}</b></div>
-    </div>
-    <div class="tr-total">合计预估：≈ €${tr.total} <span style="font-weight:400;color:#777">（约 ¥${Math.round(tr.total*7.5)}）</span></div>
-    <div class="tr-note">※ 假设：经济型柴油车 €45/天×6天、异地还车 €250、油耗 6.5L/100km、柴油 €1.65/L、高速 €13/100km。实际以租车公司与油价为准；若全程改乘火车/高铁则此项可省。</div>
-  `;
+  renderTransportEditor();
+  renderCarComparePage();
 
   renderSummaryTable();
+  switchSummaryTab('itinerary');
   overlay.classList.add('open');
   overlay.setAttribute('aria-hidden', 'false');
   document.getElementById('summaryCloseBtn').focus();
 
   document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
   document.querySelector('.day-tab.summary-tab')?.classList.add('active');
+}
+
+function renderBudgetSummary() {
+  const body = document.getElementById('summaryBody');
+  const plannedDining = RESTAURANTS
+    .filter(r => r.planned)
+    .map(r => ({...r, unitPrice:parsePrice(r.averagePrice || r.price)}));
+  const plannedDiningNames = new Set(plannedDining.map(r => r.name));
+  const diningPerPerson = plannedDining.reduce((sum, r) => sum + r.unitPrice, 0);
+  const plannedTickets = summaryRows
+    .filter(r => r.source === 'planned' && r.type !== '行程' && r.type !== '餐饮' && !plannedDiningNames.has(r.name))
+    .reduce((sum, r) => sum + r.priceEur, 0);
+  const optionalTickets = summaryRows
+    .filter(r => r.source === 'extra' && r.type !== '餐饮')
+    .reduce((sum, r) => sum + r.priceEur, 0);
+  const tr = updateTransportEstimate();
+  body.innerHTML = `<div style="padding:14px 20px">
+    <table class="summary-table">
+      <thead><tr><th>预算类别</th><th>每人 / 每车</th><th>5人参考</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>原定景点门票</strong></td><td>约 €${Math.round(plannedTickets)} / 人</td><td>约 €${Math.round(plannedTickets*5)}</td><td>按网页可解析的单项起价估算</td></tr>
+        <tr><td><strong>Paris Museum Pass 方案</strong></td><td>€120 / 人</td><td>€600</td><td>4日通票 €105 + 凡尔赛花园 €15</td></tr>
+        <tr><td><strong>全部AI景点加项</strong></td><td>约 €${Math.round(optionalTickets)} / 人</td><td>约 €${Math.round(optionalTickets*5)}</td><td>只有实际选中的加项才计入</td></tr>
+        <tr><td><strong>已定行程餐饮</strong></td><td>约 €${Math.round(diningPerPerson)} / 人</td><td>约 €${Math.round(diningPerPerson*5)}</td><td>${plannedDining.length} 项，按平均人均 × 5人估算；下方可展开</td></tr>
+        <tr><td><strong>5人 SUV 自驾</strong></td><td>每车约 <span id="budgetCarTotal">€${tr.total}</span></td><td>约 <span id="budgetCarTotal5">€${tr.total}</span></td><td>按上方可编辑参数实时计算</td></tr>
+      </tbody>
+    </table>
+    <details class="budget-details">
+      <summary>🍽️ 查看已定餐饮预算明细 · 5人约 €${Math.round(diningPerPerson*5)}</summary>
+      <div class="budget-details-body">
+        <div class="car-table-wrap"><table class="car-price-table" style="min-width:680px">
+          <thead><tr><th>日期</th><th>餐次</th><th>餐厅 / 项目</th><th>预算人均</th><th>5人预算</th><th>预约状态</th></tr></thead>
+          <tbody>${plannedDining.map(r => `<tr>
+            <td>第${r.day}天 · ${VISIT_DATES[r.day]}（周${DAY_WEEK[r.day]}）</td>
+            <td>${r.meal}</td>
+            <td><strong>${r.name}</strong><br><small>${r.specialties}</small></td>
+            <td>约 €${Math.round(r.unitPrice)}</td>
+            <td><strong>约 €${Math.round(r.unitPrice*5)}</strong></td>
+            <td>${r.reservation}</td>
+          </tr>`).join('')}</tbody>
+        </table></div>
+        <div style="font-size:10px;color:#777;line-height:1.6">Café Marly 当前记录为3位预约，但这里按全团5人的总费用估算，请确认是否需要把预订人数改为5位。餐费通常不含额外酒水、服务附加项及临时菜单差价。</div>
+      </div>
+    </details>
+    <div style="font-size:10px;color:#777;line-height:1.6;margin-top:10px">已定餐饮已计入；尚未选定的 AI 餐厅建议不进入预算，避免把多个备选重复相加。住宿、公共交通、停车费、保险升级和第二驾驶员仍未计入。</div>
+  </div>`;
+}
+
+function switchSummaryTab(tabName) {
+  document.querySelectorAll('.summary-tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.summaryTab === tabName));
+  const stats = document.getElementById('summaryStats');
+  const pass = document.getElementById('museumPassSummary');
+  const filter = document.getElementById('summaryFilter');
+  const transport = document.getElementById('summaryTransport');
+  const body = document.getElementById('summaryBody');
+  const total = document.getElementById('summaryTotal');
+  const car = document.getElementById('summaryCar');
+
+  [stats,pass,filter,transport,body,total].forEach(el => el.style.display='none');
+  car.classList.remove('active');
+
+  if (tabName === 'itinerary') {
+    stats.style.display='flex';
+    filter.style.display='flex';
+    body.style.display='block';
+    renderSummaryTable();
+    document.getElementById('summaryTitle').textContent='🗓️ 行程与可加项';
+  } else if (tabName === 'budget') {
+    pass.style.display='block';
+    transport.style.display='block';
+    body.style.display='block';
+    total.style.display='flex';
+    renderBudgetSummary();
+    document.getElementById('summaryTitle').textContent='💰 整体预算';
+  } else {
+    car.classList.add('active');
+    document.getElementById('summaryTitle').textContent='🚙 5人 SUV 租车比价';
+  }
 }
 
 function hideSummary() {
@@ -1985,39 +2678,244 @@ function hideChangelog() {
 }
 
 const MEAL_SLOT_CONFIG = {
-  breakfast:{label:'早餐',icon:'☕',keywords:['早餐','早午餐']},
-  lunch:{label:'午餐',icon:'🥗',keywords:['午餐','早午餐','简餐']},
-  dinner:{label:'晚餐',icon:'🍽️',keywords:['晚餐','轻晚餐']}
+  breakfast:{label:'早餐',icon:'☕',time:'08:00–09:00',keywords:['早餐','早午餐']},
+  lunch:{label:'午餐',icon:'🥗',time:'12:00–13:30',keywords:['午餐','早午餐','简餐']},
+  dinner:{label:'晚餐',icon:'🍽️',time:'19:00–21:00',keywords:['晚餐','轻晚餐']}
 };
 
+const DAY_MEAL_CITY = {
+  1:'巴黎',2:'巴黎',3:'凡尔赛',4:'巴黎',5:'香波尔 / 波尔多',6:'波尔多',
+  7:'图卢兹',8:'卡尔卡松 / 尼姆 / 里昂',9:'里昂',10:'里昂 / 日内瓦',11:'日内瓦',12:'日内瓦'
+};
+
+const DAY_MEAL_SEARCH_CITY = {
+  5:{breakfast:'巴黎',lunch:'香波尔',dinner:'波尔多'},
+  8:{breakfast:'图卢兹',lunch:'卡尔卡松',dinner:'里昂'},
+  10:{breakfast:'里昂',lunch:'里昂',dinner:'日内瓦'}
+};
+
+function restaurantPriceBand(price) {
+  const nums = (price.match(/\d+(?:\.\d+)?/g) || []).map(Number);
+  const min = nums.length ? nums[0] : 25;
+  if (min < 10) return {label:'€10 以下',cls:'price-low'};
+  if (min <= 20) return {label:'€10–20',cls:'price-mid'};
+  return {label:'€20 以上',cls:'price-high'};
+}
+
+function aiMealRec(name, type, priceLabel, specialties, reservation, query) {
+  const priceClass = priceLabel.includes('以下') ? 'price-low' : (priceLabel.includes('10–20') ? 'price-mid' : 'price-high');
+  return {
+    aiNamed:true,name,type,priceLabel,priceClass,specialties,reservation,
+    website:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query || name)}`
+  };
+}
+
+const AI_MEAL_POOLS = {
+  paris:{
+    breakfast:[
+      aiMealRec('Boulangerie Utopie','法式面包店','€10 以下','可颂、巧克力面包、创意面包','通常无需预约','Boulangerie Utopie Paris'),
+      aiMealRec('BO&MIE – Louvre Rivoli','烘焙 / 咖啡','€10–20','可颂、三明治、咖啡与法式甜点','早餐通常现场即可','BO&MIE Louvre Rivoli Paris'),
+      aiMealRec('Angelina Rivoli','经典巴黎茶室','€20 以上','法式早餐、老式热巧克力、Mont-Blanc','热门时段建议预约或早到','Angelina Rivoli Paris')
+    ],
+    lunch:[
+      aiMealRec('Chez Nicos','希腊可丽饼 / 快餐','€10 以下','现做咸可丽饼、鸡肉与蔬菜卷','无需预约','Chez Nicos Paris'),
+      aiMealRec('Bouillon Chartier Grands Boulevards','大众法式食堂','€10–20','洋葱汤、香肠土豆泥、牛肉与甜点','通常不预约，建议错峰','Bouillon Chartier Grands Boulevards Paris'),
+      aiMealRec('Le Fumoir','法式小酒馆','€20 以上','鸭胸、时令鱼、法式甜点','午餐可订，5人建议预约','Le Fumoir Paris')
+    ],
+    dinner:[
+      aiMealRec('Urfa Dürüm','库尔德烤肉卷','€10 以下','现烤薄饼、羊肉或鸡肉烤串卷','无需预约','Urfa Dürüm Paris'),
+      aiMealRec('Bouillon Pigalle','大众法式食堂','€10–20','蜗牛、油封鸭、香肠土豆泥','可在线预约，亦可排队','Bouillon Pigalle Paris'),
+      aiMealRec('Le Relais de l’Entrecôte – Marbeuf','经典法式牛排馆','€20 以上','核桃沙拉、牛排薯条与秘制酱汁','通常不接受预约，建议错峰','Le Relais de l’Entrecôte Marbeuf Paris')
+    ]
+  },
+  montmartre:{
+    breakfast:[
+      aiMealRec('Pain Pain','蒙马特面包店','€10 以下','可颂、法棍、果酱面包与咖啡','无需预约','Pain Pain Paris Montmartre'),
+      aiMealRec('KB CaféShop','精品咖啡 / 早餐','€10–20','咖啡、格兰诺拉、吐司与糕点','通常现场候位','KB CaféShop Paris'),
+      aiMealRec('The Hardware Société Paris','澳式早午餐','€20 以上','烤蛋、法式吐司、可颂与精品咖啡','周末建议早到','The Hardware Société Paris')
+    ]
+  },
+  versailles:{
+    breakfast:[
+      aiMealRec('Boulangerie Guinon','传统法式面包店','€10 以下','可颂、法棍、三明治与咖啡','无需预约','Boulangerie Guinon Versailles'),
+      aiMealRec('Positive Café Versailles','咖啡 / 轻食','€10–20','咖啡、吐司、糕点和轻早餐','通常无需预约','Positive Café Versailles'),
+      aiMealRec('Ore – Ducasse au Château de Versailles','宫殿法式餐厅','€20 以上','宫殿内法式早餐与精致甜点','建议提前预约','Ore Ducasse Versailles')
+    ],
+    lunch:[
+      aiMealRec('Crêperie La Place','可丽饼店','€10 以下','荞麦咸可丽饼与甜可丽饼','通常现场候位','Crêperie La Place Versailles'),
+      aiMealRec('Le Royal Brasserie','法式 Brasserie','€10–20','当日法式主菜、沙拉与牛排','5人建议预约','Le Royal Brasserie Versailles'),
+      aiMealRec('Vous Restaurant','现代法餐','€20 以上','时令套餐、现代法式主菜与甜点','座位有限，建议预约','Vous Restaurant Versailles')
+    ],
+    dinner:[
+      aiMealRec('O’Bottega Versailles','意式披萨','€10 以下','玛格丽特披萨与意式小食','可现场候位','O Bottega Versailles'),
+      aiMealRec('Le Bistrot du 11','现代小酒馆','€10–20','季节小盘、肉类与甜点','建议预约','Le Bistrot du 11 Versailles'),
+      aiMealRec('La Table du 11','现代法餐','€20 以上','主厨套餐与时令精致料理','需要提前预约','La Table du 11 Versailles')
+    ]
+  },
+  chambord:{
+    lunch:[
+      aiMealRec('Boulangerie Pâtisserie Marlau – Bracieux','面包店 / 快捷午餐','€10 以下','三明治、咸派、面包与甜点','无需预约','Boulangerie Marlau Bracieux'),
+      aiMealRec('Café d’Orléans – Château de Chambord','城堡内简餐','€10–20','沙拉、三明治、热食与甜点','通常现场即可','Café d’Orléans Château de Chambord'),
+      aiMealRec('Le Grand Saint-Michel','现代法餐 / 城堡景观','€20 以上','卢瓦尔河谷时令菜、河鱼与当地禽肉','建议提前预约并控制时长','Le Grand Saint-Michel Chambord')
+    ]
+  },
+  bordeaux:{
+    breakfast:[
+      aiMealRec('La Toque Cuivrée – Sainte-Catherine','可露丽专门店','€10 以下','现烤可露丽、咖啡与小点心','无需预约','La Toque Cuivrée Sainte-Catherine Bordeaux'),
+      aiMealRec('SIP Coffee Bar','精品咖啡 / 早餐','€10–20','咖啡、吐司、格兰诺拉与糕点','早餐通常现场即可','SIP Coffee Bar Bordeaux'),
+      aiMealRec('Contrast Brunch','早午餐','€20 以上','班尼迪克蛋、法式吐司与完整早午餐','周末建议预约','Contrast Brunch Bordeaux')
+    ],
+    lunch:[
+      aiMealRec('Pita Pita Bordeaux','地中海快餐','€10 以下','皮塔饼、鹰嘴豆泥与烤肉','通常无需预约','Pita Pita Bordeaux'),
+      aiMealRec('Edmond Pure Burger – Bordeaux','汉堡店','€10–20','牛肉汉堡、薯条与素食汉堡','通常现场即可','Edmond Pure Burger Bordeaux'),
+      aiMealRec('Latitude20 Brasserie','葡萄酒主题小酒馆','€20 以上','时令小酒馆菜、奶酪冷肉拼盘','建议查看当天时段','Latitude20 Brasserie Bordeaux')
+    ],
+    dinner:[
+      aiMealRec('Pita Pita Bordeaux','地中海快餐','€10 以下','皮塔饼、烤肉与鹰嘴豆泥','通常无需预约','Pita Pita Bordeaux'),
+      aiMealRec('Le Petit Commerce','海鲜小酒馆','€10–20','当日鲜鱼、牡蛎与海鲜小盘','晚餐建议预约','Le Petit Commerce Bordeaux'),
+      aiMealRec('La Tupina','法国西南菜 / 柴火料理','€20 以上','鸭胸、油封鸭、柴火烤肉与鹅肝','建议预约','La Tupina Bordeaux')
+    ]
+  },
+  toulouse:{
+    breakfast:[
+      aiMealRec('Le Café Cerise','精品咖啡馆','€10 以下','咖啡、可颂与简单早餐','通常无需预约','Le Café Cerise Toulouse'),
+      aiMealRec('La Fiancée Toulouse','咖啡 / 早午餐','€10–20','鸡蛋、吐司、甜点与精品咖啡','周末可能候位','La Fiancée Toulouse'),
+      aiMealRec('Le Bibent','历史 Brasserie','€20 以上','法式早餐、蛋类与甜点','建议预约露台或室内座位','Le Bibent Toulouse')
+    ],
+    lunch:[
+      aiMealRec('Sandyan','甜品店 / 快捷午餐','€10 以下','咸点、三明治与主厨甜点','无需预约','Sandyan Toulouse'),
+      aiMealRec('Le May','传统图卢兹小馆','€10–20','当日套餐、香肠与家常法餐','午餐建议早到','Le May Toulouse'),
+      aiMealRec('Le Colombier','图卢兹地方菜','€20 以上','Cassoulet、鸭肉与地方菜','建议预约','Le Colombier Toulouse')
+    ],
+    dinner:[
+      aiMealRec('La Gouaille','平价法国小馆','€10 以下','当日家常菜、肉类与甜点','通常现场候位','La Gouaille Toulouse'),
+      aiMealRec('Le May','传统图卢兹小馆','€10–20','图卢兹香肠、当日套餐与家常菜','晚餐建议早到','Le May Toulouse'),
+      aiMealRec('Genty Magre','传统法餐 / 图卢兹地方菜','€20 以上','Cassoulet、鸭肉与法国西南葡萄酒','座位有限，建议预约','Genty Magre Toulouse')
+    ]
+  },
+  carcassonne:{
+    lunch:[
+      aiMealRec('Maison Bor – Cité de Carcassonne','面包 / 快捷午餐','€10 以下','法式三明治、咸派与糕点','无需预约','Maison Bor Cité de Carcassonne'),
+      aiMealRec('Le Jardin de la Tour','地中海简餐','€10–20','沙拉、肉类与南法小盘','午餐建议提前查看座位','Le Jardin de la Tour Carcassonne'),
+      aiMealRec('Comte Roger','奥克西塔尼菜','€20 以上','Cassoulet、当地羊肉与时令南法菜','周五午餐建议预约','Comte Roger Carcassonne')
+    ]
+  },
+  lyon:{
+    breakfast:[
+      aiMealRec('Boulangerie du Palais','里昂传统面包店','€10 以下','果仁糖面包、可颂与咖啡','无需预约','Boulangerie du Palais Lyon'),
+      aiMealRec('Slake Coffee House','精品咖啡 / 早餐','€10–20','咖啡、吐司、蛋类与糕点','周末可能候位','Slake Coffee House Lyon'),
+      aiMealRec('Les Halles de Lyon Paul Bocuse','美食市场','€20 以上','里昂熟食、奶酪、生蚝与甜点','市场无需预约，摊位各异','Les Halles de Lyon Paul Bocuse')
+    ],
+    lunch:[
+      aiMealRec('YAAFA – Rue d’Algérie','鹰嘴豆饼快餐','€10 以下','Falafel、皮塔饼、薯条与沙拉','无需预约','YAAFA Rue d Algérie Lyon'),
+      aiMealRec('Bouillon Baratte','大众法式食堂','€10–20','里昂香肠、家常肉菜与甜点','可预约，热门时段建议订位','Bouillon Baratte Lyon'),
+      aiMealRec('Daniel et Denise','里昂 Bouchon','€20 以上','肉酱、梭子鱼丸、里昂传统菜','建议提前预约','Daniel et Denise Lyon')
+    ],
+    dinner:[
+      aiMealRec('YAAFA – Rue d’Algérie','鹰嘴豆饼快餐','€10 以下','Falafel、皮塔饼、薯条与沙拉','无需预约','YAAFA Rue d Algérie Lyon'),
+      aiMealRec('Bouillon Baratte','大众法式食堂','€10–20','里昂香肠、家常肉菜与甜点','晚餐建议预约','Bouillon Baratte Lyon'),
+      aiMealRec('Le Bouchon des Filles','里昂 Bouchon','€20 以上','里昂沙拉、肉酱、炖肉和甜点拼盘','周末晚餐建议预约','Le Bouchon des Filles Lyon')
+    ]
+  },
+  geneva:{
+    breakfast:[
+      aiMealRec('Pouly – Genève','瑞士面包店','CHF 10 以下','可颂、面包、咖啡与三明治','无需预约','Pouly Genève'),
+      aiMealRec('Boréal Coffee Shop – Stand','精品咖啡 / 早餐','CHF 10–20','咖啡、糕点、格兰诺拉与吐司','通常现场即可','Boréal Coffee Shop Stand Genève'),
+      aiMealRec('Birdie Food & Coffee','早午餐','CHF 20 以上','蛋类、吐司、咖啡与完整早午餐','周末建议早到','Birdie Food Coffee Genève')
+    ],
+    lunch:[
+      aiMealRec('Migros Restaurant – Genève Centre','自助简餐','CHF 10 以下','当日热菜、沙拉与快捷套餐','无需预约','Migros Restaurant Genève Centre'),
+      aiMealRec('Chez Ma Cousine – Quartier des Bains','烤鸡专门店','CHF 10–20','半只烤鸡、薯条、沙拉与酱汁','普通用餐不接受预约','Chez Ma Cousine Quartier des Bains Genève'),
+      aiMealRec('Cottage Café','花园小酒馆','CHF 20 以上','每日时令主菜、沙拉和甜点','工作日午餐建议预约','Cottage Café Genève')
+    ],
+    dinner:[
+      aiMealRec('Manora Take Away – Genève','商场外带简餐','CHF 10 以下','三明治、沙拉与快捷热食','无需预约','Manora Take Away Genève'),
+      aiMealRec('Parfums de Beyrouth','黎巴嫩餐厅','CHF 10–20','沙威玛、烤肉、鹰嘴豆泥与 Mezze','通常现场排队','Parfums de Beyrouth Genève'),
+      aiMealRec('Restaurant Les Armures','瑞士传统菜','CHF 20 以上','奶酪火锅、Rösti 与苏黎世小牛肉','晚餐建议预约','Restaurant Les Armures Genève')
+    ]
+  }
+};
+
+const DAY_MEAL_AI_POOL = {
+  1:{breakfast:'paris',lunch:'paris',dinner:'paris'},
+  2:{breakfast:'montmartre',lunch:'paris',dinner:'paris'},
+  3:{breakfast:'versailles',lunch:'versailles',dinner:'versailles'},
+  4:{breakfast:'paris',lunch:'paris',dinner:'paris'},
+  5:{breakfast:'paris',lunch:'chambord',dinner:'bordeaux'},
+  6:{breakfast:'bordeaux',lunch:'bordeaux',dinner:'bordeaux'},
+  7:{breakfast:'toulouse',lunch:'toulouse',dinner:'toulouse'},
+  8:{breakfast:'toulouse',lunch:'carcassonne',dinner:'lyon'},
+  9:{breakfast:'lyon',lunch:'lyon',dinner:'lyon'},
+  10:{breakfast:'lyon',lunch:'lyon',dinner:'geneva'},
+  11:{breakfast:'geneva',lunch:'geneva',dinner:'geneva'},
+  12:{breakfast:'geneva',lunch:'geneva',dinner:'geneva'}
+};
+
+function namedAiMealOptions(dayNum, slotName) {
+  const poolName = DAY_MEAL_AI_POOL[dayNum]?.[slotName];
+  return AI_MEAL_POOLS[poolName]?.[slotName] || [];
+}
+
+function mealSearchUrl(dayNum, slotName) {
+  const city = DAY_MEAL_SEARCH_CITY[dayNum]?.[slotName] || DAY_MEAL_CITY[dayNum];
+  const slotLabel = MEAL_SLOT_CONFIG[slotName].label;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${city} ${slotLabel} 餐厅`)}`;
+}
+
 function renderMealSlot(dayNum, slotName) {
+  if (dayNum === 1 && slotName === 'breakfast') return '';
+  if (dayNum === 12 && slotName === 'dinner') return '';
   const config = MEAL_SLOT_CONFIG[slotName];
-  const options = RESTAURANTS
+  const curated = RESTAURANTS
     .filter(r => r.day === dayNum && config.keywords.some(keyword => r.meal.includes(keyword)))
     .sort((a, b) => Number(Boolean(b.planned)) - Number(Boolean(a.planned)));
-  const restaurant = options[0];
+  const hasPlanned = curated.some(r => r.planned);
+  const booked = curated.filter(restaurantIsBooked);
+  const hasBooked = booked.length > 0;
+  const tableCandidates = curated.filter(r => r.sheetSuggested);
+  const plannedNamed = curated.filter(r => r.planned && r.name !== '塞纳河游船晚餐');
+  const aiCandidates = curated.filter(r => !r.planned && !r.sheetSuggested);
+  const options = hasBooked
+    ? [...booked, ...tableCandidates.filter(candidate => !booked.some(item => item.id === candidate.id))]
+    : (tableCandidates.length
+        ? [...plannedNamed, ...tableCandidates]
+        : (plannedNamed.length ? plannedNamed : (aiCandidates.length ? aiCandidates : namedAiMealOptions(dayNum, slotName))));
+  const source = hasBooked ? 'planned' : 'recommended';
+  const searchMore = hasBooked ? '' : `<a class="meal-search-more" href="${mealSearchUrl(dayNum, slotName)}" target="_blank" rel="noopener">🔎 不满意？搜索附近更多${config.label}餐厅</a>`;
 
-  if (!restaurant) {
-    return `<li class="meal-slot missing ai-recommended" data-source="recommended" data-theme="restaurant">
+  let optionsHtml = '';
+  options.forEach(option => {
+    if (option.aiNamed) {
+      optionsHtml += `<a class="meal-option meal-search-option" href="${option.website}" target="_blank" rel="noopener">
+        <div class="meal-option-main">
+          <div class="meal-option-name">🍽️ ${option.name}</div>
+          <div class="meal-option-tags"><span class="${option.priceClass}">${option.priceLabel}</span><span>${option.type}</span><span>AI 推荐</span></div>
+          <div class="meal-option-note">${option.specialties} · ${option.reservation} · 点击查看地图</div>
+        </div>
+      </a>`;
+      return;
+    }
+    const band = restaurantPriceBand(option.price);
+    optionsHtml += `<div class="meal-option" onclick="focusRestaurant('${option.id}')">
+      <div class="meal-option-main">
+        <div class="meal-option-name">🍽️ ${option.name}</div>
+        <div class="meal-option-tags"><span class="${band.cls}">${band.label}</span><span>${option.type}</span><span>${option.planned ? '已预订餐厅' : (option.sheetSuggested ? '表内候选餐厅' : 'AI 推荐餐厅')}</span></div>
+        <div class="meal-option-note">${option.specialties} · ${option.price} · ${option.reservation}</div>
+      </div>
+    </div>`;
+  });
+
+  return `<li class="meal-slot ${hasPlanned ? '' : 'ai-recommended ai-restaurant'}" data-source="${source}" data-theme="restaurant">
+    <div class="meal-slot-head">
       <div class="meal-slot-icon">${config.icon}</div>
       <div class="meal-slot-main">
-        <div class="meal-slot-title">${config.label} · 待安排</div>
-        <div class="meal-slot-meta">当天尚未选定合适餐厅，建议提前补充或预留现场选择时间。</div>
+        <div class="meal-slot-title">${config.label} · 建议用餐 ${config.time}</div>
+        <div class="meal-slot-meta">${hasBooked ? (tableCandidates.length ? '已预订餐厅优先；同时保留原表中的候选餐厅，不再补充 AI 备选。' : '本餐次已完成预订，不再显示 AI 餐厅备选。') : (tableCandidates.length ? '以下为原表中的候选餐厅，尚未正式预订。' : '原表没有指定餐厅，以下显示与地图一致的 AI 推荐。')}</div>
       </div>
-      <span class="meal-slot-tag" style="background:#d99a17">提醒</span>
-    </li>`;
-  }
-
-  const alternatives = options.length > 1 ? ` · 另有 ${options.length - 1} 个备选` : '';
-  const source = restaurant.planned ? 'planned' : 'recommended';
-  return `<li class="meal-slot ${restaurant.planned ? '' : 'ai-recommended'}" data-source="${source}" data-theme="restaurant" onclick="focusRestaurant('${restaurant.id}')">
-    <div class="meal-slot-icon">${config.icon}</div>
-    <div class="meal-slot-main">
-      <div class="meal-slot-title">${config.label} · ${restaurant.planned ? '已写入行程' : '沿途推荐'}</div>
-      <div class="meal-slot-name">${restaurant.name}</div>
-      <div class="meal-slot-meta">${restaurant.specialties} · ${restaurant.price}${alternatives}</div>
+      <span class="meal-slot-tag ${hasBooked ? 'planned' : ''}">${hasBooked ? (tableCandidates.length ? `已订 + ${tableCandidates.length}候选` : '已预订') : (tableCandidates.length ? `${tableCandidates.length}家表内候选` : `${options.length}家 AI 推荐`)}</span>
     </div>
-    <span class="meal-slot-tag ${restaurant.planned ? 'planned' : ''}">${restaurant.planned ? '已定' : '推荐'}</span>
+    <div class="meal-options">${optionsHtml}</div>
+    ${searchMore}
   </li>`;
 }
 
@@ -2057,16 +2955,27 @@ function buildSidebar() {
 
   const extraTab = document.createElement('div');
   extraTab.className = 'day-tab extra-tab';
-  extraTab.textContent = '✨ 可加项';
+  extraTab.textContent = '🏛️ 可加景点';
   extraTab.onclick = showExtras;
   functionTabsContainer.appendChild(extraTab);
 
   // Day tabs
+  ['一','二','三','四','五','六','日'].forEach(weekday => {
+    const weekdayLabel = document.createElement('div');
+    weekdayLabel.className = 'calendar-weekday';
+    weekdayLabel.textContent = `周${weekday}`;
+    weekdayLabel.setAttribute('aria-hidden', 'true');
+    tabsContainer.appendChild(weekdayLabel);
+  });
   ITINERARY.forEach(day => {
     const tab = document.createElement('div');
     tab.className = 'day-tab';
     tab.dataset.day = day.day;
-    tab.innerHTML = `第${day.day}天<span class="tab-week">周${DAY_WEEK[day.day]}</span>`;
+    const shortDate = day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'');
+    if (day.day === 1) tab.style.gridColumnStart = '5';
+    tab.innerHTML = `<span class="tab-day">第${day.day}天</span><span class="tab-meta tab-date">${shortDate}</span>`;
+    tab.setAttribute('aria-label', `第${day.day}天，${day.date}，${day.title}`);
+    tab.title = `${day.date} · ${day.title}`;
     tab.onclick = () => showDay(day.day);
     tabsContainer.appendChild(tab);
   });
@@ -2077,7 +2986,15 @@ function buildSidebar() {
     card.className = 'day-card';
     card.id = `day-card-${day.day}`;
 
-    let stopsHtml = renderMealSlot(day.day, 'breakfast');
+    let stopsHtml = day.day === 1 ? `
+      <div class="transit-item" data-source="planned" data-theme="attraction">
+        <div class="transit-arrow">✈️</div>
+        <div class="transit-info">
+          <strong>航班抵达巴黎机场</strong><br>
+          早晨仍在飞机上，不安排早餐；具体机场及落地时间以机票为准
+        </div>
+      </div>` : '';
+    stopsHtml += renderMealSlot(day.day, 'breakfast');
     let lunchInserted = false;
     day.stops.forEach((id, idx) => {
       if (idx === Math.ceil(day.stops.length / 2)) {
@@ -2132,7 +3049,7 @@ function buildSidebar() {
     let evBlock = '';
     const dayEvents = EVENTS.filter(e => e.day === day.day);
     if (dayEvents.length) {
-      evBlock = `<div class="event-day-block ai-recommended" data-source="recommended" data-theme="attraction"><div class="event-day-title">🎪 当日活动（${dayEvents.length}）</div>`;
+      evBlock = `<div class="event-day-block ai-recommended ai-activity" data-source="recommended" data-theme="activity"><div class="event-day-title">🎪 AI 推荐活动（${dayEvents.length}）</div>`;
       dayEvents.forEach(ev => {
         const t = eventTiming(ev);
         const tag = t === 'during' ? '<span class="ev-tag during">行程内</span>' : (t === 'after' ? '<span class="ev-tag after">行程后</span>' : '<span class="ev-tag before">行程前</span>');
@@ -2144,8 +3061,8 @@ function buildSidebar() {
     let extraBlock = '';
     const dayExtras = EXTRA_POIS.filter(p => p.day === day.day);
     if (dayExtras.length) {
-      extraBlock = `<div class="daily-extra-block ai-recommended" data-source="recommended" data-theme="attraction">
-        <div class="daily-extra-title">✨ 沿途可加 <span>${dayExtras.length} 个可进入地点</span></div>`;
+      extraBlock = `<div class="daily-extra-block ai-recommended ai-attraction" data-source="recommended" data-theme="attraction">
+        <div class="daily-extra-title">🏛️ AI 推荐景点 · 沿途可加 <span>${dayExtras.length} 个可进入地点</span></div>`;
       dayExtras.forEach(p => {
         extraBlock += `<div class="daily-extra-item" onclick="focusExtra('${p.id}')">
           <div class="daily-extra-name">${p.name}</div>
@@ -2158,7 +3075,7 @@ function buildSidebar() {
 
     card.innerHTML = `
       <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
-      <div class="day-sub">${day.date}</div>
+      <div class="day-sub">${day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'')}</div>
       <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
       <ul class="stop-list">${stopsHtml}</ul>${extraBlock}${evBlock}`;
     listContainer.appendChild(card);
@@ -2174,13 +3091,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('#dayFilterBar input[data-filter-source]').forEach(input => {
     input.addEventListener('change', () => {
-      DAY_CONTENT_FILTERS.source[input.dataset.filterSource] = input.checked;
+      if (input.dataset.filterSource === 'planned') DAY_CONTENT_FILTERS.planned = input.checked;
       refreshDayFilters();
     });
   });
-  document.querySelectorAll('#dayFilterBar input[data-filter-theme]').forEach(input => {
+  document.querySelectorAll('#dayFilterBar input[data-filter-ai]').forEach(input => {
     input.addEventListener('change', () => {
-      DAY_CONTENT_FILTERS.theme[input.dataset.filterTheme] = input.checked;
+      DAY_CONTENT_FILTERS.ai[input.dataset.filterAi] = input.checked;
       refreshDayFilters();
     });
   });
