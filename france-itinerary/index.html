@@ -24,7 +24,10 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 
 /* Sidebar */
 .sidebar{width:340px;min-width:340px;background:#fff;display:flex;flex-direction:column;border-right:1px solid #e5e5ea;overflow:hidden}
-@media(max-width:900px){.sidebar{width:100%;min-width:100%;border-right:none;position:absolute;z-index:500;height:100%;transform:translateX(-100%);transition:transform .3s ease;top:0}.sidebar.open{transform:translateX(0)}}
+@media(max-width:900px){
+  .sidebar{width:84vw;min-width:0;max-width:340px;border-right:none;position:absolute;z-index:500;height:100%;transform:translateX(-105%);transition:transform .3s ease;top:0;box-shadow:8px 0 24px rgba(0,0,0,.18)}
+  .sidebar.open{transform:translateX(0)}
+}
 .sidebar-header{padding:10px 14px 6px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
 
 /* Navigation groups: separate app functions from itinerary days */
@@ -462,6 +465,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 }
 
 @media(max-width:360px){
+  .sidebar{width:88vw}
   .brand-text .subtitle{display:none}
   .filter-row{gap:4px}
   .filter-check{font-size:9px;padding:4px 5px}
@@ -472,7 +476,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <body>
 
 <header>
-  <button class="sidebar-toggle" id="menuBtn">☰</button>
+  <button class="sidebar-toggle" id="menuBtn" aria-label="打开行程侧栏" aria-expanded="false">☰</button>
   <div class="brand">
     <div class="brand-logo">🇫🇷</div>
     <div class="brand-text">
@@ -481,7 +485,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.16</span>
+    <span class="v-dot"></span><span>v1.9.17</span>
   </div>
 </header>
 
@@ -540,10 +544,17 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.16</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.17</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.17</span><span class="version-date">2026-07-31</span>
+<div class="version-title">📱 手机侧栏改为窄抽屉</div>
+<ul class="version-items">
+<li>侧栏宽度缩至屏幕约84%，保留右侧地图区域并支持点击地图关闭</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.16</span><span class="version-date">2026-07-31</span>
 <div class="version-title">📱 移动端布局优化</div>
@@ -3107,10 +3118,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mobile sidebar
   document.getElementById('menuBtn').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('open');
+    const open = document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('menuBtn').setAttribute('aria-expanded', String(open));
+    document.getElementById('menuBtn').setAttribute('aria-label', open ? '关闭行程侧栏' : '打开行程侧栏');
   });
   document.getElementById('map').addEventListener('click', () => {
-    if (window.innerWidth <= 900) document.getElementById('sidebar').classList.remove('open');
+    if (window.innerWidth <= 900) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
+      document.getElementById('menuBtn').setAttribute('aria-label', '打开行程侧栏');
+    }
   });
 
   loadAllRoutes();
