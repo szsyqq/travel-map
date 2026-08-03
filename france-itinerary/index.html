@@ -496,7 +496,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.18</span>
+    <span class="v-dot"></span><span>v1.9.19</span>
   </div>
 </header>
 
@@ -555,10 +555,18 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.18</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.19</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.19</span><span class="version-date">2026-08-03</span>
+<div class="version-title">🧭 每日路线以住宿为起终点</div>
+<ul class="version-items">
+<li>连续住宿日从酒店出发并返回酒店；换城市日连接上一家住宿与新住宿</li>
+<li>抵达日以巴黎住宿为终点，返程日从日内瓦住宿出发；里昂住宿待补充</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.18</span><span class="version-date">2026-08-03</span>
 <div class="version-title">🏨 已预订住宿标注</div>
@@ -1490,20 +1498,22 @@ async function loadAllRoutes() {
   // Collect daily routes and the missing links between adjacent days
   const routeTasks = [];
   for (const day of ITINERARY) {
-    if (day.stops.length < 2) continue;
-    const coords = day.stops.map(id => POI_DATA[id].coords);
+    const coords = routeCoordsForDay(day);
+    if (coords.length < 2) continue;
     routeTasks.push({ type: 'day', day: day.day, coords });
   }
   for (let i = 0; i < ITINERARY.length - 1; i++) {
     const fromDay = ITINERARY[i];
     const toDay = ITINERARY[i + 1];
-    const fromPoi = POI_DATA[fromDay.stops[fromDay.stops.length - 1]];
-    const toPoi = POI_DATA[toDay.stops[0]];
-    if (!fromPoi || !toPoi) continue;
+    const fromCoords = routeCoordsForDay(fromDay);
+    const toCoords = routeCoordsForDay(toDay);
+    const from = fromCoords[fromCoords.length - 1];
+    const to = toCoords[0];
+    if (!from || !to || (from[0] === to[0] && from[1] === to[1])) continue;
     routeTasks.push({
       type: 'interday',
       key: `${fromDay.day}_${toDay.day}`,
-      coords: [fromPoi.coords, toPoi.coords]
+      coords: [from, to]
     });
   }
 
@@ -1593,16 +1603,42 @@ function accommodationForDay(dayNum) {
   return ACCOMMODATIONS.filter(stay => dayNum >= stay.checkinDay && dayNum <= stay.checkoutDay);
 }
 
-function addAccommodationMarker(stay, compact = false) {
+function accommodationRouteRole(stay, dayNum) {
+  const isStart = stay.checkoutDay === dayNum || (stay.checkinDay < dayNum && stay.checkoutDay > dayNum);
+  const isEnd = stay.checkinDay === dayNum || (stay.checkinDay < dayNum && stay.checkoutDay > dayNum);
+  if (isStart && isEnd) return '起终点';
+  if (isStart) return '起点';
+  if (isEnd) return '终点';
+  return '已订';
+}
+
+function routeStaysForDay(dayNum) {
+  const start = ACCOMMODATIONS.find(stay => stay.checkoutDay === dayNum)
+    || ACCOMMODATIONS.find(stay => stay.checkinDay < dayNum && stay.checkoutDay > dayNum);
+  const end = ACCOMMODATIONS.find(stay => stay.checkinDay === dayNum)
+    || ACCOMMODATIONS.find(stay => stay.checkinDay < dayNum && stay.checkoutDay > dayNum);
+  return {start, end};
+}
+
+function routeCoordsForDay(day) {
+  const {start, end} = routeStaysForDay(day.day);
+  const coords = [];
+  if (start) coords.push(start.coords);
+  day.stops.forEach(id => { if (POI_DATA[id]) coords.push(POI_DATA[id].coords); });
+  if (end) coords.push(end.coords);
+  return coords.filter((coord, idx) => idx === 0 || coord[0] !== coords[idx-1][0] || coord[1] !== coords[idx-1][1]);
+}
+
+function addAccommodationMarker(stay, compact = false, routeRole = '已订') {
   const size = compact ? 25 : 32;
   const icon = L.divIcon({
     className:'',
-    html:`<div class="map-type-marker" style="background:#5856d6;width:${size}px;height:${size}px;font-size:${compact ? 12 : 16}px">🏨<span class="marker-source-badge">已订</span></div>`,
+    html:`<div class="map-type-marker" style="background:#5856d6;width:${size}px;height:${size}px;font-size:${compact ? 12 : 16}px">🏨<span class="marker-source-badge">${routeRole}</span></div>`,
     iconSize:[size,size],iconAnchor:[size/2,size/2],popupAnchor:[0,-(size/2+3)]
   });
   const marker = L.marker(stay.coords,{icon}).addTo(map);
-  marker.bindPopup(`<div style="min-width:220px"><strong>🏨 ${stay.name}</strong><div style="font-size:11px;color:#5856d6;margin:3px 0">已预订住宿 · ${stay.area}</div><p style="font-size:12px;margin:5px 0"><b>入住：</b>${stay.checkinDate} ${stay.checkin}<br><b>退房：</b>${stay.checkoutDate} ${stay.checkout}<br><b>确认单人数：</b>${stay.guests}人</p>${stay.warning ? `<p style="font-size:11px;color:#b35b00"><b>⚠️ ${stay.warning}</b></p>` : ''}<p style="font-size:10px;color:#86868b">为保护隐私，公开页面不显示门牌、电话和确认码。</p></div>`,{maxWidth:300});
-  if (!compact) marker.bindTooltip(`${stay.name} · 已订住宿`,{direction:'top',offset:[0,-17],className:'marker-label'});
+  marker.bindPopup(`<div style="min-width:220px"><strong>🏨 ${stay.name}</strong><div style="font-size:11px;color:#5856d6;margin:3px 0">已预订住宿 · 当日路线${routeRole} · ${stay.area}</div><p style="font-size:12px;margin:5px 0"><b>入住：</b>${stay.checkinDate} ${stay.checkin}<br><b>退房：</b>${stay.checkoutDate} ${stay.checkout}<br><b>确认单人数：</b>${stay.guests}人</p>${stay.warning ? `<p style="font-size:11px;color:#b35b00"><b>⚠️ ${stay.warning}</b></p>` : ''}<p style="font-size:10px;color:#86868b">为保护隐私，公开页面不显示门牌、电话和确认码。</p></div>`,{maxWidth:300});
+  if (!compact) marker.bindTooltip(`${stay.name} · 路线${routeRole}`,{direction:'top',offset:[0,-17],className:'marker-label'});
   marker.on('click',()=>showAccommodationDetail(stay.id));
   eventMarkers[stay.id]=marker;
 }
@@ -1622,7 +1658,8 @@ function renderAccommodationBlock(dayNum) {
   let html = `<div class="stay-block" data-source="planned" data-theme="attraction"><div class="stay-title">🏨 住宿安排 <span>确认单已核验</span></div>`;
   stays.forEach(stay => {
     const status = dayNum === stay.checkinDay ? `入住 ${stay.checkin}` : (dayNum === stay.checkoutDay ? `退房 ${stay.checkout}` : '连续入住');
-    html += `<div class="stay-item" onclick="showAccommodationDetail('${stay.id}')"><div class="stay-name">${stay.name}<span class="stay-status">${status}</span></div><div class="stay-meta">${stay.area} · ${stay.checkinDate}—${stay.checkoutDate} · 确认单${stay.guests}人</div>${stay.warning ? `<div class="stay-warning">⚠️ ${stay.warning}</div>` : ''}</div>`;
+    const routeRole = accommodationRouteRole(stay, dayNum);
+    html += `<div class="stay-item" onclick="showAccommodationDetail('${stay.id}')"><div class="stay-name">${stay.name}<span class="stay-status">${status}</span><span class="stay-status">路线${routeRole}</span></div><div class="stay-meta">${stay.area} · ${stay.checkinDate}—${stay.checkoutDate} · 确认单${stay.guests}人</div>${stay.warning ? `<div class="stay-warning">⚠️ ${stay.warning}</div>` : ''}</div>`;
   });
   if (lyonMissing) html += `<div class="stay-warning">⚠️ 10月2日—10月4日里昂住宿尚未收到确认单，请补充酒店或民宿预订单。</div>`;
   return html + '</div>';
@@ -1680,7 +1717,7 @@ function showDay(dayNum) {
   const dayExtras = EXTRA_POIS.filter(p => p.day === dayNum && filterAllows('recommended', 'attraction'));
   dayExtras.forEach(addExtraMarker);
   const dayStays = DAY_CONTENT_FILTERS.planned ? accommodationForDay(dayNum) : [];
-  dayStays.forEach(stay => addAccommodationMarker(stay));
+  dayStays.forEach(stay => addAccommodationMarker(stay, false, accommodationRouteRole(stay, dayNum)));
 
   if (visibleStops.length || dayEvents.length || dayRestaurants.length || dayExtras.length || dayStays.length) {
     const allCoords = visibleStops.map(id => POI_DATA[id].coords);
