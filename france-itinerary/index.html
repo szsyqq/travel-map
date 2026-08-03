@@ -126,6 +126,17 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .daily-extra-meta{font-size:10px;color:#68847e;margin-top:2px;line-height:1.4}
 .daily-extra-fit{font-size:10px;color:#555;margin-top:3px;line-height:1.45}
 
+/* Confirmed accommodation shown inside each day */
+.stay-block{margin:9px 0;padding:8px;background:#f2f3ff;border:1px solid #dcdcff;border-radius:10px}
+.stay-title{font-size:11px;font-weight:800;color:#4946a8;margin-bottom:5px;display:flex;justify-content:space-between;gap:8px}
+.stay-title span{font-size:9px;font-weight:600;color:#7472ad}
+.stay-item{padding:7px 8px;margin-top:5px;background:#fff;border:1px solid #e4e4f7;border-left:3px solid #5856d6;border-radius:8px;cursor:pointer}
+.stay-item:hover{background:#f8f8ff}
+.stay-name{font-size:12px;font-weight:750;color:#1d1d1f}
+.stay-meta{font-size:10px;color:#67658e;line-height:1.45;margin-top:2px}
+.stay-status{display:inline-block;margin-left:4px;padding:1px 5px;border-radius:4px;background:#5856d6;color:#fff;font-size:8px;font-weight:700}
+.stay-warning{margin-top:5px;padding:6px 8px;border:1px dashed #e09a36;border-radius:7px;background:#fff8ec;color:#9a5b00;font-size:10px;line-height:1.45}
+
 /* Transit arrow item */
 .transit-item{display:flex;align-items:center;gap:10px;padding:6px 8px;margin:2px 0;border-radius:6px;background:#f8f9fc;cursor:default;border-left:3px solid #34c759}
 .transit-arrow{font-size:16px;color:#34c759;flex-shrink:0;width:20px;text-align:center}
@@ -485,7 +496,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.17</span>
+    <span class="v-dot"></span><span>v1.9.18</span>
   </div>
 </header>
 
@@ -544,10 +555,18 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.17</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.18</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.18</span><span class="version-date">2026-08-03</span>
+<div class="version-title">🏨 已预订住宿标注</div>
+<ul class="version-items">
+<li>加入巴黎、波尔多、图卢兹和日内瓦住宿，并同步到每日列表、地图及汇总表</li>
+<li>隐去门牌、电话、住客姓名和确认码；提醒里昂两晚缺少确认单及日内瓦仅登记3人</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.17</span><span class="version-date">2026-07-31</span>
 <div class="version-title">📱 手机侧栏改为窄抽屉</div>
@@ -1337,6 +1356,15 @@ const EXTRA_POIS = [
   {id:"extra_cern",name:"CERN 科学门户与导览",nameEn:"CERN Science Gateway",city:"日内瓦",day:11,coords:[46.2330,6.0557],category:"科研机构见学",price:"免费",duration:"2–3小时",reservation:"1–11人可预约到访；限额导览/实验活动到场后另抢名额",website:"https://visit.cern",bookingUrl:"https://visit.cern/index.php/node/32019",why:"免费进入科学门户展览，并有机会参加实验室工作坊或官方导览；地下设施并非普通票必然包含。",fit:"已在第11天主行程；不要把地下加速器参观视为保证项目。"}
 ];
 
+// Confirmed accommodation. Public map coordinates are intentionally rounded;
+// exact addresses, phone numbers, guest names and confirmation codes stay in the source PDFs.
+const ACCOMMODATIONS = [
+  {id:"stay_paris",name:"Modern Loft - 2BR/8P - Place de la République",city:"巴黎",area:"巴黎第11区 · République / Saint-Maur",coords:[48.862,2.380],checkinDay:1,checkoutDay:5,checkinDate:"9月25日",checkoutDate:"9月29日",checkin:"16:00",checkout:"10:00",guests:5,host:"Checkmyguest"},
+  {id:"stay_bordeaux",name:"Loft Albert XL · 4 bedrooms and garden",city:"波尔多",area:"波尔多 Chartrons / Rue Albert",coords:[44.856,-0.579],checkinDay:5,checkoutDay:7,checkinDate:"9月29日",checkoutDate:"10月1日",checkin:"15:00",checkout:"11:00",guests:5,host:"Josselin"},
+  {id:"stay_toulouse",name:"The Spacious Property in Toulouse",city:"图卢兹",area:"图卢兹 31500 · Rue Denis Papin",coords:[43.605,1.458],checkinDay:7,checkoutDay:8,checkinDate:"10月1日",checkoutDate:"10月2日",checkin:"16:00",checkout:"11:00",guests:5,host:"Yan"},
+  {id:"stay_geneva",name:"L’Hôtel Privé · Riverside Retreat · AC Included",city:"日内瓦",area:"Grand-Lancy · 日内瓦河畔区域",coords:[46.179,6.115],checkinDay:10,checkoutDay:12,checkinDate:"10月4日",checkoutDate:"10月6日",checkin:"15:00",checkout:"11:00",guests:3,host:"Olivier",warning:"确认单仅登记3位住客，与全团5人不一致；请确认另外2人的住宿安排或联系房东修改人数。"}
+];
+
 // ============================================================
 // APP STATE
 // ============================================================
@@ -1394,6 +1422,7 @@ function initMap() {
   legend.innerHTML = `<button class="legend-toggle" type="button" onclick="toggleMapLegend()" aria-expanded="true">📌 图例</button><div class="legend-items">
     <div class="legend-item"><div class="legend-dot" style="background:#007aff"></div><span>已制定景点</span></div>
     <div class="legend-item"><div style="width:16px;height:3px;background:#007aff;border-radius:2px;flex-shrink:0"></div><span>驾车路线</span></div>
+    <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#5856d6">🏨<span class="marker-source-badge">已订</span></div><span>已预订住宿</span></div>
     <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#ff2d55">🎪<span class="marker-source-badge">AI</span></div><span>AI 推荐活动</span></div>
     <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#00a887">🏛️<span class="marker-source-badge">AI</span></div><span>AI 推荐景点</span></div>
     <div class="legend-item"><div class="map-type-marker legend-marker" style="background:#ff9500">🍽️<span class="marker-source-badge">已订</span></div><span>已预订餐厅</span></div>
@@ -1560,6 +1589,45 @@ function addMarker(id, poi, idx, total, compact) {
   markers[id] = marker;
 }
 
+function accommodationForDay(dayNum) {
+  return ACCOMMODATIONS.filter(stay => dayNum >= stay.checkinDay && dayNum <= stay.checkoutDay);
+}
+
+function addAccommodationMarker(stay, compact = false) {
+  const size = compact ? 25 : 32;
+  const icon = L.divIcon({
+    className:'',
+    html:`<div class="map-type-marker" style="background:#5856d6;width:${size}px;height:${size}px;font-size:${compact ? 12 : 16}px">🏨<span class="marker-source-badge">已订</span></div>`,
+    iconSize:[size,size],iconAnchor:[size/2,size/2],popupAnchor:[0,-(size/2+3)]
+  });
+  const marker = L.marker(stay.coords,{icon}).addTo(map);
+  marker.bindPopup(`<div style="min-width:220px"><strong>🏨 ${stay.name}</strong><div style="font-size:11px;color:#5856d6;margin:3px 0">已预订住宿 · ${stay.area}</div><p style="font-size:12px;margin:5px 0"><b>入住：</b>${stay.checkinDate} ${stay.checkin}<br><b>退房：</b>${stay.checkoutDate} ${stay.checkout}<br><b>确认单人数：</b>${stay.guests}人</p>${stay.warning ? `<p style="font-size:11px;color:#b35b00"><b>⚠️ ${stay.warning}</b></p>` : ''}<p style="font-size:10px;color:#86868b">为保护隐私，公开页面不显示门牌、电话和确认码。</p></div>`,{maxWidth:300});
+  if (!compact) marker.bindTooltip(`${stay.name} · 已订住宿`,{direction:'top',offset:[0,-17],className:'marker-label'});
+  marker.on('click',()=>showAccommodationDetail(stay.id));
+  eventMarkers[stay.id]=marker;
+}
+
+function showAccommodationDetail(id) {
+  const stay = ACCOMMODATIONS.find(item => item.id === id);
+  if (!stay) return;
+  const headerHtml = `<div class="detail-head-main"><div class="detail-title">🏨 ${stay.name}</div><div class="detail-sub">已预订住宿 · ${stay.area}</div></div><div class="detail-head-actions"><span class="badge-reserve" style="background:#5856d6;color:#fff">已确认</span><button class="detail-ico-btn" onclick="hideDetail()" title="关闭" aria-label="关闭住宿详情">✕</button></div>`;
+  const bodyHtml = `<div class="detail-info-grid"><div><span>入住</span><b>${stay.checkinDate} ${stay.checkin}</b></div><div><span>退房</span><b>${stay.checkoutDate} ${stay.checkout}</b></div><div><span>确认单人数</span><b>${stay.guests}人</b></div><div><span>房东 / 管理方</span><b>${stay.host}</b></div></div>${stay.warning ? `<div class="detail-card tip"><div class="detail-card-h">⚠️ 人数需要确认</div><div class="detail-card-b">${stay.warning}</div></div>` : ''}<div class="detail-card"><div class="detail-card-h">🔒 隐私说明</div><div class="detail-card-b">住宿确认单已经核验。公开网页仅显示区域和约百米级地图位置；精确门牌、联系电话、住客姓名及确认码请查看原始 PDF。</div></div>`;
+  openDetailPanel(headerHtml,bodyHtml);
+}
+
+function renderAccommodationBlock(dayNum) {
+  const stays = accommodationForDay(dayNum);
+  const lyonMissing = dayNum === 8 || dayNum === 9;
+  if (!stays.length && !lyonMissing) return '';
+  let html = `<div class="stay-block" data-source="planned" data-theme="attraction"><div class="stay-title">🏨 住宿安排 <span>确认单已核验</span></div>`;
+  stays.forEach(stay => {
+    const status = dayNum === stay.checkinDay ? `入住 ${stay.checkin}` : (dayNum === stay.checkoutDay ? `退房 ${stay.checkout}` : '连续入住');
+    html += `<div class="stay-item" onclick="showAccommodationDetail('${stay.id}')"><div class="stay-name">${stay.name}<span class="stay-status">${status}</span></div><div class="stay-meta">${stay.area} · ${stay.checkinDate}—${stay.checkoutDate} · 确认单${stay.guests}人</div>${stay.warning ? `<div class="stay-warning">⚠️ ${stay.warning}</div>` : ''}</div>`;
+  });
+  if (lyonMissing) html += `<div class="stay-warning">⚠️ 10月2日—10月4日里昂住宿尚未收到确认单，请补充酒店或民宿预订单。</div>`;
+  return html + '</div>';
+}
+
 function addRoute(dayNum, coords, weight) {
   const w = weight || 4;
   // White glow outline
@@ -1611,12 +1679,15 @@ function showDay(dayNum) {
   dayRestaurants.forEach(addRestaurantMarker);
   const dayExtras = EXTRA_POIS.filter(p => p.day === dayNum && filterAllows('recommended', 'attraction'));
   dayExtras.forEach(addExtraMarker);
+  const dayStays = DAY_CONTENT_FILTERS.planned ? accommodationForDay(dayNum) : [];
+  dayStays.forEach(stay => addAccommodationMarker(stay));
 
-  if (visibleStops.length || dayEvents.length || dayRestaurants.length || dayExtras.length) {
+  if (visibleStops.length || dayEvents.length || dayRestaurants.length || dayExtras.length || dayStays.length) {
     const allCoords = visibleStops.map(id => POI_DATA[id].coords);
     dayEvents.forEach(e => allCoords.push(e.coords));
     dayRestaurants.forEach(r => allCoords.push(r.coords));
     dayExtras.forEach(p => allCoords.push(p.coords));
+    dayStays.forEach(stay => allCoords.push(stay.coords));
     map.fitBounds(L.latLngBounds(allCoords), { padding: [50, 50], maxZoom: 14 });
   }
 
@@ -1646,11 +1717,12 @@ function showOverview() {
     const idx = dayData.stops.findIndex(id => POI_DATA[id] === poi);
     addMarker(`ov_${poi.day}_${idx}`, poi, idx, dayData.stops.length, true);
   });
+  ACCOMMODATIONS.forEach(stay => addAccommodationMarker(stay, true));
 
   // Show daily routes plus every adjacent-day connection
   drawCompleteJourneyRoutes();
 
-  const allCoords = Object.values(POI_DATA).map(p => p.coords);
+  const allCoords = [...Object.values(POI_DATA).map(p => p.coords), ...ACCOMMODATIONS.map(stay => stay.coords)];
   map.fitBounds(L.latLngBounds(allCoords), { padding: [25, 25] });
 
   // Update UI
@@ -2131,7 +2203,7 @@ const MUSEUM_PASS_INCLUDED_IDS = new Set(['d1_1','d1_2','d2_6','d4_1','d4_4','d4
 const MUSEUM_PASS_PARTIAL_IDS = new Set(['d3_1']);
 
 function museumPassInfo(id, item, type) {
-  if (type === '餐饮' || type === '行程') return {label:'—', cls:'na', note:'不适用'};
+  if (type === '餐饮' || type === '行程' || type === '住宿') return {label:'—', cls:'na', note:'不适用'};
   if (MUSEUM_PASS_PARTIAL_IDS.has(id)) return {label:'△ 部分', cls:'partial', note:'主宫殿可用；音乐喷泉花园另付费'};
   if (MUSEUM_PASS_INCLUDED_IDS.has(id)) return {label:'✓ 可用', cls:'yes', note:'Paris Museum Pass 已包含'};
   const text = `${item?.price || ''} ${item?.reservation || ''} ${item?.why || ''}`;
@@ -2143,7 +2215,7 @@ function museumPassInfo(id, item, type) {
 
 function buildSummaryRows() {
   const rows = [];
-  const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗','见学':'🎓'};
+  const typeIcons = {'景点':'📍','餐饮':'🍽️','体验':'🎯','行程':'🚗','见学':'🎓','住宿':'🏨'};
 
   ITINERARY.forEach(day => {
     day.stops.forEach((id) => {
@@ -2202,6 +2274,17 @@ function buildSummaryRows() {
         source:'planned',
         sourceLabel:'原定行程'
       });
+    });
+  });
+
+  ACCOMMODATIONS.forEach(stay => {
+    rows.push({
+      day:stay.checkinDay,weekday:DAY_WEEK[stay.checkinDay],time:`入住 ${stay.checkin}`,name:stay.name,nameEn:'',
+      type:'住宿',typeIcon:'🏨',category:`${stay.city}已预订住宿`,price:'已支付（金额见确认单）',priceEur:0,
+      need:false,advanceBooking:'已预订',earliestDate:null,sortKey:'0000',
+      closedText:stay.warning ? `⚠️ ${stay.guests}人确认单` : '✓ 确认单已核验',closedConflict:Boolean(stay.warning),
+      linkCell:'<span style="color:#5856d6;font-size:9px">已确认</span>',
+      passInfo:museumPassInfo(stay.id, stay, '住宿'),source:'planned',sourceLabel:'已订住宿'
     });
   });
 
@@ -3084,11 +3167,13 @@ function buildSidebar() {
       extraBlock += `</div>`;
     }
 
+    const stayBlock = renderAccommodationBlock(day.day);
+
     card.innerHTML = `
       <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
       <div class="day-sub">${day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'')}</div>
       <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
-      <ul class="stop-list">${stopsHtml}</ul>${extraBlock}${evBlock}`;
+      ${stayBlock}<ul class="stop-list">${stopsHtml}</ul>${extraBlock}${evBlock}`;
     listContainer.appendChild(card);
   });
 }
