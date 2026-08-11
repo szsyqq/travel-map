@@ -520,7 +520,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.22</span>
+    <span class="v-dot"></span><span>v1.9.23</span>
   </div>
 </header>
 
@@ -579,10 +579,18 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.22</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.23</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.23</span><span class="version-date">2026-08-11</span>
+<div class="version-title">🍷 确认 9月30日晚老托特酒庄</div>
+<ul class="version-items">
+<li>9月30日晚新增 Château TrotteVieille，地址为 Saint-Émilion 33330</li>
+<li>同步到当天编号主线、详情列表、地图标记及住宿返回路线</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.22</span><span class="version-date">2026-08-11</span>
 <div class="version-title">🧭 每日信息改为关键节点主线</div>
@@ -943,6 +951,7 @@ const POI_DATA = {
   "d5_2":{name:"波尔多",nameEn:"Bordeaux",coords:[44.8378,-0.5792],day:5,desc:"世界葡萄酒之都，联合国世界文化遗产城市。",why:"18世纪建筑群保存完好，水镜广场是网红打卡点。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"4h",dist:"560km",depart:"13:00"},
   "d6_1":{name:"滴金酒庄",nameEn:"Château d’Yquem",coords:[44.5468,-0.3390],day:6,desc:"苏玳产区最具代表性的一级特等酒庄，以贵腐甜白葡萄酒闻名。",why:"0811 表格明确安排10:00抵达，参观约90分钟；从波尔多住宿出发需预留约1小时车程。",reservation:"已列入日程，须确认酒庄预约",price:"约100€ / 人",reserveUrl:"https://www.yquem.fr",advanceBooking:"尽快核对预约确认与到访名单",time:"10:00",category:"酒庄",type:"体验"},
   "d6_2":{name:"波尔多葡萄酒城",nameEn:"La Cité du Vin",coords:[44.8629,-0.5498],day:6,desc:"沉浸式葡萄酒主题文化体验馆，造型如醒酒器。",why:"0811 表格安排酒庄之后返回波尔多参观，场馆18:00闭馆。",reservation:"可提前购票",price:"27€（表格注明含品酒）",reserveUrl:"https://www.laciteduvin.com/en/",advanceBooking:"建议提前购票并核对末次入场",time:"14:30",category:"博物馆",closed:"周一闭馆"},
+  "d6_3":{name:"老托特酒庄",nameEn:"Château TrotteVieille",coords:[44.89477,-0.14503],day:6,desc:"位于圣埃米利永的一级特等酒庄（Premier Grand Cru Classé），出产 Château TrotteVieille 与 Dame de TrotteVieille。",why:"已明确为9月30日晚上的指定酒庄；从波尔多市区前往约需预留驾车时间，结束后返回波尔多住宿。",reservation:"指定酒庄 · 参观须确认预约",price:"以已订参观或品酒方案为准",reserveUrl:"https://www.trottevieille.com/en/contact-3/",advanceBooking:"请确认晚间到访时间及5人名单",time:"晚上 · 时间待确认",category:"酒庄",type:"体验",transport:"1 Trotte-Vieille, 33330 Saint-Émilion"},
   "d7_1":{name:"空客工厂",nameEn:"Airbus Factory",coords:[43.5800,1.3690],day:7,desc:"全球最大飞机制造商的装配工厂。",why:"亲眼目睹A350、A380大型客机装配线。需提前2周预约。",reservation:"需要预约",price:"约20€",reserveUrl:"https://www.airbus.com/visit",advanceBooking:"建议提前2周预约",time:"10:00",category:"工业",website:"https://www.airbus.com/visit"},
   "d7_2":{name:"协和博物馆",nameEn:"Concorde Museum / Aeroscopia",coords:[43.5770,1.3710],day:7,desc:"与空客工厂相邻的航空博物馆。",why:"可登机体验协和式超音速客机内部。",reservation:"无需预约",price:"含在参观套票中",reserveUrl:"",advanceBooking:"当天即可",time:"13:00",category:"博物馆"},
   "d7_3":{name:"图卢兹",nameEn:"Toulouse",coords:[43.6045,1.4440],day:7,desc:"法国第四大城市，'玫瑰之城'（红砖建筑）。",why:"圣塞尔南教堂是世界遗产，还有空中客车总部、欧洲航天局。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"16:00",category:"城市",type:"行程",driveTime:"2h40",dist:"240km",depart:"13:00"},
@@ -971,7 +980,7 @@ const ITINERARY = [
   {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
   {day:4,date:"9月28日 (一)",title:"卢浮宫与香榭丽舍",summary:"上午卢浮宫 → 杜乐丽花园 → 大/小皇宫（可选）→ 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6"]},
   {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
-  {day:6,date:"9月30日 (三)",title:"滴金酒庄与葡萄酒城",summary:"10:00滴金酒庄(约90min) → 下午波尔多葡萄酒城(18:00闭馆)",stops:["d6_1","d6_2"]},
+  {day:6,date:"9月30日 (三)",title:"滴金酒庄、葡萄酒城与老托特",summary:"10:00滴金酒庄(约90min) → 下午波尔多葡萄酒城 → 晚上老托特酒庄 Château TrotteVieille → 返回波尔多住宿",stops:["d6_1","d6_2","d6_3"]},
   {day:7,date:"10月1日 (四)",title:"图卢兹航空日",summary:"波尔多→图卢兹(2h40) → 空客工厂 → 协和博物馆",stops:["d7_1","d7_2","d7_3"]},
   {day:8,date:"10月2日 (五)",title:"南法古城→里昂",summary:"图卢兹→卡尔卡松城堡(2h) → 尼姆竞技场(2h10) → 嘉德水道桥(35min) → 里昂(2h40，约20:00抵达)",stops:["d8_1","d8_2","d8_3","d8_4"]},
   {day:9,date:"10月3日 (六)",title:"里昂历史与美术",summary:"富维耶圣母院 → 高卢罗马博物馆与剧场 → 里昂老城 → L'Auberge des Canuts午餐 → 里昂美术馆 → 旧主宫医院",stops:["d9_1","d9_2","d9_3","d9_4","d9_5","d9_6"]},
@@ -1006,6 +1015,7 @@ const POI_EXTRA = {
   "d5_1":{hours:"每日 9:00–18:00（旺季至 17:00）",duration:"2–3 小时",address:"Château de Chambord, 41250 Chambord",tips:"达芬奇双螺旋楼梯与屋顶露台是精华；园区很大，留足停车步行时间。"},
   "d6_1":{hours:"仅按确认的预约时段接待",duration:"约90分钟",address:"Sauternes, Gironde",tips:"10:00到达；请提前核对酒庄确认邮件、访客名单和驾车时间。"},
   "d6_2":{hours:"通常10:00–18:00，末次入场提前",duration:"2–3小时",address:"134 Quai de Bacalan, 33300 Bordeaux",tips:"从滴金酒庄返回后参观；表格注明门票含品酒，购票时以官网套餐为准。"},
+  "d6_3":{hours:"仅按确认的预约时间接待",duration:"以预约方案为准",address:"1 Trotte-Vieille, 33330 Saint-Émilion",tips:"晚间到访前确认酒庄是否按预约开放；不要只依赖普通公众开放时间。结束后仍需驾车返回波尔多住宿。"},
   "d7_1":{hours:"需预约导览约 1.5 小时（周二–周六）",duration:"半天",address:"Aéroport de Toulouse-Blagnac",tips:"A350/A380 装配线必看；需提前 2 周预约，带护照。"},
   "d8_1":{hours:"城堡免费进入；伯爵城堡 10:00–18:00",duration:"2–3 小时",address:"Carcassonne, 11000",tips:"52 座塔楼可登；城内石板路滑，穿舒适鞋。"},
   "d8_2":{hours:"每日 9:00–19:00（冬季至 17:00）",duration:"约 2 小时",address:"Arènes de Nîmes, 1 Pl. des Arènes, 30000 Nîmes",tips:"新版行程安排在卡尔卡松之后；停车与进场要计入紧凑时间。"},
