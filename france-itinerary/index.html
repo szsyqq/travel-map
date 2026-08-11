@@ -520,7 +520,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.23</span>
+    <span class="v-dot"></span><span>v1.9.24</span>
   </div>
 </header>
 
@@ -579,10 +579,19 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.23</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.24</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.24</span><span class="version-date">2026-08-11</span>
+<div class="version-title">✈️ 精简第一天抵达行程</div>
+<ul class="version-items">
+<li>取消第一天巴黎航空航天博物馆和奥赛博物馆</li>
+<li>当天路线以戴高乐机场T1为起点，前往民宿并保留晚餐</li>
+<li>民宿附近CityWalk继续作为非强制备选，不混入正式主线</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.23</span><span class="version-date">2026-08-11</span>
 <div class="version-title">🍷 确认 9月30日晚老托特酒庄</div>
@@ -975,7 +984,7 @@ const POI_DATA = {
 };
 
 const ITINERARY = [
-  {day:1,date:"9月25日 (五)",title:"14:25抵达巴黎",summary:"QR39 14:25抵达戴高乐机场T1 → 入境取行李 → 民宿入住 → Cafe Marly 21:30；航空博物馆及奥赛原时段冲突待调整",stops:["d1_1","d1_2","d1_3"]},
+  {day:1,date:"9月25日 (五)",title:"14:25抵达巴黎",summary:"QR39 14:25抵达戴高乐机场T1 → 入境取行李 → 前往民宿入住；Cafe Marly 21:30晚餐作为餐饮安排单独显示",stops:[]},
   {day:2,date:"9月26日 (六)",title:"蒙马特与巴黎经典线",summary:"蒙马特高地 → 巴黎歌剧院 → 蓬皮杜外观 → 圣母院 → 莎士比亚书店 → 先贤祠 → 战神广场夜景",stops:["d2_1","d2_2","d2_3","d2_4","d2_5","d2_6","d2_7"]},
   {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
   {day:4,date:"9月28日 (一)",title:"卢浮宫与香榭丽舍",summary:"上午卢浮宫 → 杜乐丽花园 → 大/小皇宫（可选）→ 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6"]},
