@@ -136,6 +136,13 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .stay-meta{font-size:10px;color:#67658e;line-height:1.45;margin-top:2px}
 .stay-status{display:inline-block;margin-left:4px;padding:1px 5px;border-radius:4px;background:#5856d6;color:#fff;font-size:8px;font-weight:700}
 .stay-warning{margin-top:5px;padding:6px 8px;border:1px dashed #e09a36;border-radius:7px;background:#fff8ec;color:#9a5b00;font-size:10px;line-height:1.45}
+.flight-block{margin:9px 0;padding:8px;background:#eef8ff;border:1px solid #cfe8f8;border-radius:10px}
+.flight-title{font-size:11px;font-weight:800;color:#0a6899;margin-bottom:5px;display:flex;justify-content:space-between;gap:8px}
+.flight-title span{font-size:9px;font-weight:650;color:#4883a2}
+.flight-item{padding:7px 8px;margin-top:5px;background:#fff;border-left:3px solid #0a84ff;border-radius:8px}
+.flight-route{font-size:12px;font-weight:800;color:#174760}
+.flight-meta{font-size:10px;color:#557486;line-height:1.5;margin-top:2px}
+.flight-warning{margin-top:6px;padding:6px 8px;border:1px dashed #ff9500;border-radius:7px;background:#fff8ec;color:#9a5b00;font-size:10px;line-height:1.45}
 
 /* Transit arrow item */
 .transit-item{display:flex;align-items:center;gap:10px;padding:6px 8px;margin:2px 0;border-radius:6px;background:#f8f9fc;cursor:default;border-left:3px solid #34c759}
@@ -496,7 +503,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.20</span>
+    <span class="v-dot"></span><span>v1.9.21</span>
   </div>
 </header>
 
@@ -555,10 +562,20 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.20</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.21</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.21</span><span class="version-date">2026-08-11</span>
+<div class="version-title">✈️ 加入已出票航班与抵达时间冲突</div>
+<ul class="version-items">
+<li>新增香港—曼谷—多哈—巴黎及日内瓦—多哈—广州航班卡片</li>
+<li>加入航班号、当地起降时间、航站楼、30kg行李额和机场路线起终点</li>
+<li>按14:25抵达巴黎的客票时间，标记首日航空博物馆与奥赛时段冲突</li>
+<li>公开页面不显示乘客姓名、订位编号、票号与常旅客号码</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.20</span><span class="version-date">2026-08-11</span>
 <div class="version-title">🗓️ 同步 0811 新日程与住宿起终点</div>
@@ -874,8 +891,8 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 const DAY_COLORS = ['#007AFF','#34C759','#FF9500','#FF3B30','#AF52DE','#5856D6','#FF2D55','#00C7BE','#FF6482','#36C9C6','#5AC8FA','#FF9500','#8E8E93'];
 
 const POI_DATA = {
-  "d1_1":{name:"巴黎航空航天博物馆",nameEn:"Musée de l'Air et de l'Espace",coords:[48.9472,2.4344],day:1,desc:"欧洲最大、世界最古老的航空博物馆之一，坐落在勒布尔热机场。",why:"镇馆之宝包括协和式超音速客机、波音747、二战与冷战战机、阿丽亚娜火箭与卫星实物。Paris Museum Pass 含常设展、临展以及波音747、Dakota和两架协和客机内部参观。",reservation:"持Paris Museum Pass无需预约",price:"17€；4日博物馆通票已包含",reserveUrl:"https://www.museeairespace.fr",advanceBooking:"无需预约",time:"09:00",category:"博物馆",closed:"周一闭馆",website:"https://www.museeairespace.fr",reserveChannels:"Paris Museum Pass 直接入场；天文馆5€、控制塔4€、儿童Planète Pilote 5€需另付费"},
-  "d1_2":{name:"奥赛博物馆",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:1,desc:"巴黎19世纪艺术圣殿，由奥赛火车站改建而成。",why:"收藏全世界最丰富的印象派和后印象派作品，必看梵高、莫奈、马奈、米勒作品与顶楼巨型大钟。",reservation:"持Paris Museum Pass仍须预约时段",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"现在查看官网可预约日期",time:"15:30",category:"博物馆",closed:"周一闭馆",website:"https://www.musee-orsay.fr",reserveChannels:"官网选择 Paris Museum Pass 免费预约时段"},
+  "d1_1":{name:"巴黎航空航天博物馆（时间冲突）",nameEn:"Musée de l'Air et de l'Espace",coords:[48.9472,2.4344],day:1,desc:"欧洲最大、世界最古老的航空博物馆之一，坐落在勒布尔热机场。",why:"电子客票显示14:25才抵达戴高乐机场，无法执行原表的上午参观；建议移至其他日期或取消。",reservation:"持Paris Museum Pass无需预约",price:"17€；4日博物馆通票已包含",reserveUrl:"https://www.museeairespace.fr",advanceBooking:"改期后再核对开放时间",time:"原定上午 · 与航班冲突",category:"博物馆",closed:"周一闭馆",website:"https://www.museeairespace.fr",reserveChannels:"Paris Museum Pass 直接入场；天文馆5€、控制塔4€、儿童Planète Pilote 5€需另付费"},
+  "d1_2":{name:"奥赛博物馆（时间紧张）",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:1,desc:"巴黎19世纪艺术圣殿，由奥赛火车站改建而成。",why:"14:25落地后还需入境、取行李和前往民宿，原定15:30参观不可行；如保留须另选更晚时段并确认闭馆时间。",reservation:"持Paris Museum Pass仍须预约时段",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"先调整日期或时段",time:"原定15:30 · 与落地衔接冲突",category:"博物馆",closed:"周一闭馆",website:"https://www.musee-orsay.fr",reserveChannels:"官网选择 Paris Museum Pass 免费预约时段"},
   "d1_3":{name:"Le Cafe Marly (晚餐)",nameEn:"Le Cafe Marly",coords:[48.8610,2.3370],day:1,desc:"位于卢浮宫黎塞留通道内的法式餐厅，正对卢浮宫金字塔。",why:"在卢浮宫享用晚餐后，出门就是玻璃金字塔夜景，位置绝佳，氛围满分。",reservation:"已通过Google预约，3位21:30",price:"中高档",reserveUrl:"",advanceBooking:"已预约",time:"21:30",category:"餐饮",type:"餐饮"},
   "d2_1":{name:"蒙马特高地",nameEn:"Montmartre",coords:[48.8867,2.3431],day:2,desc:"巴黎北部艺术区，含Rue Lamarck、葡萄园、圣心堂、蒙马特博物馆和画家广场。",why:"新版行程安排周六上午完整步行约2.5km，串联铁塔隐藏机位、巴黎市区葡萄园、圣心堂和雷诺阿花园。",reservation:"圣心堂无需预约；博物馆可提前购票",price:"圣心堂免费，登顶约8€，博物馆16€",reserveUrl:"https://museedemontmartre.fr",advanceBooking:"教堂无需预约；博物馆可提前购票",time:"09:00",category:"街区"},
   "d2_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:2,desc:"拿破仑三世时期的新巴洛克式歌剧院，可参观大楼梯、夏加尔穹顶和大休息厅。",why:"新版行程放在蒙马特之后，随后向东前往蓬皮杜、圣母院与拉丁区。",reservation:"白天参观建议预约；演出必须购票",price:"自助参观约25€",reserveUrl:"https://www.operadeparis.fr/visits/palais-garnier",advanceBooking:"参观票开放后尽早购买",time:"13:00",category:"剧院"},
@@ -922,7 +939,7 @@ const POI_DATA = {
 };
 
 const ITINERARY = [
-  {day:1,date:"9月25日 (五)",title:"抵达巴黎",summary:"航班抵达巴黎机场 → 航空博物馆 → 民宿入住 → 下午奥赛博物馆 → Cafe Marly晚餐",stops:["d1_1","d1_2","d1_3"]},
+  {day:1,date:"9月25日 (五)",title:"14:25抵达巴黎",summary:"QR39 14:25抵达戴高乐机场T1 → 入境取行李 → 民宿入住 → Cafe Marly 21:30；航空博物馆及奥赛原时段冲突待调整",stops:["d1_1","d1_2","d1_3"]},
   {day:2,date:"9月26日 (六)",title:"蒙马特与巴黎经典线",summary:"蒙马特高地 → 巴黎歌剧院 → 蓬皮杜外观 → 圣母院 → 莎士比亚书店 → 先贤祠 → 战神广场夜景",stops:["d2_1","d2_2","d2_3","d2_4","d2_5","d2_6","d2_7"]},
   {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
   {day:4,date:"9月28日 (一)",title:"卢浮宫与香榭丽舍",summary:"上午卢浮宫 → 杜乐丽花园 → 大/小皇宫（可选）→ 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6"]},
@@ -1394,6 +1411,20 @@ const ACCOMMODATIONS = [
   {id:"stay_geneva",name:"L’Hôtel Privé · Riverside Retreat · AC Included",city:"日内瓦",area:"Grand-Lancy · 日内瓦河畔区域",coords:[46.179,6.115],checkinDay:10,checkoutDay:12,checkinDate:"10月4日",checkoutDate:"10月6日",checkin:"15:00",checkout:"11:00",guests:3,host:"Olivier",warning:"确认单仅登记3位住客，与全团5人不一致；请确认另外2人的住宿安排或联系房东修改人数。"}
 ];
 
+// Ticket-confirmed flight times. Passenger names, booking references, ticket
+// numbers and frequent-flyer details are intentionally excluded from this public page.
+const FLIGHTS = [
+  {id:"flight_outbound",day:1,direction:"去程",status:"已出票 · 已确认",baggage:"30kg 托运行李",airportCoords:[49.0097,2.5479],airportLabel:"巴黎戴高乐机场 T1 · 抵达",segments:[
+    {flight:"QR3452（国泰实际承运）",from:"香港 HKG T1",to:"曼谷 BKK",depart:"9月24日 22:15",arrive:"9月25日 00:10",duration:"2h55"},
+    {flight:"QR829",from:"曼谷 BKK",to:"多哈 DOH",depart:"9月25日 03:00",arrive:"9月25日 05:35",duration:"6h35"},
+    {flight:"QR39",from:"多哈 DOH",to:"巴黎 CDG T1",depart:"9月25日 08:35",arrive:"9月25日 14:25",duration:"6h50"}
+  ],warning:"14:25才抵达巴黎；入境、取行李和前往民宿后，无法执行原表上午航空博物馆及15:30奥赛安排。"},
+  {id:"flight_return",day:12,direction:"返程",status:"已出票 · 已确认",baggage:"30kg 托运行李",airportCoords:[46.2381,6.1090],airportLabel:"日内瓦机场 T1 · 出发",segments:[
+    {flight:"QR100",from:"日内瓦 GVA T1",to:"多哈 DOH",depart:"10月6日 15:55",arrive:"10月6日 22:55",duration:"6h00"},
+    {flight:"QR874",from:"多哈 DOH",to:"广州 CAN T2",depart:"10月7日 02:50",arrive:"10月7日 15:30",duration:"7h40"}
+  ],warning:"建议至少提前3小时抵达日内瓦机场，并为多哈转机预留随身物品与登机口移动时间。"}
+];
+
 // ============================================================
 // APP STATE
 // ============================================================
@@ -1644,10 +1675,28 @@ function routeStaysForDay(dayNum) {
 function routeCoordsForDay(day) {
   const {start, end} = routeStaysForDay(day.day);
   const coords = [];
-  if (start) coords.push(start.coords);
+  const flight = FLIGHTS.find(item => item.day === day.day);
+  if (day.day === 1 && flight) coords.push(flight.airportCoords);
+  else if (start) coords.push(start.coords);
   day.stops.forEach(id => { if (POI_DATA[id]) coords.push(POI_DATA[id].coords); });
-  if (end) coords.push(end.coords);
+  if (day.day === 12 && flight) coords.push(flight.airportCoords);
+  else if (end) coords.push(end.coords);
   return coords.filter((coord, idx) => idx === 0 || coord[0] !== coords[idx-1][0] || coord[1] !== coords[idx-1][1]);
+}
+
+function renderFlightBlock(dayNum) {
+  const flight = FLIGHTS.find(item => item.day === dayNum);
+  if (!flight) return '';
+  const segments = flight.segments.map(segment => `<div class="flight-item"><div class="flight-route">${segment.from} → ${segment.to}</div><div class="flight-meta"><b>${segment.flight}</b> · ${segment.depart} 起飞 → ${segment.arrive} 抵达 · ${segment.duration}</div></div>`).join('');
+  return `<div class="flight-block" data-source="planned" data-theme="attraction"><div class="flight-title">✈️ ${flight.direction}航班 <span>${flight.status} · ${flight.baggage}</span></div>${segments}<div class="flight-warning">⚠️ ${flight.warning}</div></div>`;
+}
+
+function addFlightAirportMarker(flight) {
+  const icon = L.divIcon({className:'',html:'<div class="map-type-marker" style="background:#0a84ff">✈️<span class="marker-source-badge">已出票</span></div>',iconSize:[32,32],iconAnchor:[16,16],popupAnchor:[0,-19]});
+  const marker = L.marker(flight.airportCoords,{icon}).addTo(map);
+  marker.bindTooltip(flight.airportLabel,{direction:'top',offset:[0,-17],className:'marker-label'});
+  marker.bindPopup(`<strong>✈️ ${flight.airportLabel}</strong><p style="font-size:11px;margin:5px 0">${flight.direction} · ${flight.status}<br>${flight.baggage}</p>`);
+  eventMarkers[flight.id]=marker;
 }
 
 function addAccommodationMarker(stay, compact = false, routeRole = '已订') {
@@ -1739,13 +1788,16 @@ function showDay(dayNum) {
   dayExtras.forEach(addExtraMarker);
   const dayStays = DAY_CONTENT_FILTERS.planned ? accommodationForDay(dayNum) : [];
   dayStays.forEach(stay => addAccommodationMarker(stay, false, accommodationRouteRole(stay, dayNum)));
+  const dayFlight = DAY_CONTENT_FILTERS.planned ? FLIGHTS.find(item => item.day === dayNum) : null;
+  if (dayFlight) addFlightAirportMarker(dayFlight);
 
-  if (visibleStops.length || dayEvents.length || dayRestaurants.length || dayExtras.length || dayStays.length) {
+  if (visibleStops.length || dayEvents.length || dayRestaurants.length || dayExtras.length || dayStays.length || dayFlight) {
     const allCoords = visibleStops.map(id => POI_DATA[id].coords);
     dayEvents.forEach(e => allCoords.push(e.coords));
     dayRestaurants.forEach(r => allCoords.push(r.coords));
     dayExtras.forEach(p => allCoords.push(p.coords));
     dayStays.forEach(stay => allCoords.push(stay.coords));
+    if (dayFlight) allCoords.push(dayFlight.airportCoords);
     map.fitBounds(L.latLngBounds(allCoords), { padding: [50, 50], maxZoom: 14 });
   }
 
@@ -2343,6 +2395,17 @@ function buildSummaryRows() {
       closedText:stay.warning ? `⚠️ ${stay.guests}人确认单` : '✓ 确认单已核验',closedConflict:Boolean(stay.warning),
       linkCell:'<span style="color:#5856d6;font-size:9px">已确认</span>',
       passInfo:museumPassInfo(stay.id, stay, '住宿'),source:'planned',sourceLabel:'已订住宿'
+    });
+  });
+
+  FLIGHTS.forEach(flight => {
+    const first = flight.segments[0];
+    const last = flight.segments[flight.segments.length - 1];
+    rows.push({
+      day:flight.day,weekday:DAY_WEEK[flight.day],time:first.depart,name:`${flight.direction}航班 · ${first.from} → ${last.to}`,nameEn:flight.segments.map(s => s.flight).join(' / '),
+      type:'交通',typeIcon:'✈️',category:`已出票航班 · ${flight.baggage}`,price:'已支付（金额见电子客票）',priceEur:0,
+      need:false,advanceBooking:'已出票',earliestDate:null,sortKey:'0000',closedText:'✓ 客票已核验',closedConflict:false,
+      linkCell:'<span style="color:#0a84ff;font-size:9px">已确认</span>',passInfo:museumPassInfo(flight.id, flight, '交通'),source:'planned',sourceLabel:'已出票航班'
     });
   });
 
@@ -3225,13 +3288,14 @@ function buildSidebar() {
       extraBlock += `</div>`;
     }
 
+    const flightBlock = renderFlightBlock(day.day);
     const stayBlock = renderAccommodationBlock(day.day);
 
     card.innerHTML = `
       <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
       <div class="day-sub">${day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'')}</div>
       <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
-      ${stayBlock}<ul class="stop-list">${stopsHtml}</ul>${extraBlock}${evBlock}`;
+      ${flightBlock}${stayBlock}<ul class="stop-list">${stopsHtml}</ul>${extraBlock}${evBlock}`;
     listContainer.appendChild(card);
   });
 }
