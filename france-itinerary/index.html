@@ -160,6 +160,13 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .route-main-name{font-size:12px;font-weight:750;color:#1d1d1f;line-height:1.35}
 .route-main-meta{font-size:9px;color:#7a8791;line-height:1.35;margin-top:1px}
 .route-main-node.warning .route-main-meta{color:#a15f00}
+.route-main-node.clickable{cursor:pointer;border-radius:7px}
+.route-main-node.clickable:hover{background:#f2f7fc}
+.route-main-node.clickable:focus-visible{outline:2px solid #007aff;outline-offset:2px}
+.dining-section{margin:9px 0;padding-top:7px;border-top:1px solid #eceff3}
+.dining-section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;font-size:11px;font-weight:800;color:#8a4c24}
+.dining-section-title span{font-size:9px;font-weight:600;color:#9b7c69}
+.dining-section .stop-list{display:grid;gap:5px}
 
 /* Transit arrow item */
 .transit-item{display:flex;align-items:center;gap:10px;padding:6px 8px;margin:2px 0;border-radius:6px;background:#f8f9fc;cursor:default;border-left:3px solid #34c759}
@@ -520,7 +527,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.24</span>
+    <span class="v-dot"></span><span>v1.9.25</span>
   </div>
 </header>
 
@@ -579,10 +586,20 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.24</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.25</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.25</span><span class="version-date">2026-08-11</span>
+<div class="version-title">🧭 合并重复路线与景点详情</div>
+<ul class="version-items">
+<li>移除与关键路线重复的顶部文字摘要及下方景点列表</li>
+<li>所有景点集中在唯一编号主线中，点击即可打开完整详情</li>
+<li>下方统一只显示早餐、午餐和晚餐；航班、住宿及AI推荐各自分区</li>
+<li>补充里昂指定午餐 L'Auberge des Canuts 到餐饮区</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.24</span><span class="version-date">2026-08-11</span>
 <div class="version-title">✈️ 精简第一天抵达行程</div>
@@ -1428,6 +1445,7 @@ const RESTAURANTS = [
   {id:"rest_d7_grands_buffets",day:7,name:"Les Grands Buffets",city:"纳博讷",coords:[43.1696,2.9872],type:"高端法式自助餐",meal:"午餐",price:"约67.50€ / 人，饮料另计",averagePrice:"平均约67.50€ / 人",specialties:"古典法餐、海鲜、烤肉、鹅肝、甜点与大型奶酪区",near:"纳博讷 Espace de Liberté，明显偏离波尔多—图卢兹直达路线",fit:"原表第7天午餐候选；餐厅位于纳博讷，并不在空客工厂附近，必须接受较大绕行才适合加入。",reservation:"官网强烈建议预约，热门日期经常满位",website:"https://www.lesgrandsbuffets.com/en/practical-info/booking",sheetSuggested:true},
   {id:"rest_d7_perlette",day:7,name:"Perlette",city:"图卢兹",coords:[43.6008,1.4423],type:"甜品茶室 / 早午餐",meal:"下午茶 / 轻晚餐",price:"约15–30€ / 人",specialties:"自制蛋糕、咸派、早午餐和咖啡",near:"图卢兹历史中心 Bourse 区",fit:"进城后先休息吃轻食，再决定是否吃正式Cassoulet晚餐。",reservation:"热门下午时段可能候位",website:"https://www.toulouse-tourisme.com/en/restaurant/perlette/"},
   {id:"rest_d8_perlette_breakfast",day:8,name:"Perlette – 早餐备选",city:"图卢兹",coords:[43.6008,1.4423],type:"咖啡馆 / 甜点",meal:"早餐",price:"约12–25€ / 人",specialties:"咖啡、糕点、鸡蛋与轻食",near:"图卢兹老城，出发去卡尔卡松前可顺路",fit:"第8天早晨在新城市补早餐后再驾车前往卡尔卡松。",reservation:"早到通常无需预约",website:"https://www.toulouse-tourisme.com/en/restaurant/perlette/"},
+  {id:"rest_d9_canuts",day:9,name:"L'Auberge des Canuts",city:"里昂",coords:[45.7620,4.8271],type:"里昂 Bouchon / 传统菜",meal:"午餐 · 13:00",price:"约30–50€ / 人",averagePrice:"平均约40€ / 人",specialties:"Quenelle、Salade Lyonnaise、Tarte aux pralines、Cervelle de canut",near:"里昂老城 · 圣让主教座堂附近",fit:"0811表格指定的第9天午餐，位于上午老城路线末端。",reservation:"指定餐厅，周六午餐建议提前预约5人桌",website:"https://www.google.com/maps/search/?api=1&query=L%27Auberge%20des%20Canuts%20Lyon",planned:true},
   {id:"rest_d9_bouchon",day:9,name:"Le Bouchon des Filles",city:"里昂",coords:[45.7689,4.8310],type:"里昂Bouchon / 家常菜",meal:"里昂深度日晚餐",price:"约30–45€ / 人",specialties:"里昂沙拉、肉酱、炖肉和甜点拼盘",near:"里昂市中心，距老城约15分钟步行",fit:"第9天整天留在里昂，可把这顿传统Bouchon作为当天正式晚餐；与第10天大型啤酒馆形成不同风格。",reservation:"周六晚餐建议预约并复查营业",website:"https://www.bouchondesfilles.fr/"},
   {id:"rest_d10_halles",day:10,name:"Les Halles de Lyon Paul Bocuse",city:"里昂",coords:[45.7616,4.8505],type:"美食市场 / 多摊位",meal:"早餐 / 早午餐",price:"约15–40€ / 人",specialties:"里昂熟食、奶酪、生蚝、面包甜点",near:"里昂Part-Dieu区",fit:"周日早晨先吃当地特色并采购路上食品，再开始老城与博若莱行程。",reservation:"市场无需预约，具体摊位各异",website:"https://www.halles-de-lyon-paulbocuse.com/"},
   {id:"rest_d11_bains",day:11,name:"Buvette des Bains des Pâquis",city:"日内瓦",coords:[46.2107,6.1524],type:"湖畔公共餐厅 / 瑞士简餐",meal:"早餐",price:"早餐约12 CHF / 人",specialties:"完整早餐、面包咖啡、湖景与当日套餐",near:"日内瓦湖右岸，正对大喷泉",fit:"第11天文化行程前吃早餐；环境有特色且价格相对友好。",reservation:"早餐通常现场即可",website:"https://www.bains-des-paquis.ch/"},
@@ -1743,19 +1761,26 @@ function renderFlightBlock(dayNum) {
 function renderMainRoute(day) {
   const nodes = [];
   const flight = FLIGHTS.find(item => item.day === day.day);
-  if (day.day === 1 && flight) nodes.push({name:'巴黎戴高乐机场 T1 落地',meta:'QR39 · 9月25日 14:25抵达',kind:'transport'});
+  if (day.day === 1 && flight) nodes.push({name:'巴黎戴高乐机场 T1 落地',meta:'QR39 · 9月25日 14:25抵达 · 点击查看航班',kind:'transport',action:`focusFlight(${day.day})`});
   const {start, end} = routeStaysForDay(day.day);
-  if (start && day.day !== 1) nodes.push({name:start.name,meta:`住宿出发 · ${start.area}`,kind:'stay'});
+  if (start && day.day !== 1) nodes.push({name:start.name,meta:`住宿出发 · ${start.area}`,kind:'stay',action:`showAccommodationDetail('${start.id}')`});
   day.stops.forEach(id => {
     const poi = POI_DATA[id];
     if (!poi || poi.type === '餐饮') return;
     const warning = poi.time && (poi.time.includes('冲突') || poi.time.includes('时间紧张'));
-    nodes.push({name:poi.name,meta:`${poi.time || '时间待定'}${poi.type === '行程' ? ' · 行程节点' : ''}`,kind:warning ? 'warning' : (poi.type === '行程' ? 'transport' : '')});
+    nodes.push({name:poi.name,meta:`${poi.time || '时间待定'}${poi.type === '行程' ? ' · 行程节点' : ''} · 点击查看详情`,kind:warning ? 'warning' : (poi.type === '行程' ? 'transport' : ''),action:`showDetail('${id}')`});
   });
-  if (day.day === 12 && flight) nodes.push({name:'日内瓦机场 T1',meta:'QR100 · 10月6日 15:55起飞',kind:'transport'});
-  else if (end) nodes.push({name:end.name,meta:`住宿${accommodationRouteRole(end,day.day)} · ${end.area}`,kind:'stay'});
+  if (day.day === 12 && flight) nodes.push({name:'日内瓦机场 T1',meta:'QR100 · 10月6日 15:55起飞 · 点击查看航班',kind:'transport',action:`focusFlight(${day.day})`});
+  else if (end) nodes.push({name:end.name,meta:`住宿${accommodationRouteRole(end,day.day)} · ${end.area} · 点击查看`,kind:'stay',action:`showAccommodationDetail('${end.id}')`});
   const unique = nodes.filter((node,index) => index === 0 || node.name !== nodes[index-1].name);
-  return `<div class="route-main" data-source="planned" data-theme="attraction"><div class="route-main-title">🧭 今日关键路线 <span>${unique.length}个节点 · 餐饮穿插在下方</span></div><div class="route-main-list">${unique.map((node,index)=>`<div class="route-main-node ${node.kind || ''}"><div class="route-main-num">${index+1}</div><div><div class="route-main-name">${node.name}</div><div class="route-main-meta">${node.meta}</div></div></div>`).join('')}</div></div>`;
+  return `<div class="route-main" data-source="planned" data-theme="attraction"><div class="route-main-title">🧭 今日关键路线 <span>${unique.length}个节点 · 点击景点查看详情</span></div><div class="route-main-list">${unique.map((node,index)=>`<div class="route-main-node ${node.kind || ''} ${node.action ? 'clickable' : ''}" ${node.action ? `onclick="${node.action}" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${node.action}}"` : ''}><div class="route-main-num">${index+1}</div><div><div class="route-main-name">${node.name}</div><div class="route-main-meta">${node.meta}</div></div></div>`).join('')}</div></div>`;
+}
+
+function focusFlight(dayNum) {
+  const block = document.querySelector(`#day-card-${dayNum} .flight-block`);
+  if (!block) return;
+  block.open = true;
+  block.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function addFlightAirportMarker(flight) {
@@ -3353,12 +3378,12 @@ function buildSidebar() {
     const mainRoute = renderMainRoute(day);
     const flightBlock = renderFlightBlock(day.day);
     const stayBlock = renderAccommodationBlock(day.day);
+    const diningHtml = `${renderMealSlot(day.day,'breakfast')}${renderMealSlot(day.day,'lunch')}${renderMealSlot(day.day,'dinner')}`;
 
     card.innerHTML = `
       <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
       <div class="day-sub">${day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'')}</div>
-      <p style="font-size:12px;color:#666;margin-bottom:8px;padding:6px 10px;background:#f0f4ff;border-radius:6px">🚗 ${day.summary}</p>
-      ${mainRoute}<ul class="stop-list">${stopsHtml}</ul>${flightBlock}${stayBlock}${extraBlock}${evBlock}`;
+      ${mainRoute}<div class="dining-section" data-theme="restaurant"><div class="dining-section-title">🍽️ 当日餐饮 <span>按早餐 / 午餐 / 晚餐集中显示</span></div><ul class="stop-list">${diningHtml}</ul></div>${flightBlock}${stayBlock}${extraBlock}${evBlock}`;
     listContainer.appendChild(card);
   });
 }
