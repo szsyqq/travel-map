@@ -70,28 +70,30 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .filtered-out{display:none!important}
 
 /* Itinerary list */
-.itinerary-list{flex:1;overflow:hidden;padding:10px 12px}
+.info-matrix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:9px;flex:1;min-height:0;padding:10px 12px}
+.itinerary-list{display:contents}
 .day-card{display:none}
-.day-card.active{display:flex;flex-direction:column;height:100%;min-height:0}
+.day-card.active{display:contents}
 .day-card h3{font-size:15px;font-weight:600;margin-bottom:3px;color:#1d1d1f}
 .day-card .day-sub{font-size:11px;color:#86868b;margin-bottom:10px}
 .day-card .stop-list{list-style:none}
-.daily-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:9px;min-height:0;flex:1}
+.daily-board{display:contents}
 .daily-panel{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 8px 10px;background:#fbfcfd;border:1px solid #e2e7ec;border-radius:11px;box-shadow:0 1px 3px rgba(27,52,75,.04)}
-.panel-itinerary{grid-column:1;grid-row:1}
-.panel-support{grid-column:1;grid-row:2}
+.matrix-calendar{grid-column:1;grid-row:1}
+.panel-itinerary{grid-column:1;grid-row:2}
 .panel-recommend{grid-column:2;grid-row:1}
 .panel-dining{grid-column:2;grid-row:2}
 .column-title{position:sticky;top:0;z-index:3;margin:0 -8px 7px;padding:7px 9px;background:rgba(248,250,252,.97);backdrop-filter:blur(6px);border-bottom:1px solid #e7ebef;font-size:10px;font-weight:800;color:#405161;letter-spacing:.25px;display:flex;align-items:center;justify-content:space-between}
 .column-title span{font-size:8px;font-weight:650;color:#8996a1}
 .panel-itinerary .column-title{color:#075ea8}
-.panel-support .column-title{color:#514e9b}
+.matrix-calendar .column-title{color:#514e9b}
 .panel-recommend .column-title{color:#087b66}
 .panel-dining .column-title{color:#9b4d25}
 .recommendation-stack:empty{display:none}
 @media(max-width:900px){
-  .itinerary-list{overflow-y:auto}
-  .day-card.active{height:auto;min-height:100%;display:block}
+  .info-matrix{display:block;overflow-y:auto;padding:9px 10px 18px}
+  .itinerary-list{display:contents}
+  .day-card.active{display:block}
   .daily-board{display:block}
   .daily-panel{overflow:visible;margin-bottom:9px;padding-bottom:9px}
   .column-title{position:static}
@@ -556,7 +558,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.27</span>
+    <span class="v-dot"></span><span>v1.9.28</span>
   </div>
 </header>
 
@@ -577,10 +579,6 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     <div class="tab-group-label">活动与推荐</div>
     <div class="day-tabs function-tabs" id="functionTabs"></div>
   </div>
-  <div class="tab-group">
-    <div class="tab-group-label">12 天行程 · 全部日期</div>
-    <div class="day-tabs itinerary-tabs" id="dayTabs"></div>
-  </div>
 </div>
 <div class="day-filter-bar" id="dayFilterBar">
   <div class="filter-row">
@@ -591,7 +589,13 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     <label class="filter-check recommend"><input type="checkbox" data-filter-ai="restaurant" checked>AI 餐厅</label>
   </div>
 </div>
-<div class="itinerary-list" id="itineraryList"></div>
+<div class="info-matrix" id="infoMatrix">
+  <section class="matrix-calendar daily-panel">
+    <div class="column-title">📅 12 天行程列表 <span>选择日期</span></div>
+    <div class="day-tabs itinerary-tabs" id="dayTabs"></div>
+  </section>
+  <div class="itinerary-list" id="itineraryList"></div>
+</div>
 <div class="events-list" id="eventsList"></div>
 </div>
 
@@ -615,10 +619,19 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.27</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.28</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.28</span><span class="version-date">2026-08-11</span>
+<div class="version-title">▦ 修正 2×2 区域定义</div>
+<ul class="version-items">
+<li>左上改为12天日期列表，左下为当天正式行程及航班住宿</li>
+<li>右上保留AI景点与活动，右下保留早餐午餐晚餐</li>
+<li>日期选择与三类内容共同组成固定等宽2×2矩阵</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.27</span><span class="version-date">2026-08-11</span>
 <div class="version-title">▦ 正文改为等宽 2×2 信息矩阵</div>
@@ -1913,7 +1926,8 @@ function showDay(dayNum) {
   const dayData = ITINERARY.find(d => d.day === dayNum);
   if (!dayData) return;
 
-  document.getElementById('itineraryList').style.display = 'block';
+  document.getElementById('infoMatrix').style.display = '';
+  document.getElementById('itineraryList').style.display = '';
   document.getElementById('eventsList').style.display = 'none';
   clearMap();
   const visibleStops = dayData.stops.filter(id => filterAllows('planned', poiTheme(POI_DATA[id])));
@@ -1962,7 +1976,8 @@ function showDay(dayNum) {
 // ============================================================
 function showOverview() {
   currentMode = 'overview';
-  document.getElementById('itineraryList').style.display = 'block';
+  document.getElementById('infoMatrix').style.display = '';
+  document.getElementById('itineraryList').style.display = '';
   document.getElementById('eventsList').style.display = 'none';
   clearMap();
 
@@ -2025,7 +2040,7 @@ function showEvents() {
   // UI
   document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
   document.querySelector('.day-tab.event-tab')?.classList.add('active');
-  document.getElementById('itineraryList').style.display = 'none';
+  document.getElementById('infoMatrix').style.display = 'none';
   document.getElementById('eventsList').style.display = 'block';
   renderEventsList();
 }
@@ -2140,7 +2155,7 @@ function showExtras() {
   map.fitBounds(L.latLngBounds(EXTRA_POIS.map(p=>p.coords)),{padding:[40,40],maxZoom:12});
   document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
   document.querySelector('.day-tab.extra-tab')?.classList.add('active');
-  document.getElementById('itineraryList').style.display='none';
+  document.getElementById('infoMatrix').style.display='none';
   document.getElementById('eventsList').style.display='block';
   renderExtrasList();
 }
@@ -2246,7 +2261,7 @@ function showRestaurants() {
   document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
   document.querySelector('.day-tab.restaurant-tab')?.classList.add('active');
   document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('itineraryList').style.display='none';
+  document.getElementById('infoMatrix').style.display='none';
   document.getElementById('eventsList').style.display='block';
   renderRestaurantsList();
 }
@@ -3436,16 +3451,11 @@ function buildSidebar() {
     const recommendationContent = extraBlock || evBlock ? `${extraBlock}${evBlock}` : '<div style="padding:12px 5px;color:#8a949c;font-size:10px;line-height:1.5">当天暂无适合加入且可进入的 AI 景点或活动。</div>';
 
     card.innerHTML = `
-      <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
-      <div class="day-sub">${day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'')}</div>
       <div class="daily-board">
         <section class="daily-panel panel-itinerary">
-          <div class="column-title">🗓️ 正式旅游行程 <span>点击节点查看详情</span></div>
-          ${mainRoute}
-        </section>
-        <section class="daily-panel panel-support">
-          <div class="column-title">🧳 航班与住宿 <span>已确认资料</span></div>
-          ${flightBlock}${stayBlock}
+          <div class="column-title">🗓️ 当天正式行程 <span>${day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'')} · 点击节点</span></div>
+          <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
+          ${mainRoute}${flightBlock}${stayBlock}
         </section>
         <section class="daily-panel panel-recommend">
           <div class="column-title">✨ AI 景点与活动 <span>不属于原定行程</span></div>
