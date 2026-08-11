@@ -496,7 +496,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.19</span>
+    <span class="v-dot"></span><span>v1.9.20</span>
   </div>
 </header>
 
@@ -555,10 +555,20 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.19</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.20</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.20</span><span class="version-date">2026-08-11</span>
+<div class="version-title">🗓️ 同步 0811 新日程与住宿起终点</div>
+<ul class="version-items">
+<li>按 0811 行程表更新波尔多酒庄、里昂深度游和里昂至日内瓦路线</li>
+<li>10月3日补齐富维耶、高卢罗马遗址、里昂老城、美术馆与旧主宫医院</li>
+<li>10月4日改为汇流博物馆后前往日内瓦，博若莱品酒保留为可选停靠</li>
+<li>继续以住宿确认单作为路线起终点依据，并标明里昂住宿尚待确认</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.19</span><span class="version-date">2026-08-03</span>
 <div class="version-title">🧭 每日路线以住宿为起终点</div>
@@ -887,8 +897,8 @@ const POI_DATA = {
   "d4_9":{name:"法国参议院（卢森堡宫）",nameEn:"Sénat · Palais du Luxembourg",coords:[48.8555,2.3370],day:4,desc:"法国参议院（上议院）所在地，位于卢森堡花园内。普通个人周六参观目前暂停，常规入内通常需参议员邀请或担保团体。",why:"你们到访期间建议参观外观和免费开放的卢森堡花园，不应把进入宫殿列为确定项目。2026年欧洲遗产日开放在9月19–20日，早于抵达日期。",reservation:"普通个人不能直接预约；花园无需预约",price:"宫殿常规不对个人售票；花园免费",reserveUrl:"https://www.senat.fr/le-senat-et-vous/visiter-le-senat.html",advanceBooking:"如必须入内，需联系参议员争取邀请",time:"—",category:"见学/机构",type:"见学",transport:"地铁10号线 Odéon / RER B Luxembourg 站",closed:"个人周六参观暂停；团体依议事安排",website:"https://www.senat.fr",reserveChannels:"参议员担保团体通常安排周一、周五或周六；欧洲遗产日9月19–20日无需预约但不在本次行程内",studyTour:true},
   "d5_1":{name:"香波尔城堡",nameEn:"Château de Chambord",coords:[47.6161,1.5170],day:5,desc:"卢瓦尔河谷最大、最标志性的文艺复兴城堡。",why:"达芬奇双螺旋楼梯是灵魂；顶层露台360°俯瞰护城河与狩猎森林。",reservation:"无需预约",price:"15€（博物馆通票不含）",reserveUrl:"https://www.chambord.org",advanceBooking:"提前购票即可",time:"10:00",category:"城堡"},
   "d5_2":{name:"波尔多",nameEn:"Bordeaux",coords:[44.8378,-0.5792],day:5,desc:"世界葡萄酒之都，联合国世界文化遗产城市。",why:"18世纪建筑群保存完好，水镜广场是网红打卡点。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"4h",dist:"560km",depart:"13:00"},
-  "d6_1":{name:"波尔多葡萄酒城",nameEn:"La Cité du Vin",coords:[44.8629,-0.5498],day:6,desc:"沉浸式葡萄酒主题文化体验馆，造型如醒酒器。",why:"六大主题18个沉浸式空间，门票含一杯免费品酒。",reservation:"无需预约",price:"23€（含一杯免费酒）",reserveUrl:"https://www.laciteduvin.com",advanceBooking:"提前购票即可",time:"10:00",category:"博物馆",closed:"周一闭馆"},
-  "d6_2":{name:"波尔多酒庄体验",nameEn:"Bordeaux Château Visit",coords:[44.8500,-0.6000],day:6,desc:"在TripAdvisor上选择开放酒庄品酒。",why:"数百家酒庄可供参观品酒，体验正宗法国酒庄文化。",reservation:"需要预约",price:"30-100€ 视酒庄和套餐",reserveUrl:"",advanceBooking:"建议提前2-4周联系酒庄",time:"14:00",category:"体验",type:"体验"},
+  "d6_1":{name:"滴金酒庄",nameEn:"Château d’Yquem",coords:[44.5468,-0.3390],day:6,desc:"苏玳产区最具代表性的一级特等酒庄，以贵腐甜白葡萄酒闻名。",why:"0811 表格明确安排10:00抵达，参观约90分钟；从波尔多住宿出发需预留约1小时车程。",reservation:"已列入日程，须确认酒庄预约",price:"约100€ / 人",reserveUrl:"https://www.yquem.fr",advanceBooking:"尽快核对预约确认与到访名单",time:"10:00",category:"酒庄",type:"体验"},
+  "d6_2":{name:"波尔多葡萄酒城",nameEn:"La Cité du Vin",coords:[44.8629,-0.5498],day:6,desc:"沉浸式葡萄酒主题文化体验馆，造型如醒酒器。",why:"0811 表格安排酒庄之后返回波尔多参观，场馆18:00闭馆。",reservation:"可提前购票",price:"27€（表格注明含品酒）",reserveUrl:"https://www.laciteduvin.com/en/",advanceBooking:"建议提前购票并核对末次入场",time:"14:30",category:"博物馆",closed:"周一闭馆"},
   "d7_1":{name:"空客工厂",nameEn:"Airbus Factory",coords:[43.5800,1.3690],day:7,desc:"全球最大飞机制造商的装配工厂。",why:"亲眼目睹A350、A380大型客机装配线。需提前2周预约。",reservation:"需要预约",price:"约20€",reserveUrl:"https://www.airbus.com/visit",advanceBooking:"建议提前2周预约",time:"10:00",category:"工业",website:"https://www.airbus.com/visit"},
   "d7_2":{name:"协和博物馆",nameEn:"Concorde Museum / Aeroscopia",coords:[43.5770,1.3710],day:7,desc:"与空客工厂相邻的航空博物馆。",why:"可登机体验协和式超音速客机内部。",reservation:"无需预约",price:"含在参观套票中",reserveUrl:"",advanceBooking:"当天即可",time:"13:00",category:"博物馆"},
   "d7_3":{name:"图卢兹",nameEn:"Toulouse",coords:[43.6045,1.4440],day:7,desc:"法国第四大城市，'玫瑰之城'（红砖建筑）。",why:"圣塞尔南教堂是世界遗产，还有空中客车总部、欧洲航天局。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"16:00",category:"城市",type:"行程",driveTime:"2h40",dist:"240km",depart:"13:00"},
@@ -896,9 +906,14 @@ const POI_DATA = {
   "d8_2":{name:"尼姆竞技场",nameEn:"Arènes de Nîmes",coords:[43.8347,4.3600],day:8,desc:"保存最完好的古罗马竞技场之一，建于公元1世纪。",why:"比罗马斗兽场保存更好，至今用于斗牛和音乐会。",reservation:"无需预约",price:"约10€",reserveUrl:"",advanceBooking:"提前购票即可",time:"13:45",category:"古迹"},
   "d8_3":{name:"嘉德水道桥",nameEn:"Pont du Gard",coords:[43.9474,4.5350],day:8,desc:"古罗马最伟大的水利工程之一，世界文化遗产。",why:"三层拱桥跨越加尔德河，是从尼姆前往里昂途中顺路的短暂停靠点。",reservation:"无需预约",price:"停车/参观约8.5€",reserveUrl:"",advanceBooking:"无需预约",time:"16:20",category:"古迹"},
   "d8_4":{name:"抵达里昂",nameEn:"Arrivée à Lyon",coords:[45.7640,4.8357],day:8,desc:"完成南法长途串联后抵达里昂。",why:"新版行程取消蒙彼利埃住宿，改为当晚直接抵达里昂，为随后两天里昂行程留出完整时间。",reservation:"无需预约",price:"—",reserveUrl:"",advanceBooking:"无需",time:"约20:00",category:"城市",type:"行程",driveTime:"2h40",dist:"约250km",depart:"17:20"},
-  "d9_1":{name:"里昂自由活动",nameEn:"Lyon",coords:[45.7640,4.8357],day:9,desc:"新版行程安排完整一天停留里昂，可按体力在老城、富维耶山和市区之间灵活安排。",why:"不再从尼姆、阿维尼翁赶路，可以留出一整天深入体验里昂。",reservation:"按所选场馆决定",price:"按实际项目",reserveUrl:"",advanceBooking:"建议前一晚确定具体顺序",time:"全天",category:"城市"},
-  "d10_1":{name:"里昂老城 & Traboule",nameEn:"Vieux Lyon & Traboules",coords:[45.7630,4.8270],day:10,desc:"里昂文艺复兴老城区，拥有独特的秘密通道系统。",why:"Traboules是丝绸工人秘密通道，二战时被抵抗军使用，可穿越建筑内部。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"09:00",category:"街区"},
-  "d10_2":{name:"博若莱酒区",nameEn:"Beaujolais Wine Region",coords:[46.0000,4.7000],day:10,desc:"从里昂出发30分钟可达的著名葡萄酒产区。",why:"在19世纪丝绸厂改建的酒窖里品酒，品尝博若莱新酒。",reservation:"需要预约",price:"品酒费用5-20€",reserveUrl:"",advanceBooking:"建议提前1周联系酒庄",time:"11:00",category:"体验"},
+  "d9_1":{name:"富维耶圣母院",nameEn:"Basilique Notre-Dame de Fourvière",coords:[45.7623,4.8226],day:9,desc:"俯瞰里昂全城的山顶教堂，是当天步行线的起点。",why:"0811 表格把富维耶山、高卢罗马遗址与里昂老城安排在上午。",reservation:"教堂通常无需预约",price:"教堂免费",reserveUrl:"https://www.fourviere.org",advanceBooking:"无需",time:"09:00",category:"教堂"},
+  "d9_2":{name:"高卢罗马博物馆与剧场遗址",nameEn:"Lugdunum Musée et Théâtres romains",coords:[45.7603,4.8197],day:9,desc:"展示古罗马时期里昂历史，旁边保存两座高卢罗马剧场遗址。",why:"与富维耶圣母院相邻，可在上午连续参观。",reservation:"可现场购票",price:"博物馆约7€；遗址免费",reserveUrl:"https://lugdunum.grandlyon.com",advanceBooking:"无需预约",time:"10:15",category:"博物馆"},
+  "d9_3":{name:"里昂主座教堂与老城",nameEn:"Cathédrale Saint-Jean-Baptiste · Vieux Lyon",coords:[45.7606,4.8274],day:9,desc:"里昂老城核心的哥特式主教座堂与文艺复兴街区。",why:"从富维耶下山后顺路进入老城，衔接表格指定午餐。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:00",category:"街区"},
+  "d9_4":{name:"L'Auberge des Canuts（午餐）",nameEn:"L'Auberge des Canuts",coords:[45.7620,4.8271],day:9,desc:"里昂传统 Bouchon 餐厅。",why:"0811 表格明确指定的午餐，适合品尝 Quenelle、里昂沙拉和粉红果仁甜点。",reservation:"建议提前预约",price:"约30–50€ / 人",reserveUrl:"https://www.google.com/maps/search/?api=1&query=L%27Auberge%20des%20Canuts%20Lyon",advanceBooking:"周六午餐建议预约",time:"13:00",category:"餐饮",type:"餐饮"},
+  "d9_5":{name:"里昂美术馆",nameEn:"Musée des Beaux-Arts de Lyon",coords:[45.7672,4.8336],day:9,desc:"位于沃土广场旁的法国重要综合美术馆。",why:"0811 表格安排为下午主景点。",reservation:"可提前购票",price:"常设展约8€",reserveUrl:"https://www.mba-lyon.fr",advanceBooking:"建议核对周六开放时间",time:"15:00",category:"博物馆"},
+  "d9_6":{name:"里昂旧主宫医院",nameEn:"Grand Hôtel-Dieu de Lyon",coords:[45.7584,4.8361],day:9,desc:"由历史医院改造的建筑群，拥有标志性的白色穹顶与庭院。",why:"0811 表格把这里作为当天最后一站；建筑公共区域可进入散步。",reservation:"公共区域无需预约",price:"免费；个别展览另计",reserveUrl:"https://www.grand-hotel-dieu.com",advanceBooking:"无需",time:"17:30",category:"历史建筑"},
+  "d10_1":{name:"汇流博物馆",nameEn:"Musée des Confluences",coords:[45.7331,4.8180],day:10,desc:"位于罗讷河与索恩河交汇处的现代建筑与人类学、自然史博物馆。",why:"0811 表格明确安排周日上午参观，并建议到四楼看两江汇流景色。",reservation:"可提前购票",price:"约12€",reserveUrl:"https://www.museedesconfluences.fr",advanceBooking:"建议提前购票",time:"10:00",category:"博物馆"},
+  "d10_2":{name:"博若莱酒区（可选停靠）",nameEn:"Beaujolais Wine Region",coords:[46.0000,4.7000],day:10,desc:"从里昂向北进入的葡萄酒产区，可参观由19世纪丝绸厂改建的酒窖。",why:"0811 表格把品酒作为前往日内瓦途中可加入的体验；若预约时段影响入住则应跳过。",reservation:"需要预约",price:"品酒费用约5–20€",reserveUrl:"",advanceBooking:"确定离开里昂时间后再预约",time:"14:00",category:"可选体验",type:"行程"},
   "d10_3":{name:"日内瓦",nameEn:"Geneva",coords:[46.2044,6.1432],day:10,desc:"国际化大都市，联合国欧洲总部所在地。",why:"日内瓦湖大喷泉、花钟、老城区。200多个国际组织汇集地。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"2h",dist:"150km",depart:"15:00"},
   "d11_1":{name:"百达翡丽博物馆",nameEn:"Patek Philippe Museum",coords:[46.2002,6.1447],day:11,desc:"全球最重要钟表博物馆之一。",why:"500年2000多件钟表珍品，钟表爱好者的朝圣地。",reservation:"需要预约",price:"约10-15瑞郎",reserveUrl:"https://www.patek.com/museum",advanceBooking:"建议提前1-2周预约",time:"10:00",category:"博物馆",closed:"周日、周一闭馆"},
   "d11_2":{name:"联合国日内瓦办事处",nameEn:"United Nations Geneva",coords:[46.2263,6.1393],day:11,desc:"联合国欧洲总部，又称万国宫。",why:"参观国际外交真实发生场所。提供英文/法文导览团（约1h），可参观会议厅、各国赠礼及艺术品。如当天有会议，可申请旁听（需提前确认议程）。",reservation:"需要预约",price:"约15瑞郎",reserveUrl:"https://www.ungeneva.org",advanceBooking:"建议提前2周预约",time:"11:30",category:"机构",website:"https://www.ungeneva.org",reserveChannels:"官网在线预约导览；如需旁听理事会/委员会会议，需当天凭护照在入口处申请旁听席位（先到先得）"},
@@ -912,11 +927,11 @@ const ITINERARY = [
   {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
   {day:4,date:"9月28日 (一)",title:"卢浮宫与香榭丽舍",summary:"上午卢浮宫 → 杜乐丽花园 → 大/小皇宫（可选）→ 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6"]},
   {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
-  {day:6,date:"9月30日 (三)",title:"波尔多红酒日",summary:"葡萄酒城(上午) → 酒庄品酒(下午)",stops:["d6_1","d6_2"]},
+  {day:6,date:"9月30日 (三)",title:"滴金酒庄与葡萄酒城",summary:"10:00滴金酒庄(约90min) → 下午波尔多葡萄酒城(18:00闭馆)",stops:["d6_1","d6_2"]},
   {day:7,date:"10月1日 (四)",title:"图卢兹航空日",summary:"波尔多→图卢兹(2h40) → 空客工厂 → 协和博物馆",stops:["d7_1","d7_2","d7_3"]},
   {day:8,date:"10月2日 (五)",title:"南法古城→里昂",summary:"图卢兹→卡尔卡松城堡(2h) → 尼姆竞技场(2h10) → 嘉德水道桥(35min) → 里昂(2h40，约20:00抵达)",stops:["d8_1","d8_2","d8_3","d8_4"]},
-  {day:9,date:"10月3日 (六)",title:"里昂深度日",summary:"里昂整天自由安排，不再前往尼姆或阿维尼翁",stops:["d9_1"]},
-  {day:10,date:"10月4日 (日)",title:"里昂深度→日内瓦",summary:"里昂老城与Traboule → 博若莱酒区/丝绸酒窖品酒 → 晚上前往日内瓦",stops:["d10_1","d10_2","d10_3"]},
+  {day:9,date:"10月3日 (六)",title:"里昂历史与美术",summary:"富维耶圣母院 → 高卢罗马博物馆与剧场 → 里昂老城 → L'Auberge des Canuts午餐 → 里昂美术馆 → 旧主宫医院",stops:["d9_1","d9_2","d9_3","d9_4","d9_5","d9_6"]},
+  {day:10,date:"10月4日 (日)",title:"里昂汇流→日内瓦",summary:"上午汇流博物馆 → 里昂午餐 → 博若莱酒区（可选）→ 下午前往日内瓦民宿",stops:["d10_1","d10_2","d10_3"]},
   {day:11,date:"10月5日 (一)",title:"日内瓦文化日",summary:"百达翡丽博物馆 → 联合国 → CERN粒子加速器；Nico、Bonnie 下午返程",stops:["d11_1","d11_2","d11_3"]},
   {day:12,date:"10月6日 (二)",title:"日内瓦返程",summary:"日内瓦湖晨间漫步 → 15:55返程",stops:["d12_1"]}
 ];
@@ -945,13 +960,19 @@ const POI_EXTRA = {
   "d4_5":{hours:"街区全天开放",duration:"约1小时",address:"Avenue des Champs-Élysées, 75008 Paris",tips:"从协和广场一路向西前往凯旋门。"},
   "d4_6":{hours:"9月周一10:00–23:00，末次入场提前45分钟",duration:"1–1.5 小时",address:"Place Charles de Gaulle, 75008 Paris",tips:"普通个人无需预约；官网购票只是减少现场排队。通票持有人直接按现场规则入场。"},
   "d5_1":{hours:"每日 9:00–18:00（旺季至 17:00）",duration:"2–3 小时",address:"Château de Chambord, 41250 Chambord",tips:"达芬奇双螺旋楼梯与屋顶露台是精华；园区很大，留足停车步行时间。"},
-  "d6_1":{hours:"周二–周日 10:00–18:00（周一闭馆）",duration:"2–3 小时",address:"134 Quai de Bacalan, 33300 Bordeaux",tips:"门票含一杯免费品酒；沉浸式展厅建议租语音导览。"},
+  "d6_1":{hours:"仅按确认的预约时段接待",duration:"约90分钟",address:"Sauternes, Gironde",tips:"10:00到达；请提前核对酒庄确认邮件、访客名单和驾车时间。"},
+  "d6_2":{hours:"通常10:00–18:00，末次入场提前",duration:"2–3小时",address:"134 Quai de Bacalan, 33300 Bordeaux",tips:"从滴金酒庄返回后参观；表格注明门票含品酒，购票时以官网套餐为准。"},
   "d7_1":{hours:"需预约导览约 1.5 小时（周二–周六）",duration:"半天",address:"Aéroport de Toulouse-Blagnac",tips:"A350/A380 装配线必看；需提前 2 周预约，带护照。"},
   "d8_1":{hours:"城堡免费进入；伯爵城堡 10:00–18:00",duration:"2–3 小时",address:"Carcassonne, 11000",tips:"52 座塔楼可登；城内石板路滑，穿舒适鞋。"},
   "d8_2":{hours:"每日 9:00–19:00（冬季至 17:00）",duration:"约 2 小时",address:"Arènes de Nîmes, 1 Pl. des Arènes, 30000 Nîmes",tips:"新版行程安排在卡尔卡松之后；停车与进场要计入紧凑时间。"},
   "d8_3":{hours:"园区全天开放（博物馆 10:00–18:00）",duration:"约 20–40 分钟",address:"Pont du Gard, 30210 Vers-Pont-du-Gard",tips:"本次为前往里昂途中的短停，避免展开长距离河岸活动。"},
-  "d9_1":{hours:"全天自由安排",duration:"完整一天",address:"Lyon, France",tips:"新版表尚未指定第 9 天的固定景点，可从里昂老城、富维耶山或美食市场中选择。"},
-  "d10_1":{hours:"老城全天；Traboule 通道白天开放",duration:"2–3 小时",address:"Vieux Lyon, 69005 Lyon",tips:"寻找隐藏 Traboule 入口（如 54 Rue Saint-Jean）；里昂老城免费。"},
+  "d9_1":{hours:"教堂通常每日开放，具体以官网为准",duration:"45–60分钟",address:"8 Place de Fourvière, 69005 Lyon",tips:"从山顶开始游览，之后步行前往相邻的高卢罗马遗址。"},
+  "d9_2":{hours:"周六开放时间以官网为准",duration:"1.5–2小时",address:"17 Rue Cleberg, 69005 Lyon",tips:"博物馆与户外剧场相连；穿防滑、适合坡路的鞋。"},
+  "d9_3":{hours:"老城全天；教堂依礼拜时间开放",duration:"1–1.5小时",address:"Place Saint-Jean, 69005 Lyon",tips:"午餐前预留老城步行时间；秘密通道可作为沿途加项。"},
+  "d9_4":{hours:"以餐厅周六午餐时段为准",duration:"1.5小时",address:"里昂老城 · Place Saint-Jean 附近",tips:"这是0811表格指定餐厅，优先确认5人座位与菜单。"},
+  "d9_5":{hours:"周六通常10:30–18:00",duration:"1.5–2小时",address:"20 Place des Terreaux, 69001 Lyon",tips:"下午时间有限，建议提前选定重点展厅。"},
+  "d9_6":{hours:"公共庭院与商业区按当天开放",duration:"45–60分钟",address:"1 Place de l'Hôpital, 69002 Lyon",tips:"适合作为当天收尾散步，不涉及门票的公共区域无需预约。"},
+  "d10_1":{hours:"周日通常10:30–18:30",duration:"2–3小时",address:"86 Quai Perrache, 69002 Lyon",tips:"四楼可看罗讷河与索恩河汇流；参观后直接从城市南端上路较顺。"},
   "d11_1":{hours:"周二–周五 11:00–18:00；周六 10:00–18:00（周日周一闭馆）",duration:"1.5–2 小时",address:"Rue des Vieux-Grenadiers 7, 1208 Genève",tips:"钟表迷朝圣；珍藏品需预约，官网购票。"},
   "d11_2":{hours:"导览团 工作日 10:30 / 14:30（需预约）",duration:"1–1.5 小时",address:"Palais des Nations, 14 Av. de la Paix, Genève",tips:"带护照；如逢会议可入口申请旁听席位（先到先得）。"},
   "d11_3":{hours:"导览团需预约；展览区免费无需约",duration:"2–3 小时",address:"CERN, 1211 Genève",tips:"Globe of Science 展览免费；导览需提前数周预约。"},
