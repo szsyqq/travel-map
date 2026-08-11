@@ -76,18 +76,25 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .day-card h3{font-size:15px;font-weight:600;margin-bottom:3px;color:#1d1d1f}
 .day-card .day-sub{font-size:11px;color:#86868b;margin-bottom:10px}
 .day-card .stop-list{list-style:none}
-.daily-board{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:10px;min-height:0;flex:1}
-.daily-column{min-width:0;overflow-y:auto;overscroll-behavior:contain;padding:1px 5px 16px 1px}
-.daily-column-right{padding-left:7px;border-left:1px solid #e9edf1}
-.column-title{position:sticky;top:0;z-index:3;margin:-1px 0 7px;padding:5px 3px;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);font-size:10px;font-weight:800;color:#52606b;letter-spacing:.25px}
+.daily-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:9px;min-height:0;flex:1}
+.daily-panel{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 8px 10px;background:#fbfcfd;border:1px solid #e2e7ec;border-radius:11px;box-shadow:0 1px 3px rgba(27,52,75,.04)}
+.panel-itinerary{grid-column:1;grid-row:1}
+.panel-support{grid-column:1;grid-row:2}
+.panel-recommend{grid-column:2;grid-row:1}
+.panel-dining{grid-column:2;grid-row:2}
+.column-title{position:sticky;top:0;z-index:3;margin:0 -8px 7px;padding:7px 9px;background:rgba(248,250,252,.97);backdrop-filter:blur(6px);border-bottom:1px solid #e7ebef;font-size:10px;font-weight:800;color:#405161;letter-spacing:.25px;display:flex;align-items:center;justify-content:space-between}
+.column-title span{font-size:8px;font-weight:650;color:#8996a1}
+.panel-itinerary .column-title{color:#075ea8}
+.panel-support .column-title{color:#514e9b}
+.panel-recommend .column-title{color:#087b66}
+.panel-dining .column-title{color:#9b4d25}
 .recommendation-stack:empty{display:none}
 @media(max-width:900px){
   .itinerary-list{overflow-y:auto}
   .day-card.active{height:auto;min-height:100%;display:block}
   .daily-board{display:block}
-  .daily-column{overflow:visible;padding-right:0}
-  .daily-column-right{padding-left:0;border-left:0;margin-top:10px}
-  .column-title{position:static;background:#fff;padding-top:7px;border-top:1px solid #eceff3}
+  .daily-panel{overflow:visible;margin-bottom:9px;padding-bottom:9px}
+  .column-title{position:static}
 }
 .stop-item{padding:8px 10px;margin-bottom:4px;border-radius:8px;background:#f5f5f7;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
 .stop-item:hover{background:#e8e8ed}
@@ -168,8 +175,8 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .flight-block>summary::-webkit-details-marker{display:none}
 .flight-block>summary::after{content:'展开';font-size:9px;color:#0a6899;border:1px solid #9fd1eb;border-radius:999px;padding:2px 6px}
 .flight-block[open]>summary::after{content:'收起'}
-.route-main{margin:8px 0 10px;padding:9px 10px;background:#fff;border:1px solid #dce6f2;border-radius:11px;box-shadow:0 1px 3px rgba(20,54,86,.05)}
-.route-main-title{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:800;color:#173b57;margin-bottom:7px}
+.route-main{margin:0;padding:0;background:transparent;border:0;box-shadow:none}
+.route-main-title{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;color:#173b57;margin:0 0 7px;padding:5px 7px;background:#eef6ff;border-radius:7px}
 .route-main-title span{font-size:9px;font-weight:600;color:#7a8d9d}
 .route-main-list{display:flex;flex-direction:column;gap:0}
 .route-main-node{display:grid;grid-template-columns:24px 1fr;gap:7px;align-items:start;position:relative;padding:2px 0 8px}
@@ -185,7 +192,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .route-main-node.clickable{cursor:pointer;border-radius:7px}
 .route-main-node.clickable:hover{background:#f2f7fc}
 .route-main-node.clickable:focus-visible{outline:2px solid #007aff;outline-offset:2px}
-.dining-section{margin:9px 0;padding-top:7px;border-top:1px solid #eceff3}
+.dining-section{margin:0;padding:0;border-top:0}
 .dining-section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;font-size:11px;font-weight:800;color:#8a4c24}
 .dining-section-title span{font-size:9px;font-weight:600;color:#9b7c69}
 .dining-section .stop-list{display:grid;gap:5px}
@@ -549,7 +556,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.26</span>
+    <span class="v-dot"></span><span>v1.9.27</span>
   </div>
 </header>
 
@@ -608,10 +615,19 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.26</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.27</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.27</span><span class="version-date">2026-08-11</span>
+<div class="version-title">▦ 正文改为等宽 2×2 信息矩阵</div>
+<ul class="version-items">
+<li>左上正式行程、左下航班住宿、右上AI景点活动、右下餐厅</li>
+<li>四个面板统一标题、边框、圆角、间距与独立滚动逻辑</li>
+<li>正式行程与餐厅严格等宽；手机端按相同逻辑纵向排列</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.26</span><span class="version-date">2026-08-11</span>
 <div class="version-title">🧱 双栏独立滚动与筛选简化</div>
@@ -3417,19 +3433,27 @@ function buildSidebar() {
     const flightBlock = renderFlightBlock(day.day);
     const stayBlock = renderAccommodationBlock(day.day);
     const diningHtml = `${renderMealSlot(day.day,'breakfast')}${renderMealSlot(day.day,'lunch')}${renderMealSlot(day.day,'dinner')}`;
+    const recommendationContent = extraBlock || evBlock ? `${extraBlock}${evBlock}` : '<div style="padding:12px 5px;color:#8a949c;font-size:10px;line-height:1.5">当天暂无适合加入且可进入的 AI 景点或活动。</div>';
 
     card.innerHTML = `
       <h3>周${DAY_WEEK[day.day]} · 第${day.day}天 · ${day.title}</h3>
       <div class="day-sub">${day.date.replace(/\s*\([一二三四五六日]\)\s*$/,'')}</div>
       <div class="daily-board">
-        <section class="daily-column daily-column-left">
-          <div class="column-title">🗓️ 正式旅游行程</div>
-          ${mainRoute}${flightBlock}${stayBlock}
+        <section class="daily-panel panel-itinerary">
+          <div class="column-title">🗓️ 正式旅游行程 <span>点击节点查看详情</span></div>
+          ${mainRoute}
         </section>
-        <section class="daily-column daily-column-right">
-          <div class="column-title">✨ 推荐与餐厅</div>
-          <div class="recommendation-stack">${extraBlock}${evBlock}</div>
-          <div class="dining-section" data-theme="restaurant"><div class="dining-section-title">🍽️ 当日餐饮 <span>已定餐厅同时进入左侧主线</span></div><ul class="stop-list">${diningHtml}</ul></div>
+        <section class="daily-panel panel-support">
+          <div class="column-title">🧳 航班与住宿 <span>已确认资料</span></div>
+          ${flightBlock}${stayBlock}
+        </section>
+        <section class="daily-panel panel-recommend">
+          <div class="column-title">✨ AI 景点与活动 <span>不属于原定行程</span></div>
+          <div class="recommendation-stack">${recommendationContent}</div>
+        </section>
+        <section class="daily-panel panel-dining">
+          <div class="column-title">🍽️ 当日餐厅 <span>已定餐厅同步进入主线</span></div>
+          <div class="dining-section" data-theme="restaurant"><ul class="stop-list">${diningHtml}</ul></div>
         </section>
       </div>`;
     listContainer.appendChild(card);
