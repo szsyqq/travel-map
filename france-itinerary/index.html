@@ -67,10 +67,12 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .filter-check input{appearance:none;width:9px;height:9px;border-radius:50%;background:#c5cbd1;cursor:pointer}
 .filter-check input:checked{background:#007aff;box-shadow:0 0 0 2px #dcebff}
 .filter-check.recommend input:checked{background:#7a5af8;box-shadow:0 0 0 2px #eee9ff}
+.view-tool-btn{border:1px solid #bcd5ef;border-radius:999px;background:#edf6ff;color:#0769bd;padding:4px 9px;font-size:9px;font-weight:800;cursor:pointer}
+.view-tool-btn:hover{background:#dfeeff}
 .filtered-out{display:none!important}
 
 /* Itinerary list */
-.info-matrix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:9px;flex:1;min-height:0;padding:10px 12px}
+.info-matrix{--matrix-top:34%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(140px,var(--matrix-top)) 8px minmax(0,1fr);column-gap:9px;row-gap:5px;flex:1;min-height:0;padding:10px 12px}
 .itinerary-list{display:contents}
 .day-card{display:none}
 .day-card.active{display:contents}
@@ -80,9 +82,12 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .daily-board{display:contents}
 .daily-panel{min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 8px 10px;background:#fbfcfd;border:1px solid #e2e7ec;border-radius:11px;box-shadow:0 1px 3px rgba(27,52,75,.04)}
 .matrix-calendar{grid-column:1;grid-row:1}
-.panel-itinerary{grid-column:1;grid-row:2}
+.matrix-resizer{grid-column:1/-1;grid-row:2;display:flex;align-items:center;justify-content:center;cursor:row-resize;touch-action:none;z-index:4}
+.matrix-resizer span{width:52px;height:4px;border-radius:99px;background:#c8d0d8;transition:.15s}
+.matrix-resizer:hover span,.matrix-resizer.dragging span{width:76px;background:#007aff}
+.panel-itinerary{grid-column:1;grid-row:3}
 .panel-recommend{grid-column:2;grid-row:1}
-.panel-dining{grid-column:2;grid-row:2}
+.panel-dining{grid-column:2;grid-row:3}
 .column-title{position:sticky;top:0;z-index:3;margin:0 -8px 7px;padding:7px 9px;background:rgba(248,250,252,.97);backdrop-filter:blur(6px);border-bottom:1px solid #e7ebef;font-size:10px;font-weight:800;color:#405161;letter-spacing:.25px;display:flex;align-items:center;justify-content:space-between}
 .column-title span{font-size:8px;font-weight:650;color:#8996a1}
 .panel-itinerary .column-title{color:#075ea8}
@@ -97,6 +102,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
   .daily-board{display:block}
   .daily-panel{overflow:visible;margin-bottom:9px;padding-bottom:9px}
   .column-title{position:static}
+  .matrix-resizer{display:none}
 }
 .stop-item{padding:8px 10px;margin-bottom:4px;border-radius:8px;background:#f5f5f7;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
 .stop-item:hover{background:#e8e8ed}
@@ -222,6 +228,8 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 /* Map */
 .map-container{flex:1;position:relative}
 #map{width:100%;height:100%}
+.map-summary-btn{position:absolute;top:12px;right:12px;z-index:1100;border:1px solid rgba(255,149,0,.45);border-radius:999px;background:rgba(255,255,255,.96);color:#a45c00;padding:8px 13px;font-size:11px;font-weight:800;box-shadow:0 3px 12px rgba(0,0,0,.12);cursor:pointer;backdrop-filter:blur(8px)}
+.map-summary-btn:hover{background:#fff6e8;border-color:#ff9500;transform:translateY(-1px)}
 
 /* Mobile toggle */
 .sidebar-toggle{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:2px}
@@ -558,7 +566,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.28</span>
+    <span class="v-dot"></span><span>v1.9.29</span>
   </div>
 </header>
 
@@ -570,19 +578,10 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <strong style="font-size:14px">📋 行程列表</strong>
 </div>
 </div>
-<div class="tab-groups">
-  <div class="tab-group">
-    <div class="tab-group-label">总览与汇总</div>
-    <div class="day-tabs function-tabs" id="overviewTabs"></div>
-  </div>
-  <div class="tab-group">
-    <div class="tab-group-label">活动与推荐</div>
-    <div class="day-tabs function-tabs" id="functionTabs"></div>
-  </div>
-</div>
 <div class="day-filter-bar" id="dayFilterBar">
   <div class="filter-row">
-    <span class="filter-row-label">显示</span>
+    <button class="view-tool-btn" type="button" onclick="showOverview()">🗺️ 总览</button>
+    <span class="filter-row-label">地图显示</span>
     <label class="filter-check"><input type="checkbox" data-filter-source="planned" checked>正式行程</label>
     <label class="filter-check recommend"><input type="checkbox" data-filter-ai="attraction" checked>AI 景点</label>
     <label class="filter-check recommend"><input type="checkbox" data-filter-ai="activity" checked>AI 活动</label>
@@ -594,6 +593,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     <div class="column-title">📅 12 天行程列表 <span>选择日期</span></div>
     <div class="day-tabs itinerary-tabs" id="dayTabs"></div>
   </section>
+  <div class="matrix-resizer" id="matrixResizer" role="separator" aria-orientation="horizontal" aria-label="拖动调整上下区域高度" tabindex="0"><span></span></div>
   <div class="itinerary-list" id="itineraryList"></div>
 </div>
 <div class="events-list" id="eventsList"></div>
@@ -601,6 +601,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 
 <div class="map-container">
 <div id="map"></div>
+<button class="map-summary-btn" type="button" onclick="showSummary()">📊 汇总</button>
 <div class="loading-overlay hidden" id="loadingOverlay">
 <div class="spinner"></div>
 <span id="loadingText">加载路线中...</span>
@@ -619,10 +620,20 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.28</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.29</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.29</span><span class="version-date">2026-08-12</span>
+<div class="version-title">🧭 总览、筛选与可调信息矩阵</div>
+<ul class="version-items">
+<li>汇总改为地图右上角独立入口，打开或关闭时不再改变当前日期与正文状态</li>
+<li>总览并入日期区；AI景点、AI活动和AI餐厅统一由“地图显示”筛选控制</li>
+<li>桌面端默认上短下长，并支持拖动中间分隔条调整高度；设置会自动保存在当前浏览器</li>
+<li>手机端保持自然纵向排列，不显示拖动条，避免小屏交互拥挤</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.28</span><span class="version-date">2026-08-11</span>
 <div class="version-title">▦ 修正 2×2 区域定义</div>
@@ -2950,8 +2961,6 @@ function showSummary() {
   overlay.setAttribute('aria-hidden', 'false');
   document.getElementById('summaryCloseBtn').focus();
 
-  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('.day-tab.summary-tab')?.classList.add('active');
 }
 
 function renderBudgetSummary() {
@@ -3300,40 +3309,7 @@ function renderMealSlot(dayNum, slotName) {
 // ============================================================
 function buildSidebar() {
   const tabsContainer = document.getElementById('dayTabs');
-  const overviewTabsContainer = document.getElementById('overviewTabs');
-  const functionTabsContainer = document.getElementById('functionTabs');
   const listContainer = document.getElementById('itineraryList');
-
-  // Add special tabs: 总览 + 汇总
-  const overviewTab = document.createElement('div');
-  overviewTab.className = 'day-tab overview-tab';
-  overviewTab.textContent = '🗺️ 总览';
-  overviewTab.onclick = showOverview;
-  overviewTabsContainer.appendChild(overviewTab);
-
-  const summaryTab = document.createElement('div');
-  summaryTab.className = 'day-tab summary-tab';
-  summaryTab.textContent = '📊 汇总';
-  summaryTab.onclick = showSummary;
-  overviewTabsContainer.appendChild(summaryTab);
-
-  const eventTab = document.createElement('div');
-  eventTab.className = 'day-tab event-tab';
-  eventTab.textContent = '🎪 活动';
-  eventTab.onclick = showEvents;
-  functionTabsContainer.appendChild(eventTab);
-
-  const restaurantTab = document.createElement('div');
-  restaurantTab.className = 'day-tab restaurant-tab';
-  restaurantTab.textContent = '🍽️ 餐厅';
-  restaurantTab.onclick = showRestaurants;
-  functionTabsContainer.appendChild(restaurantTab);
-
-  const extraTab = document.createElement('div');
-  extraTab.className = 'day-tab extra-tab';
-  extraTab.textContent = '🏛️ 可加景点';
-  extraTab.onclick = showExtras;
-  functionTabsContainer.appendChild(extraTab);
 
   // Day tabs
   ['一','二','三','四','五','六','日'].forEach(weekday => {
@@ -3470,12 +3446,50 @@ function buildSidebar() {
   });
 }
 
+function initMatrixResizer() {
+  const matrix = document.getElementById('infoMatrix');
+  const handle = document.getElementById('matrixResizer');
+  if (!matrix || !handle) return;
+  const saved = Number(localStorage.getItem('franceMatrixTopPercent'));
+  if (saved >= 24 && saved <= 58) matrix.style.setProperty('--matrix-top', `${saved}%`);
+  const setFromPointer = clientY => {
+    const rect = matrix.getBoundingClientRect();
+    const percent = Math.max(24, Math.min(58, ((clientY - rect.top) / rect.height) * 100));
+    matrix.style.setProperty('--matrix-top', `${percent}%`);
+    localStorage.setItem('franceMatrixTopPercent', percent.toFixed(1));
+  };
+  handle.addEventListener('pointerdown', event => {
+    if (window.innerWidth <= 900) return;
+    handle.classList.add('dragging');
+    handle.setPointerCapture(event.pointerId);
+    setFromPointer(event.clientY);
+  });
+  handle.addEventListener('pointermove', event => {
+    if (handle.hasPointerCapture(event.pointerId)) setFromPointer(event.clientY);
+  });
+  const stop = event => {
+    if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
+    handle.classList.remove('dragging');
+  };
+  handle.addEventListener('pointerup', stop);
+  handle.addEventListener('pointercancel', stop);
+  handle.addEventListener('keydown', event => {
+    if (!['ArrowUp','ArrowDown'].includes(event.key)) return;
+    event.preventDefault();
+    const current = parseFloat(getComputedStyle(matrix).getPropertyValue('--matrix-top')) || 34;
+    const next = Math.max(24, Math.min(58, current + (event.key === 'ArrowDown' ? 2 : -2)));
+    matrix.style.setProperty('--matrix-top', `${next}%`);
+    localStorage.setItem('franceMatrixTopPercent', next.toFixed(1));
+  });
+}
+
 // ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   initMap();
   buildSidebar();
+  initMatrixResizer();
 
   document.querySelectorAll('#dayFilterBar input[data-filter-source]').forEach(input => {
     input.addEventListener('change', () => {
