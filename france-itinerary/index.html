@@ -215,6 +215,8 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 /* Detail panel */
 .detail-panel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.12);z-index:2000;transform:translateY(calc(100% + 32px));opacity:0;visibility:hidden;pointer-events:none;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .2s ease,visibility 0s linear .35s;max-height:70vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom)}
 .detail-panel.open{transform:translateY(0);opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+.detail-panel.collapsed{max-height:none}
+.detail-panel.collapsed .detail-content{display:none}
 .detail-handle{width:36px;height:4px;background:#d1d1d6;border-radius:2px;margin:8px auto 4px}
 .detail-content{padding:6px 18px 20px}
 .detail-content h3{font-size:17px;font-weight:700;margin-bottom:3px}
@@ -299,7 +301,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 /* Summary modal - wider */
 .summary-modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:9999;align-items:center;justify-content:center}
 .summary-modal-overlay.open{display:flex}
-.summary-modal{background:#fff;border-radius:16px;width:96%;max-width:1200px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.15)}
+.summary-modal{background:#fff;border-radius:16px;width:98%;max-width:1540px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.15)}
 .summary-modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
 .summary-modal-header h2{font-size:16px;font-weight:700}
 .summary-modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:#86868b;padding:4px}
@@ -308,7 +310,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .summary-tab-btn{border:1px solid #d1d1d6;background:#fff;color:#555;border-radius:16px;padding:5px 13px;font-size:11px;font-weight:600;cursor:pointer}
 .summary-tab-btn.active{background:#1d1d1f;color:#fff;border-color:#1d1d1f}
 .summary-modal-body{overflow:auto;padding:0;flex:1}
-.summary-table{width:100%;min-width:1160px;border-collapse:collapse;font-size:11px}
+.summary-table{width:100%;min-width:1380px;border-collapse:collapse;font-size:11px}
 .summary-table thead{position:sticky;top:0;z-index:1}
 .summary-table th{background:#f5f5f7;padding:6px 6px;text-align:left;font-weight:600;color:#555;border-bottom:2px solid #e5e5ea;font-size:10px;white-space:nowrap}
 .summary-table td{padding:5px 6px;border-bottom:1px solid #f0f0f0;vertical-align:middle;word-break:break-word}
@@ -324,6 +326,17 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .summary-table .col-day{min-width:50px;white-space:nowrap;text-align:center}
 .summary-table .col-reserve{min-width:72px;white-space:nowrap}
 .summary-table .col-pass{min-width:68px;white-space:nowrap;text-align:center}
+.summary-table .col-item{min-width:220px}
+.summary-table .col-booking{min-width:230px}
+.summary-table .col-confirm{min-width:220px}
+.booking-confirm{display:grid;grid-template-columns:auto 1fr;gap:4px 6px;align-items:center}
+.booking-confirm label{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#24653a;white-space:nowrap}
+.booking-confirm input[type="datetime-local"]{grid-column:1/-1;min-width:185px;border:1px solid #d6dce2;border-radius:5px;padding:3px 5px;font-size:10px;background:#fff}
+.booking-confirm input[type="datetime-local"]:disabled{background:#f3f4f6;color:#a0a5aa}
+.day-time-estimate{margin:0 0 9px;padding:8px 10px;border-radius:9px;border:1px solid #cfe1f4;background:#f3f8fe;color:#31536f;font-size:10px;line-height:1.55}
+.day-time-estimate strong{color:#075ea8}
+.day-time-estimate.tight{border-color:#f3c7a6;background:#fff7f0;color:#824e29}
+.detail-collapse-btn{border:1px solid #d8dde3;background:#f5f7f9;color:#51606d;border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:16px;line-height:1}
 .pass-tag{display:inline-block;border-radius:4px;padding:2px 5px;font-size:9px;font-weight:700;white-space:nowrap}
 .pass-tag.yes{background:#e8f8ed;color:#207a3d}
 .pass-tag.free{background:#e8f3ff;color:#1769aa}
@@ -566,7 +579,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.29</span>
+    <span class="v-dot"></span><span>v1.9.30</span>
   </div>
 </header>
 
@@ -620,10 +633,20 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.29</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.30</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.30</span><span class="version-date">2026-08-12</span>
+<div class="version-title">🎫 行程时长与预约确认</div>
+<ul class="version-items">
+<li>每天增加参观、移动与缓冲后的时间估算，并标出过紧或冲突的日程</li>
+<li>汇总表支持手工勾选“已约好票”及填写预约时间，刷新后仍保留</li>
+<li>汇总表加宽，移除来源与分类，价格移到最后；通票仅显示可用或不可用</li>
+<li>景点详情增加收起按钮，同时保留完全关闭按钮</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.29</span><span class="version-date">2026-08-12</span>
 <div class="version-title">🧭 总览、筛选与可调信息矩阵</div>
@@ -1851,7 +1874,9 @@ function renderMainRoute(day) {
   if (day.day === 12 && flight) nodes.push({name:'日内瓦机场 T1',meta:'QR100 · 10月6日 15:55起飞 · 点击查看航班',kind:'transport',action:`focusFlight(${day.day})`});
   else if (end) nodes.push({name:end.name,meta:`住宿${accommodationRouteRole(end,day.day)} · ${end.area} · 点击查看`,kind:'stay',action:`showAccommodationDetail('${end.id}')`});
   const unique = nodes.filter((node,index) => index === 0 || node.name !== nodes[index-1].name);
-  return `<div class="route-main" data-source="planned" data-theme="attraction"><div class="route-main-title">🧭 今日关键路线 <span>${unique.length}个节点 · 点击景点查看详情</span></div><div class="route-main-list">${unique.map((node,index)=>`<div class="route-main-node ${node.kind || ''} ${node.action ? 'clickable' : ''}" ${node.action ? `onclick="${node.action}" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${node.action}}"` : ''}><div class="route-main-num">${index+1}</div><div><div class="route-main-name">${node.name}</div><div class="route-main-meta">${node.meta}</div></div></div>`).join('')}</div></div>`;
+  const estimate = DAY_TIME_ESTIMATES[day.day];
+  const estimateHtml = estimate ? `<div class="day-time-estimate ${estimate.tight?'tight':''}"><strong>⏱️ 当日预计 ${estimate.window} · ${estimate.total}</strong><br>${estimate.note}</div>` : '';
+  return `${estimateHtml}<div class="route-main" data-source="planned" data-theme="attraction"><div class="route-main-title">🧭 今日关键路线 <span>${unique.length}个节点 · 点击景点查看详情</span></div><div class="route-main-list">${unique.map((node,index)=>`<div class="route-main-node ${node.kind || ''} ${node.action ? 'clickable' : ''}" ${node.action ? `onclick="${node.action}" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();${node.action}}"` : ''}><div class="route-main-num">${index+1}</div><div><div class="route-main-name">${node.name}</div><div class="route-main-meta">${node.meta}</div></div></div>`).join('')}</div></div>`;
 }
 
 function focusFlight(dayNum) {
@@ -2410,15 +2435,27 @@ function showDetail(id) {
 
 // Shared panel shell: header (title + collapse/close) + body
 function openDetailPanel(headerHtml, bodyHtml) {
-  document.getElementById('detailHeader').innerHTML = headerHtml;
+  document.getElementById('detailHeader').innerHTML = headerHtml.replace('<div class="detail-head-actions">','<div class="detail-head-actions"><button class="detail-collapse-btn" onclick="toggleDetailCollapse()" title="收起详情" aria-label="收起详情">⌄</button>');
   document.getElementById('detailContent').innerHTML = bodyHtml;
   const panel = document.getElementById('detailPanel');
   clearTimeout(panel._hideTimer);
   panel.hidden = false;
+  panel.classList.remove('collapsed');
   // Flush the hidden state before starting the entrance transition.
   void panel.offsetHeight;
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
+}
+
+function toggleDetailCollapse() {
+  const panel = document.getElementById('detailPanel');
+  const collapsed = panel.classList.toggle('collapsed');
+  const btn = panel.querySelector('.detail-collapse-btn');
+  if (btn) {
+    btn.textContent = collapsed ? '⌃' : '⌄';
+    btn.title = collapsed ? '展开详情' : '收起详情';
+    btn.setAttribute('aria-label', btn.title);
+  }
 }
 
 function hideDetail() {
@@ -2440,6 +2477,22 @@ function hideDetail() {
 // ============================================================
 const DAY_WEEK = {1:"五",2:"六",3:"日",4:"一",5:"二",6:"三",7:"四",8:"五",9:"六",10:"日",11:"一",12:"二"};
 const VISIT_DATES = {1:"9/25",2:"9/26",3:"9/27",4:"9/28",5:"9/29",6:"9/30",7:"10/1",8:"10/2",9:"10/3",10:"10/4",11:"10/5",12:"10/6"};
+
+// Travel-time estimate includes visits, inter-stop travel and a practical buffer.
+const DAY_TIME_ESTIMATES = {
+  1:{window:"14:25–22:45",total:"约8小时20分",note:"入境取行李约1.5小时 + 机场到民宿约1小时 + 入住/休整；20:45左右出发去 Café Marly，21:30晚餐。",tight:false},
+  2:{window:"08:30–21:00",total:"约12小时30分",note:"蒙马特约3.5小时、歌剧院1.25小时、右岸至拉丁区步行参观约4小时、跨城移动约2小时。建议将歌剧院锁定13:00左右；若延误，先删蓬皮杜外观。",tight:true},
+  3:{window:"07:45–21:00",total:"约13小时15分",note:"巴黎往返凡尔赛约2小时、宫殿与花园5.5–6小时、返程及前往码头约1.5小时。凡尔赛建议预约09:00；晚餐游船按最终码头至少提前30分钟到。",tight:true},
+  4:{window:"08:45–20:30",total:"约11小时45分",note:"卢浮宫3.5小时、午餐/步行1小时、橘园1小时、香榭丽舍与凯旋门约3小时。卢浮宫09:00最稳，橘园建议14:30；大/小皇宫只作为有余量时加项。",tight:true},
+  5:{window:"08:00–19:30",total:"约11小时30分",note:"巴黎取车约1小时，至香波尔约2小时，参观2.5小时，前往波尔多约4.5小时，另留休息与停车约1.5小时。",tight:true},
+  6:{window:"08:30–22:30",total:"约14小时",note:"波尔多—滴金往返约2小时、酒庄1.5小时、葡萄酒城2.5小时、波尔多—老托特往返约2小时。老托特具体时间未定，是当天预约的关键约束。",tight:true},
+  7:{window:"07:15–19:00",total:"约11小时45分",note:"波尔多到图卢兹约2小时40分，空客导览约1.5小时，Aeroscopia约2.5小时，含停车安检与市区移动。空客时段确定后反推最迟出发时间。",tight:true},
+  8:{window:"07:30–21:00",total:"约13小时30分",note:"图卢兹—卡尔卡松约1小时15分、参观2.5小时、至尼姆约2小时10分、竞技场约1.5小时、嘉德水道桥短停及至里昂约3小时15分。当天极紧，建议尼姆和水道桥二选一。",tight:true},
+  9:{window:"08:45–19:00",total:"约10小时15分",note:"富维耶及罗马遗址约3小时、老城1.5小时、13:00午餐1.5小时、美术馆2小时、旧主宫医院45分钟，步行移动约1小时。",tight:false},
+ 10:{window:"09:00–18:30",total:"约9小时30分",note:"汇流博物馆2.5小时、午餐1.5小时、里昂到日内瓦约2小时；若加入博若莱需额外2.5–3小时并可能推迟入住。",tight:false},
+ 11:{window:"09:30–18:00",total:"约8小时30分",note:"百达翡丽周一闭馆，不能按原计划入馆；联合国导览约1.5小时，前往 CERN 约45分钟，CERN 2–3小时。建议把上午改为老城/湖边，锁定联合国与 CERN 两个时段。",tight:true},
+ 12:{window:"08:30–13:30",total:"约5小时",note:"湖边散步约1小时、早餐与取行李约1.5小时；国际航班建议12:45–13:00抵达机场，为15:55起飞预留约3小时。",tight:false}
+};
 
 function calcEarliestBooking(dateStr, advanceStr) {
   if (!advanceStr || advanceStr.includes('无需') || advanceStr.includes('当天') || advanceStr.includes('已预约')) return null;
@@ -2485,14 +2538,11 @@ const MUSEUM_PASS_INCLUDED_IDS = new Set(['d1_1','d1_2','d2_6','d4_1','d4_4','d4
 const MUSEUM_PASS_PARTIAL_IDS = new Set(['d3_1']);
 
 function museumPassInfo(id, item, type) {
-  if (type === '餐饮' || type === '行程' || type === '住宿') return {label:'—', cls:'na', note:'不适用'};
-  if (MUSEUM_PASS_PARTIAL_IDS.has(id)) return {label:'△ 部分', cls:'partial', note:'主宫殿可用；音乐喷泉花园另付费'};
-  if (MUSEUM_PASS_INCLUDED_IDS.has(id)) return {label:'✓ 可用', cls:'yes', note:'Paris Museum Pass 已包含'};
+  if (type === '餐饮' || type === '行程' || type === '住宿' || type === '交通') return {label:'不可用', cls:'no', note:'不属于通票景点'};
+  if (MUSEUM_PASS_PARTIAL_IDS.has(id)) return {label:'可用', cls:'yes', note:'主宫殿可用；音乐喷泉花园另付费'};
+  if (MUSEUM_PASS_INCLUDED_IDS.has(id)) return {label:'可用', cls:'yes', note:'Paris Museum Pass 已包含'};
   const text = `${item?.price || ''} ${item?.reservation || ''} ${item?.why || ''}`;
-  if (/免费|无需门票|免费开放|自由进入/.test(text)) return {label:'免费', cls:'free', note:'免费入场，无需使用通票'};
-  if (/通票不含|通票不包含|博物馆通票不含/.test(text)) return {label:'✕ 不含', cls:'no', note:'Paris Museum Pass 不包含'};
-  if ((item?.day || 99) <= 4 || item?.city === '巴黎') return {label:'✕ 不含', cls:'no', note:'不在本次通票覆盖项目内'};
-  return {label:'—', cls:'na', note:'非巴黎通票适用范围'};
+  return {label:'不可用', cls:'no', note:/免费|无需门票|免费开放|自由进入/.test(text)?'免费项目，无需使用通票':'Paris Museum Pass 不覆盖'};
 }
 
 function buildSummaryRows() {
@@ -2535,6 +2585,7 @@ function buildSummaryRows() {
       const sortKey = earliestDate === '现已开放' ? '0000' : (earliestDate || '9999');
 
       rows.push({
+        id,
         day: day.day,
         weekday,
         time: p.time,
@@ -2561,6 +2612,7 @@ function buildSummaryRows() {
 
   ACCOMMODATIONS.forEach(stay => {
     rows.push({
+      id:stay.id,
       day:stay.checkinDay,weekday:DAY_WEEK[stay.checkinDay],time:`入住 ${stay.checkin}`,name:stay.name,nameEn:'',
       type:'住宿',typeIcon:'🏨',category:`${stay.city}已预订住宿`,price:'已支付（金额见确认单）',priceEur:0,
       need:false,advanceBooking:'已预订',earliestDate:null,sortKey:'0000',
@@ -2574,6 +2626,7 @@ function buildSummaryRows() {
     const first = flight.segments[0];
     const last = flight.segments[flight.segments.length - 1];
     rows.push({
+      id:flight.id,
       day:flight.day,weekday:DAY_WEEK[flight.day],time:first.depart,name:`${flight.direction}航班 · ${first.from} → ${last.to}`,nameEn:flight.segments.map(s => s.flight).join(' / '),
       type:'交通',typeIcon:'✈️',category:`已出票航班 · ${flight.baggage}`,price:'已支付（金额见电子客票）',priceEur:0,
       need:false,advanceBooking:'已出票',earliestDate:null,sortKey:'0000',closedText:'✓ 客票已核验',closedConflict:false,
@@ -2584,6 +2637,7 @@ function buildSummaryRows() {
   EXTRA_POIS.forEach(p => {
     const need = !p.reservation.includes('无需');
     rows.push({
+      id:p.id,
       day:p.day,weekday:DAY_WEEK[p.day],time:'可加',name:p.name,nameEn:p.nameEn || '',
       type:'景点',typeIcon:'🏛️',category:p.category,price:p.price,priceEur:parsePrice(p.price),
       need,advanceBooking:p.reservation,earliestDate:null,sortKey:'9999',
@@ -2597,6 +2651,7 @@ function buildSummaryRows() {
   RESTAURANTS.filter(r => !r.planned).forEach(r => {
     const need = !r.reservation.includes('无需') && !r.reservation.includes('现场');
     rows.push({
+      id:r.id,
       day:r.day,weekday:DAY_WEEK[r.day],time:r.meal,name:r.name,nameEn:'',
       type:'餐饮',typeIcon:'🍽️',category:r.type,price:r.price,priceEur:parsePrice(r.price),
       need,advanceBooking:r.reservation,earliestDate:null,sortKey:'9999',
@@ -2613,6 +2668,31 @@ let summaryRows = [];
 let summaryFilter = 'all'; // 'all' | 'need'
 let summarySort = 'day'; // 'day' | 'earliest'
 let summarySourceFilter = 'planned'; // 'all' | 'planned' | 'extra'
+
+const BOOKING_OVERRIDES = {
+  d2_2:{earliestDate:'现已开放',advanceBooking:'官网滚动开放未来60天；9月26日已进入销售窗口',url:'https://www.operadeparis.fr/en/visits/palais-garnier'},
+  d3_1:{earliestDate:'现已开放',advanceBooking:'旺季建议立即锁定09:00宫殿时段',url:'https://billetterie.chateauversailles.fr/'},
+  d4_1:{earliestDate:'现已开放',advanceBooking:'9月28日票务时段已开放；建议立即预约09:00',url:'https://ticket.louvre.fr/en'},
+  d4_4:{earliestDate:'现已开放后尽快',advanceBooking:'建议与卢浮宫错开，优先14:30左右',url:'https://billetterie.musee-orangerie.fr/'},
+  d6_1:{earliestDate:'现在确认',advanceBooking:'核对10:00、5人名单及确认邮件',url:'https://www.yquem.fr/'},
+  d6_3:{earliestDate:'现在确认',advanceBooking:'先确认晚间是否接待及具体到访时间',url:'https://www.trottevieille.com/en/contact-3/'},
+  d7_1:{earliestDate:'现在预约',advanceBooking:'工厂导览名额有限，先锁定场次再安排波尔多出发',url:'https://www.manatour.fr/airbus/'},
+  d11_2:{earliestDate:'建议9/21前',advanceBooking:'导览场次有限，至少提前2周',url:'https://www.ungeneva.org/en/visit'},
+  d11_3:{earliestDate:'约9/7起密切关注',advanceBooking:'导览通常按滚动规则放位；免费展览区无需预约',url:'https://visit.cern/' }
+};
+
+function bookingState(id) {
+  try { return JSON.parse(localStorage.getItem(`franceBooking:${id}`) || '{}'); }
+  catch (_) { return {}; }
+}
+
+function saveBookingState(id, field, value) {
+  const state = bookingState(id);
+  state[field] = value;
+  if (field === 'confirmed' && !value) state.time = '';
+  localStorage.setItem(`franceBooking:${id}`, JSON.stringify(state));
+  renderSummaryTable();
+}
 
 function renderSummaryTable() {
   const body = document.getElementById('summaryBody');
@@ -2636,23 +2716,28 @@ function renderSummaryTable() {
   }
 
   let html = `<table class="summary-table"><thead><tr>
-    <th class="col-source">来源</th><th class="col-day">天</th><th>时间</th><th>项目</th><th>分类</th><th>价格</th><th class="col-pass">通票</th><th class="col-reserve">预约</th><th>提前多久</th><th>最早预约</th><th>开放情况</th><th>链接</th>
+    <th class="col-day">天</th><th>时间</th><th class="col-item">项目</th><th class="col-pass">通票</th><th class="col-reserve">预约</th><th class="col-booking">预约建议</th><th>最早预约</th><th>开放情况</th><th>预约链接</th><th class="col-confirm">手工确认</th><th>价格</th>
   </tr></thead><tbody>`;
 
   filtered.forEach(r => {
+    const override = BOOKING_OVERRIDES[r.id] || {};
+    if (override.earliestDate) r.earliestDate = override.earliestDate;
+    if (override.advanceBooking) r.advanceBooking = override.advanceBooking;
+    if (override.url) r.linkCell = `<a href="${override.url}" target="_blank" rel="noopener" class="link-btn">🔗 预约/购票</a>`;
+    const booked = bookingState(r.id);
+    const confirmable = r.need && !['餐饮','住宿','交通'].includes(r.type);
     html += `<tr${r.closedConflict ? ' style="background:#fff5f5"' : ''}>
-      <td class="col-source"><span class="source-tag ${r.source}">${r.sourceLabel}</span></td>
       <td class="col-day"><span class="tag-day" style="background:${DAY_COLORS[r.day]}">D${r.day}</span></td>
       <td class="tag-time">${r.time}<br><span style="font-size:9px;color:#ccc">周${r.weekday}</span></td>
-      <td><strong>${r.typeIcon} ${r.name}</strong><br><span style="font-size:9px;color:#86868b">${r.nameEn}</span></td>
-      <td><span class="tag-cat">${r.category}</span></td>
-      <td class="tag-price" style="font-weight:600;font-size:11px;color:#1d1d1f;white-space:nowrap">${r.price}</td>
+      <td class="col-item"><strong>${r.typeIcon} ${r.name}</strong><br><span style="font-size:9px;color:#86868b">${r.nameEn}</span></td>
       <td class="col-pass"><span class="pass-tag ${r.passInfo.cls}" title="${r.passInfo.note}">${r.passInfo.label}</span></td>
-      <td class="col-reserve">${r.need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯</span>'}</td>
-      <td class="adv-info">${r.advanceBooking}</td>
+      <td class="col-reserve">${r.need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯ 无需</span>'}</td>
+      <td class="adv-info col-booking">${r.advanceBooking}</td>
       <td class="adv-info" style="font-weight:${r.earliestDate ? '600' : '400'};color:${r.earliestDate ? '#e65100' : '#555'}">${r.earliestDate || '—'}</td>
       <td>${r.closedText}</td>
       <td>${r.linkCell}</td>
+      <td class="col-confirm">${confirmable ? `<div class="booking-confirm"><label><input type="checkbox" ${booked.confirmed?'checked':''} onchange="saveBookingState('${r.id}','confirmed',this.checked)"> 已约好票</label><span>${booked.confirmed?'✓ 已确认':'待确认'}</span><input type="datetime-local" value="${booked.time || ''}" ${booked.confirmed?'':'disabled'} onchange="saveBookingState('${r.id}','time',this.value)" aria-label="${r.name}预约时间"></div>` : '<span style="color:#aaa">—</span>'}</td>
+      <td class="tag-price" style="font-weight:600;font-size:11px;color:#1d1d1f;white-space:nowrap">${r.price}</td>
     </tr>`;
   });
 
