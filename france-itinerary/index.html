@@ -323,7 +323,9 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 .summary-table .tag-reserve.need{color:#e65100}
 .summary-table .tag-reserve.free{color:#555}
 .summary-table .col-source{min-width:78px;white-space:nowrap}
-.summary-table .col-day{min-width:50px;white-space:nowrap;text-align:center}
+.summary-table .col-day{min-width:86px;white-space:nowrap;text-align:center}
+.summary-date{display:block;margin-top:3px;font-size:10px;font-weight:700;color:#3f4b56;font-variant-numeric:tabular-nums}
+.summary-weekday{display:block;margin-top:1px;font-size:9px;color:#8a939b}
 .summary-table .col-reserve{min-width:72px;white-space:nowrap}
 .summary-table .col-pass{min-width:68px;white-space:nowrap;text-align:center}
 .summary-table .col-item{min-width:220px}
@@ -579,7 +581,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.31</span>
+    <span class="v-dot"></span><span>v1.9.32</span>
   </div>
 </header>
 
@@ -633,10 +635,15 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.31</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.32</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.32</span><span class="version-date">2026-08-12</span>
+<div class="version-title">📅 汇总表补充具体日期</div>
+<ul class="version-items"><li>日期列同时显示第几天、月/日和星期，预约时不必返回日历对照</li></ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.31</span><span class="version-date">2026-08-12</span>
 <div class="version-title">🖱️ 景点重复点击切换与预约口径复核</div>
@@ -2746,7 +2753,7 @@ function renderSummaryTable() {
   }
 
   let html = `<table class="summary-table"><thead><tr>
-    <th class="col-day">天</th><th>时间</th><th class="col-item">项目</th><th class="col-pass">通票</th><th class="col-reserve">预约</th><th class="col-booking">预约建议</th><th>最早预约</th><th>开放情况</th><th>预约链接</th><th class="col-confirm">手工确认</th><th>价格</th>
+    <th class="col-day">日期</th><th>时间</th><th class="col-item">项目</th><th class="col-pass">通票</th><th class="col-reserve">预约</th><th class="col-booking">预约建议</th><th>最早预约</th><th>开放情况</th><th>预约链接</th><th class="col-confirm">手工确认</th><th>价格</th>
   </tr></thead><tbody>`;
 
   filtered.forEach(r => {
@@ -2757,7 +2764,7 @@ function renderSummaryTable() {
     const booked = bookingState(r.id);
     const confirmable = r.need && !['餐饮','住宿','交通'].includes(r.type);
     html += `<tr${r.closedConflict ? ' style="background:#fff5f5"' : ''}>
-      <td class="col-day"><span class="tag-day" style="background:${DAY_COLORS[r.day]}">D${r.day}</span></td>
+      <td class="col-day"><span class="tag-day" style="background:${DAY_COLORS[r.day]}">第${r.day}天</span><span class="summary-date">${VISIT_DATES[r.day]}</span><span class="summary-weekday">周${r.weekday}</span></td>
       <td class="tag-time">${r.time}<br><span style="font-size:9px;color:#ccc">周${r.weekday}</span></td>
       <td class="col-item"><strong>${r.typeIcon} ${r.name}</strong><br><span style="font-size:9px;color:#86868b">${r.nameEn}</span></td>
       <td class="col-pass"><span class="pass-tag ${r.passInfo.cls}" title="${r.passInfo.note}">${r.passInfo.label}</span></td>
