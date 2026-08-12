@@ -579,7 +579,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.30</span>
+    <span class="v-dot"></span><span>v1.9.31</span>
   </div>
 </header>
 
@@ -633,10 +633,19 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.30</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.31</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.31</span><span class="version-date">2026-08-12</span>
+<div class="version-title">🖱️ 景点重复点击切换与预约口径复核</div>
+<ul class="version-items">
+<li>同一景点第一次点击展开详情，再次点击收起，第三次点击重新展开</li>
+<li>按 Paris Museum Pass 与各场馆官方规则复核：卢浮宫、凡尔赛主宫殿、橘园必须预约时段</li>
+<li>凯旋门和先贤祠保持个人免预约，避免把提前购票误写成强制预约</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.30</span><span class="version-date">2026-08-12</span>
 <div class="version-title">🎫 行程时长与预约确认</div>
@@ -1059,7 +1068,7 @@ const POI_DATA = {
   "d2_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:2,desc:"从战神广场近距离观看埃菲尔铁塔。",why:"晚上作为巴黎市区行程收尾，整点灯光闪烁约5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:30",category:"地标"},
   "d3_1":{name:"凡尔赛宫",nameEn:"Château de Versailles",coords:[48.8049,2.1204],day:3,desc:"路易十四'太阳王'打造的欧洲顶级皇家宫殿，世界文化遗产。",why:"Paris Museum Pass 覆盖主宫殿、大小特里亚农宫和王后农庄；9月27日为周日音乐喷泉日，花园不含在通票内，需另买15€花园票。",reservation:"持通票仍须预约宫殿时段",price:"单买高峰期Passport 35€；持4日通票另付花园15€",reserveUrl:"https://www.chateauversailles.fr",advanceBooking:"建议提前2-4周，旺季至少一个月",time:"09:00",category:"宫殿",transport:"RER C线至 Versailles Château Rive Gauche，车程30-40min，单程约4€",closed:"周一闭馆",website:"https://www.chateauversailles.fr",reserveChannels:"官网选择 Paris Museum Pass/免费票预约宫殿时段；另购 Musical Fountains 花园票15€"},
   "d3_2":{name:"塞纳河游船晚餐",nameEn:"Seine River Cruise Dinner",coords:[48.8589,2.3468],day:3,desc:"乘游船沿塞纳河航行，一边享用法式晚餐一边欣赏两岸古迹。",why:"夜游塞纳河，经过巴黎圣母院、卢浮宫、埃菲尔铁塔等标志性建筑。",reservation:"需要预约",price:"70-130€/人（依套餐）",reserveUrl:"",advanceBooking:"建议提前2-3周",time:"18:00",category:"体验",type:"体验"},
-  "d4_1":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:4,desc:"世界重要博物馆，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。",why:"新版 Excel 改为9月28日上午参观，而不是抵达当天夜场。",reservation:"持Paris Museum Pass仍须预约免费时段",price:"32€（非欧洲经济区游客）；4日博物馆通票已包含",reserveUrl:"https://ticket.louvre.fr/billetterie/3313",advanceBooking:"9月28日时段现已开放，立即预约",time:"09:00",category:"博物馆",closed:"周二闭馆",website:"https://www.louvre.fr",reserveChannels:"官网 ticket.louvre.fr 选择9月28日及 Paris Museum Pass 持有者免费时段"},
+  "d4_1":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:4,desc:"世界重要博物馆，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。",why:"新版 Excel 改为9月28日上午参观，而不是抵达当天夜场。",reservation:"必须预约时段；Paris Museum Pass 持有人预约免费",price:"32€（非欧洲经济区游客）；4日博物馆通票已包含",reserveUrl:"https://ticket.louvre.fr/en",advanceBooking:"9月28日时段现已开放，立即预约09:00",time:"09:00",category:"博物馆",closed:"周二闭馆",website:"https://www.louvre.fr",reserveChannels:"Paris Museum Pass 官方明确列为必须预约；只有提前锁定时段才能保证通票入场"},
   "d4_2":{name:"杜乐丽花园",nameEn:"Jardin des Tuileries",coords:[48.8637,2.3260],day:4,desc:"连接卢浮宫和协和广场的法式花园。",why:"卢浮宫结束后向西步行前往橘园和香榭丽舍。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:30",category:"公园"},
   "d4_3":{name:"大皇宫 / 小皇宫（可选）",nameEn:"Grand Palais / Petit Palais",coords:[48.8661,2.3130],day:4,desc:"香榭丽舍附近的玻璃穹顶展馆和美术馆。",why:"新版 Excel 明确列为可选项，只有当天进度允许时加入。",reservation:"视具体展览决定",price:"外观免费；展览另购票",reserveUrl:"https://www.grandpalais.fr",advanceBooking:"如决定看特展再预约",time:"13:30",category:"可选景点",type:"行程"},
   "d4_4":{name:"橘园美术馆",nameEn:"Musée de l'Orangerie",coords:[48.8636,2.3220],day:4,desc:"以莫奈8幅巨型《睡莲》全景壁画闻名。",why:"新版行程安排约1小时参观，位于杜乐丽花园西端。",reservation:"持Paris Museum Pass仍须预约时段",price:"网购12.5€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orangerie.fr",advanceBooking:"官网开放后尽早预约",time:"14:30",category:"博物馆",closed:"周二闭馆"},
@@ -2213,6 +2222,7 @@ function renderExtrasList() {
 function focusExtra(id) {
   const p=EXTRA_POIS.find(x=>x.id===id);
   if(!p)return;
+  if (toggleSameDetail(`extra:${id}`)) return;
   map.setView(p.coords,13,{animate:true});
   showExtraDetail(id);
 }
@@ -2337,6 +2347,7 @@ function renderRestaurantsList() {
 function focusRestaurant(id) {
   const r=RESTAURANTS.find(x=>x.id===id);
   if(!r)return;
+  if (toggleSameDetail(`restaurant:${id}`)) return;
   map.setView(r.coords,14,{animate:true});
   showRestaurantDetail(id);
 }
@@ -2360,6 +2371,7 @@ function showRestaurantDetail(id) {
 // DETAIL PANEL - cleaner layout with professional info
 // ============================================================
 function showDetail(id) {
+  if (toggleSameDetail(`poi:${id}`)) return;
   const poi = POI_DATA[id] || Object.values(POI_DATA).find(p => {
     const dayData = ITINERARY.find(d => d.day === p.day);
     return dayData && `ov_${p.day}_${dayData.stops.findIndex(s => POI_DATA[s] === p)}` === id;
@@ -2369,7 +2381,7 @@ function showDetail(id) {
   const extra = POI_EXTRA[id] || {};
 
   // Professional reservation badge
-  const hasReserve = poi.reservation && !poi.reservation.includes('无需') && !poi.reservation.includes('免费') && !poi.reservation.includes('已通过');
+  const hasReserve = Boolean(poi.reservation && (/必须预约|须预约|需要预约|建议预约/.test(poi.reservation)) && !/无需预约|已通过/.test(poi.reservation));
   const reserveBadge = hasReserve
     ? '<span class="badge-reserve badge-need">需要预约</span>'
     : '<span class="badge-reserve badge-free">免预约</span>';
@@ -2434,6 +2446,23 @@ function showDetail(id) {
 }
 
 // Shared panel shell: header (title + collapse/close) + body
+function toggleSameDetail(key) {
+  const panel = document.getElementById('detailPanel');
+  if (panel.dataset.detailKey !== key) {
+    panel.dataset.detailKey = key;
+    return false;
+  }
+  if (panel.classList.contains('open') && !panel.classList.contains('collapsed')) {
+    toggleDetailCollapse();
+  } else if (panel.classList.contains('open')) {
+    toggleDetailCollapse();
+  } else {
+    panel.dataset.detailKey = key;
+    return false;
+  }
+  return true;
+}
+
 function openDetailPanel(headerHtml, bodyHtml) {
   document.getElementById('detailHeader').innerHTML = headerHtml.replace('<div class="detail-head-actions">','<div class="detail-head-actions"><button class="detail-collapse-btn" onclick="toggleDetailCollapse()" title="收起详情" aria-label="收起详情">⌄</button>');
   document.getElementById('detailContent').innerHTML = bodyHtml;
@@ -2466,6 +2495,7 @@ function hideDetail() {
   panel._hideTimer = setTimeout(() => {
     if (!panel.classList.contains('open')) {
       panel.hidden = true;
+      panel.dataset.detailKey = '';
       document.getElementById('detailHeader').innerHTML = '';
       document.getElementById('detailContent').innerHTML = '';
     }
