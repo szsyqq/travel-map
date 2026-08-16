@@ -581,7 +581,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.32</span>
+    <span class="v-dot"></span><span>v1.9.33</span>
   </div>
 </header>
 
@@ -635,10 +635,18 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.32</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.33</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.33</span><span class="version-date">2026-08-16</span>
+<div class="version-title">⏰ 圣母院与歌剧院抢票提醒</div>
+<ul class="version-items">
+<li>圣母院按本团必须预约执行，9月24日15:30起检查48小时窗口，并保留当天刷新提示</li>
+<li>巴黎歌剧院加入9月11日抢票提醒，与官网通用销售说明分开显示</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.32</span><span class="version-date">2026-08-12</span>
 <div class="version-title">📅 汇总表补充具体日期</div>
@@ -1067,9 +1075,9 @@ const POI_DATA = {
   "d1_2":{name:"奥赛博物馆（时间紧张）",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:1,desc:"巴黎19世纪艺术圣殿，由奥赛火车站改建而成。",why:"14:25落地后还需入境、取行李和前往民宿，原定15:30参观不可行；如保留须另选更晚时段并确认闭馆时间。",reservation:"持Paris Museum Pass仍须预约时段",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"先调整日期或时段",time:"原定15:30 · 与落地衔接冲突",category:"博物馆",closed:"周一闭馆",website:"https://www.musee-orsay.fr",reserveChannels:"官网选择 Paris Museum Pass 免费预约时段"},
   "d1_3":{name:"Le Cafe Marly (晚餐)",nameEn:"Le Cafe Marly",coords:[48.8610,2.3370],day:1,desc:"位于卢浮宫黎塞留通道内的法式餐厅，正对卢浮宫金字塔。",why:"在卢浮宫享用晚餐后，出门就是玻璃金字塔夜景，位置绝佳，氛围满分。",reservation:"已通过Google预约，3位21:30",price:"中高档",reserveUrl:"",advanceBooking:"已预约",time:"21:30",category:"餐饮",type:"餐饮"},
   "d2_1":{name:"蒙马特高地",nameEn:"Montmartre",coords:[48.8867,2.3431],day:2,desc:"巴黎北部艺术区，含Rue Lamarck、葡萄园、圣心堂、蒙马特博物馆和画家广场。",why:"新版行程安排周六上午完整步行约2.5km，串联铁塔隐藏机位、巴黎市区葡萄园、圣心堂和雷诺阿花园。",reservation:"圣心堂无需预约；博物馆可提前购票",price:"圣心堂免费，登顶约8€，博物馆16€",reserveUrl:"https://museedemontmartre.fr",advanceBooking:"教堂无需预约；博物馆可提前购票",time:"09:00",category:"街区"},
-  "d2_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:2,desc:"拿破仑三世时期的新巴洛克式歌剧院，可参观大楼梯、夏加尔穹顶和大休息厅。",why:"新版行程放在蒙马特之后，随后向东前往蓬皮杜、圣母院与拉丁区。",reservation:"白天参观建议预约；演出必须购票",price:"自助参观约25€",reserveUrl:"https://www.operadeparis.fr/visits/palais-garnier",advanceBooking:"参观票开放后尽早购买",time:"13:00",category:"剧院"},
+  "d2_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:2,desc:"拿破仑三世时期的新巴洛克式歌剧院，可参观大楼梯、夏加尔穹顶和大休息厅。",why:"新版行程放在蒙马特之后，随后向东前往蓬皮杜、圣母院与拉丁区。",reservation:"白天参观建议预约；本团9月11日抢票",price:"自助参观约25€",reserveUrl:"https://www.operadeparis.fr/en/visits/palais-garnier",advanceBooking:"⏰ 9月11日提醒抢票",time:"13:00",category:"剧院"},
   "d2_3":{name:"蓬皮杜艺术中心（外观）",nameEn:"Centre Pompidou",coords:[48.8606,2.3522],day:2,desc:"欧洲重要现代艺术中心，主馆目前因全面改造关闭。",why:"本次只能参观彩色管道建筑外观，或查看蓬皮杜在巴黎其他场地的临时项目。",reservation:"主馆闭馆，无需预约",price:"外观免费",reserveUrl:"https://www.centrepompidou.fr",advanceBooking:"无需",time:"14:30",category:"建筑地标",closed:"主馆改造关闭至预计2030年"},
-  "d2_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:2,desc:"修复后重新开放的哥特式大教堂。",why:"位于蓬皮杜、莎士比亚书店和先贤祠之间，适合顺路衔接。",reservation:"免费入内可预约时段；也可现场排队",price:"教堂免费，珍宝馆另付费",reserveUrl:"https://www.notredamedeparis.fr",advanceBooking:"官网开放时尽早选择免费时段",time:"15:30",category:"教堂"},
+  "d2_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:2,desc:"修复后重新开放的哥特式大教堂。",why:"位于蓬皮杜、莎士比亚书店和先贤祠之间，适合顺路衔接。",reservation:"本团按必须预约执行；官方普通参观仍允许现场排队",price:"教堂免费，珍宝馆另付费",reserveUrl:"https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets",advanceBooking:"9月24日15:30起检查；时段可能到9月26日当天才逐步放出",time:"15:30",category:"教堂"},
   "d2_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:2,desc:"塞纳河畔传奇英文书店。",why:"从圣母院步行即达，二楼可看圣母院景观。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
   "d2_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:2,desc:"伏尔泰、卢梭、雨果、居里夫人等法国伟人安葬地。",why:"新版行程安排在拉丁区步行线末段，注意18:00前入场。",reservation:"个人无需预约；可提前购票",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.paris-pantheon.fr",advanceBooking:"无需预约",time:"17:00",category:"纪念馆"},
   "d2_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:2,desc:"从战神广场近距离观看埃菲尔铁塔。",why:"晚上作为巴黎市区行程收尾，整点灯光闪烁约5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:30",category:"地标"},
@@ -1138,7 +1146,7 @@ const POI_EXTRA = {
   "d2_1":{hours:"圣心堂 6:00–22:30；蒙马特博物馆约10:00–19:00",duration:"3.5–4 小时",address:"Montmartre, 75018 Paris",tips:"按 Rue Lamarck—葡萄园—圣心堂—蒙马特博物馆—画家广场顺序步行。"},
   "d2_2":{hours:"自助参观时段随演出安排变化",duration:"1–1.5 小时",address:"Place de l'Opéra, 75009 Paris",tips:"先核对当天观众厅是否开放；参观票不包含演出。"},
   "d2_3":{hours:"主馆改造关闭",duration:"外观约20–30分钟",address:"Place Georges Pompidou, 75004 Paris",tips:"不要为主馆购买旧票；只看外观或临时场地项目。"},
-  "d2_4":{hours:"教堂每日开放；免费时段以官网为准",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"预约不是唯一入内方式，但预约免费时段可减少现场等待。"},
+  "d2_4":{hours:"教堂每日开放；预约时段滚动放出",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"本团按必须预约执行：9月24日15:30开始检查48小时窗口；官方普通参观虽可现场排队，但不利于当天紧凑衔接。"},
   "d2_5":{hours:"通常每日开放，可能排队",duration:"约30分钟",address:"37 Rue de la Bûcherie, 75005 Paris",tips:"店内通常禁止拍照，门口高峰时段可能排队。"},
   "d2_6":{hours:"通常10:00–18:00，最后入场提前",duration:"1–1.5 小时",address:"Place du Panthéon, 75005 Paris",tips:"新版表要求注意18:00闭馆，前序景点不要拖延。"},
   "d2_7":{hours:"广场全天开放",duration:"约1小时",address:"Champ de Mars, 75007 Paris",tips:"等整点灯光闪烁约5分钟；夜间注意随身物品。"},
@@ -2707,7 +2715,8 @@ let summarySort = 'day'; // 'day' | 'earliest'
 let summarySourceFilter = 'planned'; // 'all' | 'planned' | 'extra'
 
 const BOOKING_OVERRIDES = {
-  d2_2:{earliestDate:'现已开放',advanceBooking:'官网滚动开放未来60天；9月26日已进入销售窗口',url:'https://www.operadeparis.fr/en/visits/palais-garnier'},
+  d2_2:{earliestDate:'⏰ 9/11 抢票',advanceBooking:'按本团安排9月11日抢票；官网参观票通常滚动开放未来60天',url:'https://www.operadeparis.fr/en/visits/palais-garnier'},
+  d2_4:{earliestDate:'9/24 15:30起',advanceBooking:'按48小时窗口开始检查；官方入口可能到参观当天才逐步放票',url:'https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets'},
   d3_1:{earliestDate:'现已开放',advanceBooking:'旺季建议立即锁定09:00宫殿时段',url:'https://billetterie.chateauversailles.fr/'},
   d4_1:{earliestDate:'现已开放',advanceBooking:'9月28日票务时段已开放；建议立即预约09:00',url:'https://ticket.louvre.fr/en'},
   d4_4:{earliestDate:'现已开放后尽快',advanceBooking:'建议与卢浮宫错开，优先14:30左右',url:'https://billetterie.musee-orangerie.fr/'},
