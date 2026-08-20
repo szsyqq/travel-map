@@ -581,7 +581,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.33</span>
+    <span class="v-dot"></span><span>v1.9.34</span>
   </div>
 </header>
 
@@ -635,10 +635,19 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.33</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.34</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry">
+<span class="version-tag">v1.9.34</span><span class="version-date">2026-08-20</span>
+<div class="version-title">⛪ 圣母院调整至9月27日下午</div>
+<ul class="version-items">
+<li>因教皇相关安排，圣母院从第2天移至第3天下午，置于凡尔赛与塞纳河游船之间</li>
+<li>48小时预约检查时间改为9月25日15:30起，汇总表保留手工订票确认及预约时间</li>
+<li>重新标注第3天为高强度衔接，建议压缩凡尔赛花园部分以保证后续准时</li>
+</ul>
+</div>
 <div class="version-entry">
 <span class="version-tag">v1.9.33</span><span class="version-date">2026-08-16</span>
 <div class="version-title">⏰ 圣母院与歌剧院抢票提醒</div>
@@ -1077,7 +1086,7 @@ const POI_DATA = {
   "d2_1":{name:"蒙马特高地",nameEn:"Montmartre",coords:[48.8867,2.3431],day:2,desc:"巴黎北部艺术区，含Rue Lamarck、葡萄园、圣心堂、蒙马特博物馆和画家广场。",why:"新版行程安排周六上午完整步行约2.5km，串联铁塔隐藏机位、巴黎市区葡萄园、圣心堂和雷诺阿花园。",reservation:"圣心堂无需预约；博物馆可提前购票",price:"圣心堂免费，登顶约8€，博物馆16€",reserveUrl:"https://museedemontmartre.fr",advanceBooking:"教堂无需预约；博物馆可提前购票",time:"09:00",category:"街区"},
   "d2_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:2,desc:"拿破仑三世时期的新巴洛克式歌剧院，可参观大楼梯、夏加尔穹顶和大休息厅。",why:"新版行程放在蒙马特之后，随后向东前往蓬皮杜、圣母院与拉丁区。",reservation:"白天参观建议预约；本团9月11日抢票",price:"自助参观约25€",reserveUrl:"https://www.operadeparis.fr/en/visits/palais-garnier",advanceBooking:"⏰ 9月11日提醒抢票",time:"13:00",category:"剧院"},
   "d2_3":{name:"蓬皮杜艺术中心（外观）",nameEn:"Centre Pompidou",coords:[48.8606,2.3522],day:2,desc:"欧洲重要现代艺术中心，主馆目前因全面改造关闭。",why:"本次只能参观彩色管道建筑外观，或查看蓬皮杜在巴黎其他场地的临时项目。",reservation:"主馆闭馆，无需预约",price:"外观免费",reserveUrl:"https://www.centrepompidou.fr",advanceBooking:"无需",time:"14:30",category:"建筑地标",closed:"主馆改造关闭至预计2030年"},
-  "d2_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:2,desc:"修复后重新开放的哥特式大教堂。",why:"位于蓬皮杜、莎士比亚书店和先贤祠之间，适合顺路衔接。",reservation:"本团按必须预约执行；官方普通参观仍允许现场排队",price:"教堂免费，珍宝馆另付费",reserveUrl:"https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets",advanceBooking:"9月24日15:30起检查；时段可能到9月26日当天才逐步放出",time:"15:30",category:"教堂"},
+  "d2_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:3,desc:"修复后重新开放的哥特式大教堂。",why:"因教皇相关安排，已从9月26日调整至9月27日下午；从凡尔赛返回后前往，随后衔接塞纳河游船。",reservation:"本团按必须预约执行；汇总表需手工确认订票与预约时间",price:"教堂免费，珍宝馆另付费",reserveUrl:"https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets",advanceBooking:"9月25日15:30起检查；时段可能到9月27日当天才逐步放出",time:"15:30",category:"教堂"},
   "d2_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:2,desc:"塞纳河畔传奇英文书店。",why:"从圣母院步行即达，二楼可看圣母院景观。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
   "d2_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:2,desc:"伏尔泰、卢梭、雨果、居里夫人等法国伟人安葬地。",why:"新版行程安排在拉丁区步行线末段，注意18:00前入场。",reservation:"个人无需预约；可提前购票",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.paris-pantheon.fr",advanceBooking:"无需预约",time:"17:00",category:"纪念馆"},
   "d2_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:2,desc:"从战神广场近距离观看埃菲尔铁塔。",why:"晚上作为巴黎市区行程收尾，整点灯光闪烁约5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:30",category:"地标"},
@@ -1121,8 +1130,8 @@ const POI_DATA = {
 
 const ITINERARY = [
   {day:1,date:"9月25日 (五)",title:"14:25抵达巴黎",summary:"QR39 14:25抵达戴高乐机场T1 → 入境取行李 → 前往民宿入住；Cafe Marly 21:30晚餐作为餐饮安排单独显示",stops:[]},
-  {day:2,date:"9月26日 (六)",title:"蒙马特与巴黎经典线",summary:"蒙马特高地 → 巴黎歌剧院 → 蓬皮杜外观 → 圣母院 → 莎士比亚书店 → 先贤祠 → 战神广场夜景",stops:["d2_1","d2_2","d2_3","d2_4","d2_5","d2_6","d2_7"]},
-  {day:3,date:"9月27日 (日)",title:"凡尔赛宫 + 塞纳河游船",summary:"凡尔赛宫全天 → 塞纳河游船晚餐",stops:["d3_1","d3_2"]},
+  {day:2,date:"9月26日 (六)",title:"蒙马特与巴黎经典线",summary:"蒙马特高地 → 巴黎歌剧院 → 蓬皮杜外观 → 莎士比亚书店 → 先贤祠 → 战神广场夜景",stops:["d2_1","d2_2","d2_3","d2_5","d2_6","d2_7"]},
+  {day:3,date:"9月27日 (日)",title:"凡尔赛、圣母院与塞纳河",summary:"凡尔赛宫 → 下午巴黎圣母院 → 塞纳河游船晚餐",stops:["d3_1","d2_4","d3_2"]},
   {day:4,date:"9月28日 (一)",title:"卢浮宫与香榭丽舍",summary:"上午卢浮宫 → 杜乐丽花园 → 大/小皇宫（可选）→ 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6"]},
   {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
   {day:6,date:"9月30日 (三)",title:"滴金酒庄、葡萄酒城与老托特",summary:"10:00滴金酒庄(约90min) → 下午波尔多葡萄酒城 → 晚上老托特酒庄 Château TrotteVieille → 返回波尔多住宿",stops:["d6_1","d6_2","d6_3"]},
@@ -1146,7 +1155,7 @@ const POI_EXTRA = {
   "d2_1":{hours:"圣心堂 6:00–22:30；蒙马特博物馆约10:00–19:00",duration:"3.5–4 小时",address:"Montmartre, 75018 Paris",tips:"按 Rue Lamarck—葡萄园—圣心堂—蒙马特博物馆—画家广场顺序步行。"},
   "d2_2":{hours:"自助参观时段随演出安排变化",duration:"1–1.5 小时",address:"Place de l'Opéra, 75009 Paris",tips:"先核对当天观众厅是否开放；参观票不包含演出。"},
   "d2_3":{hours:"主馆改造关闭",duration:"外观约20–30分钟",address:"Place Georges Pompidou, 75004 Paris",tips:"不要为主馆购买旧票；只看外观或临时场地项目。"},
-  "d2_4":{hours:"教堂每日开放；预约时段滚动放出",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"本团按必须预约执行：9月24日15:30开始检查48小时窗口；官方普通参观虽可现场排队，但不利于当天紧凑衔接。"},
+  "d2_4":{hours:"9月27日下午；预约时段滚动放出",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"本团按必须预约执行：9月25日15:30开始检查48小时窗口；从凡尔赛返回后直接前往，必须控制前序参观时间。"},
   "d2_5":{hours:"通常每日开放，可能排队",duration:"约30分钟",address:"37 Rue de la Bûcherie, 75005 Paris",tips:"店内通常禁止拍照，门口高峰时段可能排队。"},
   "d2_6":{hours:"通常10:00–18:00，最后入场提前",duration:"1–1.5 小时",address:"Place du Panthéon, 75005 Paris",tips:"新版表要求注意18:00闭馆，前序景点不要拖延。"},
   "d2_7":{hours:"广场全天开放",duration:"约1小时",address:"Champ de Mars, 75007 Paris",tips:"等整点灯光闪烁约5分钟；夜间注意随身物品。"},
@@ -2527,7 +2536,7 @@ const VISIT_DATES = {1:"9/25",2:"9/26",3:"9/27",4:"9/28",5:"9/29",6:"9/30",7:"10
 const DAY_TIME_ESTIMATES = {
   1:{window:"14:25–22:45",total:"约8小时20分",note:"入境取行李约1.5小时 + 机场到民宿约1小时 + 入住/休整；20:45左右出发去 Café Marly，21:30晚餐。",tight:false},
   2:{window:"08:30–21:00",total:"约12小时30分",note:"蒙马特约3.5小时、歌剧院1.25小时、右岸至拉丁区步行参观约4小时、跨城移动约2小时。建议将歌剧院锁定13:00左右；若延误，先删蓬皮杜外观。",tight:true},
-  3:{window:"07:45–21:00",total:"约13小时15分",note:"巴黎往返凡尔赛约2小时、宫殿与花园5.5–6小时、返程及前往码头约1.5小时。凡尔赛建议预约09:00；晚餐游船按最终码头至少提前30分钟到。",tight:true},
+  3:{window:"07:45–21:00",total:"约13小时15分",note:"凡尔赛往返约2小时，宫殿与精简花园约4.5小时，15:30圣母院约1小时，随后前往游船码头。当天非常紧：凡尔赛建议09:00入场并最迟14:00返程，游船至少提前30分钟到。",tight:true},
   4:{window:"08:45–20:30",total:"约11小时45分",note:"卢浮宫3.5小时、午餐/步行1小时、橘园1小时、香榭丽舍与凯旋门约3小时。卢浮宫09:00最稳，橘园建议14:30；大/小皇宫只作为有余量时加项。",tight:true},
   5:{window:"08:00–19:30",total:"约11小时30分",note:"巴黎取车约1小时，至香波尔约2小时，参观2.5小时，前往波尔多约4.5小时，另留休息与停车约1.5小时。",tight:true},
   6:{window:"08:30–22:30",total:"约14小时",note:"波尔多—滴金往返约2小时、酒庄1.5小时、葡萄酒城2.5小时、波尔多—老托特往返约2小时。老托特具体时间未定，是当天预约的关键约束。",tight:true},
@@ -2716,7 +2725,7 @@ let summarySourceFilter = 'planned'; // 'all' | 'planned' | 'extra'
 
 const BOOKING_OVERRIDES = {
   d2_2:{earliestDate:'⏰ 9/11 抢票',advanceBooking:'按本团安排9月11日抢票；官网参观票通常滚动开放未来60天',url:'https://www.operadeparis.fr/en/visits/palais-garnier'},
-  d2_4:{earliestDate:'9/24 15:30起',advanceBooking:'按48小时窗口开始检查；官方入口可能到参观当天才逐步放票',url:'https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets'},
+  d2_4:{earliestDate:'9/25 15:30起',advanceBooking:'9月27日15:30参观；按48小时窗口开始检查，汇总表勾选后填写实际预约时间',url:'https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets'},
   d3_1:{earliestDate:'现已开放',advanceBooking:'旺季建议立即锁定09:00宫殿时段',url:'https://billetterie.chateauversailles.fr/'},
   d4_1:{earliestDate:'现已开放',advanceBooking:'9月28日票务时段已开放；建议立即预约09:00',url:'https://ticket.louvre.fr/en'},
   d4_4:{earliestDate:'现已开放后尽快',advanceBooking:'建议与卢浮宫错开，优先14:30左右',url:'https://billetterie.musee-orangerie.fr/'},
