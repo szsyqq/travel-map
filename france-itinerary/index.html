@@ -587,7 +587,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.37</span>
+    <span class="v-dot"></span><span>v1.9.38</span>
   </div>
 </header>
 
@@ -641,10 +641,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.37</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.38</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry"><span class="version-tag">v1.9.38</span><span class="version-date">2026-09-08</span><div class="version-title">修正红十字博物馆周一闭馆</div><ul class="version-items"><li>10月5日为周一，国际红十字与红新月博物馆闭馆</li><li>保留原表项目作为冲突提示，但从当天可执行路线和时间估算中排除</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.37</span><span class="version-date">2026-09-08</span><div class="version-title">final 行程、最新活动与完整路线</div><ul class="version-items"><li>按“法国final行程”更新12天景点、已订餐厅、住宿与日内瓦安排</li><li>核对教皇9月25–28日法国访问，增加9月26日协和广场交通提醒，并确认圣母院9月27日恢复开放</li><li>增加“一键显示全部景点”，修正路线缓存误用和加载前缺线问题</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.36</span><span class="version-date">2026-08-27</span><div class="version-title">▶ 行程执行与预约任务</div><ul class="version-items"><li>橘园美术馆调整至16:30，并重新顺延香榭丽舍与凯旋门时段</li><li>增加执行模式、节点间交通时间与一键导航</li><li>增加独立预约任务中心；可执行性用文字、符号和边框表示，不依赖红绿颜色</li></ul></div>
 <div class="version-entry">
@@ -1162,7 +1163,7 @@ const POI_DATA = {
   "d10_cern":{name:"CERN（已预约）",nameEn:"CERN",coords:[46.2333,6.0492],day:10,desc:"CERN科学门户和预约项目。",why:"final 表确认10月4日11:00，需从里昂很早出发并计算过境时间。",reservation:"已预约11:00",price:"免费",reserveUrl:"https://visit.cern",advanceBooking:"已预约",time:"11:00",category:"科技"},
   "d10_patek":{name:"百达翡丽博物馆",nameEn:"Patek Philippe Museum",coords:[46.2002,6.1447],day:10,desc:"全球重要钟表博物馆之一。",why:"周一闭馆，final 表改到周日下午。",reservation:"建议提前购票",price:"约10 CHF",reserveUrl:"https://www.patek.com/museum",advanceBooking:"核对周日下午时段",time:"15:00",category:"博物馆"},
   "d10_dinner":{name:"Les Armures（已预订）",nameEn:"Les Armures",coords:[46.2015,6.1472],day:10,desc:"日内瓦传统瑞士菜。",why:"已预订阿尔卑斯小木屋区域。",reservation:"已预订19:00",price:"约45–75 CHF / 人",reserveUrl:"https://www.hotel-les-armures.ch",advanceBooking:"已预订",time:"19:00",category:"餐饮",type:"餐饮"},
-  "d11_redcross":{name:"国际红十字与红新月博物馆（可选）",nameEn:"International Red Cross Museum",coords:[46.2272,6.1371],day:11,desc:"联合国对面的国际人道主义主题博物馆。",why:"final 表列为可选，只有联合国时段允许时加入。",reservation:"可提前购票",price:"15 CHF",reserveUrl:"https://redcrossmuseum.ch",advanceBooking:"确定联合国时段后再购票",time:"可选",category:"博物馆",type:"行程"},
+  "d11_redcross":{name:"国际红十字与红新月博物馆（周一闭馆）",nameEn:"International Red Cross Museum",coords:[46.2272,6.1371],day:11,desc:"联合国对面的国际人道主义主题博物馆；官网开放时间为周二至周日10:00–17:00，周一闭馆。",why:"final 表把它列为10月5日可选项，但当天是周一，无法入内参观；仅保留为排期冲突提示，不接入当天路线。",reservation:"当天闭馆，不能预约",price:"成人15 CHF（本日不适用）",reserveUrl:"https://redcrossmuseum.ch/en/prices-opening-hours-access/",advanceBooking:"10月5日不可执行；如要参观须改到10月4日周日",time:"10月5日周一 · 闭馆",category:"博物馆",type:"行程",closed:"每周一闭馆",unavailable:true},
   "d11_jlc":{name:"积家工厂导览（可选）",nameEn:"Jaeger-LeCoultre Manufacture",coords:[46.6052,6.2316],day:11,desc:"汝拉山谷Le Sentier的公众工厂导览。",why:"距日内瓦约1小时车程，会占用至少半天，不适合与联合国、红十字会同日全部执行。",reservation:"必须官网预约",price:"约50–70 CHF",reserveUrl:"https://www.jaeger-lecoultre.com",advanceBooking:"先查10月5日是否有场次",time:"可选半天",category:"工厂见学",type:"行程"},
   "d11_lunch":{name:"L’Aparté（已预订）",nameEn:"L’Aparté",coords:[46.2191,6.1138],day:11,desc:"final 表指定午餐。",why:"需根据联合国预约时段复核交通。",reservation:"已预订12:30",price:"69 CHF / 人",reserveUrl:"",advanceBooking:"已预订",time:"12:30",category:"餐饮",type:"餐饮"},
   "d11_dinner":{name:"Parfums de Beyrouth",nameEn:"Parfums de Beyrouth",coords:[46.2115,6.1452],day:11,desc:"黎巴嫩餐厅。",why:"final 表指定晚餐。",reservation:"通常现场排队",price:"约20–35 CHF / 人",reserveUrl:"",advanceBooking:"无需预约，建议错峰",time:"19:00",category:"餐饮",type:"餐饮"},
@@ -1180,7 +1181,7 @@ const ITINERARY = [
   {day:8,date:"10月2日 (五)",title:"南法古城→里昂",summary:"图卢兹→卡尔卡松城堡(2h) → 尼姆竞技场(2h10) → 嘉德水道桥(35min) → 里昂(2h40，约20:00抵达)",stops:["d8_1","d8_2","d8_3","d8_4"]},
   {day:9,date:"10月3日 (六)",title:"里昂历史、美术与汇流",summary:"富维耶 → 高卢罗马遗址 → 老城 → 12:00 L'Auberge des Canuts → 主座教堂/美术馆/旧主宫医院 → 汇流博物馆 → 19:30 Flair",stops:["d9_1","d9_2","d9_3","d9_4","d9_5","d9_6","d10_1","d9_dinner"]},
   {day:10,date:"10月4日 (日)",title:"里昂→日内瓦 · CERN与钟表",summary:"清晨里昂出发并过境 → 11:00 CERN（已预约）→ 下午百达翡丽博物馆 → 19:00 Les Armures",stops:["d10_cern","d10_patek","d10_dinner"]},
-  {day:11,date:"10月5日 (一)",title:"联合国与日内瓦",summary:"联合国导览 → 国际红十字会博物馆（可选）→ 12:30 L’Aparté → 日内瓦半天 → 19:00 Parfums de Beyrouth；积家工厂为需另留半天的备选",stops:["d11_2","d11_redcross","d11_lunch","d11_jlc","d11_dinner"]},
+  {day:11,date:"10月5日 (一)",title:"联合国与日内瓦",summary:"联合国导览 → 12:30 L’Aparté → 日内瓦半天 → 19:00 Parfums de Beyrouth；红十字博物馆周一闭馆，积家工厂为需另留半天的备选",stops:["d11_2","d11_redcross","d11_lunch","d11_jlc","d11_dinner"]},
   {day:12,date:"10月6日 (二)",title:"日内瓦返程",summary:"日内瓦湖晨间漫步 → 15:55返程",stops:["d12_1"]}
 ];
 
@@ -2681,7 +2682,7 @@ const DAY_TIME_ESTIMATES = {
   8:{window:"07:30–21:00",total:"约13小时30分",note:"图卢兹—卡尔卡松约1小时15分、参观2.5小时、至尼姆约2小时10分、竞技场约1.5小时、嘉德水道桥短停及至里昂约3小时15分。当天极紧，建议尼姆和水道桥二选一。",tight:true},
   9:{window:"08:30–21:30",total:"约13小时",note:"富维耶、罗马遗址、老城、12:00午餐、美术馆、旧主宫医院及汇流博物馆全部同日，19:30 Flair。建议把汇流博物馆作为可删项。",tight:true},
  10:{window:"06:30–21:00",total:"约14小时30分",note:"从里昂Saint-Priest到CERN含过境建议至少3小时，需约06:30出发；11:00 CERN、下午百达翡丽、19:00 Les Armures。",tight:true},
- 11:{window:"09:00–21:00",total:"约12小时",note:"联合国与红十字会在同一区域，12:30 L’Aparté后安排市区。积家工厂往返至少2小时，不能和全部市区项目同时执行。",tight:true},
+11:{window:"09:00–21:00",total:"约12小时",note:"10月5日周一红十字博物馆闭馆，已从可执行路线排除。12:30 L’Aparté后安排市区；积家工厂往返至少2小时，不能和全部市区项目同时执行。",tight:true},
  12:{window:"08:30–13:30",total:"约5小时",note:"湖边散步约1小时、早餐与取行李约1.5小时；国际航班建议12:45–13:00抵达机场，为15:55起飞预留约3小时。",tight:false}
 };
 
