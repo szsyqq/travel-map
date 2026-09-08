@@ -587,7 +587,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.36</span>
+    <span class="v-dot"></span><span>v1.9.37</span>
   </div>
 </header>
 
@@ -622,7 +622,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 
 <div class="map-container">
 <div id="map"></div>
-<div class="map-action-stack"><button class="map-action-btn" type="button" onclick="showExecutionMode()">▶ 执行模式</button><button class="map-action-btn" type="button" onclick="showBookingTasks()">☑ 预约任务</button><button class="map-summary-btn" type="button" onclick="showSummary()">📊 汇总</button></div>
+<div class="map-action-stack"><button class="map-action-btn" type="button" onclick="showAllAttractions()">◎ 全部景点</button><button class="map-action-btn" type="button" onclick="showExecutionMode()">▶ 执行模式</button><button class="map-action-btn" type="button" onclick="showBookingTasks()">☑ 预约任务</button><button class="map-summary-btn" type="button" onclick="showSummary()">📊 汇总</button></div>
 <div class="loading-overlay hidden" id="loadingOverlay">
 <div class="spinner"></div>
 <span id="loadingText">加载路线中...</span>
@@ -641,10 +641,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.36</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.37</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry"><span class="version-tag">v1.9.37</span><span class="version-date">2026-09-08</span><div class="version-title">final 行程、最新活动与完整路线</div><ul class="version-items"><li>按“法国final行程”更新12天景点、已订餐厅、住宿与日内瓦安排</li><li>核对教皇9月25–28日法国访问，增加9月26日协和广场交通提醒，并确认圣母院9月27日恢复开放</li><li>增加“一键显示全部景点”，修正路线缓存误用和加载前缺线问题</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.36</span><span class="version-date">2026-08-27</span><div class="version-title">▶ 行程执行与预约任务</div><ul class="version-items"><li>橘园美术馆调整至16:30，并重新顺延香榭丽舍与凯旋门时段</li><li>增加执行模式、节点间交通时间与一键导航</li><li>增加独立预约任务中心；可执行性用文字、符号和边框表示，不依赖红绿颜色</li></ul></div>
 <div class="version-entry">
 <span class="version-tag">v1.9.35</span><span class="version-date">2026-08-27</span>
@@ -1099,32 +1100,34 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 const DAY_COLORS = ['#007AFF','#34C759','#FF9500','#FF3B30','#AF52DE','#5856D6','#FF2D55','#00C7BE','#FF6482','#36C9C6','#5AC8FA','#FF9500','#8E8E93'];
 
 const POI_DATA = {
-  "d1_1":{name:"巴黎航空航天博物馆（时间冲突）",nameEn:"Musée de l'Air et de l'Espace",coords:[48.9472,2.4344],day:1,desc:"欧洲最大、世界最古老的航空博物馆之一，坐落在勒布尔热机场。",why:"电子客票显示14:25才抵达戴高乐机场，无法执行原表的上午参观；建议移至其他日期或取消。",reservation:"持Paris Museum Pass无需预约",price:"17€；4日博物馆通票已包含",reserveUrl:"https://www.museeairespace.fr",advanceBooking:"改期后再核对开放时间",time:"原定上午 · 与航班冲突",category:"博物馆",closed:"周一闭馆",website:"https://www.museeairespace.fr",reserveChannels:"Paris Museum Pass 直接入场；天文馆5€、控制塔4€、儿童Planète Pilote 5€需另付费"},
+  "d1_1":{name:"巴黎航空航天博物馆（与航班冲突）",nameEn:"Musée de l'Air et de l'Espace",coords:[48.9472,2.4344],day:1,desc:"final 表保留的上午项目，但电子客票显示14:25才抵达戴高乐机场。",why:"落地前无法参观；页面保留该项目用于忠实反映 final 表，但不把它接入当天可执行路线。",reservation:"无需预约",price:"17€；登机参观约另付6–8€",reserveUrl:"https://www.museeairespace.fr",advanceBooking:"必须改期才能执行",time:"上午 · 与14:25落地冲突",category:"博物馆",closed:"周一闭馆",website:"https://www.museeairespace.fr",unavailable:true},
   "d1_2":{name:"奥赛博物馆（时间紧张）",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:1,desc:"巴黎19世纪艺术圣殿，由奥赛火车站改建而成。",why:"14:25落地后还需入境、取行李和前往民宿，原定15:30参观不可行；如保留须另选更晚时段并确认闭馆时间。",reservation:"持Paris Museum Pass仍须预约时段",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"先调整日期或时段",time:"原定15:30 · 与落地衔接冲突",category:"博物馆",closed:"周一闭馆",website:"https://www.musee-orsay.fr",reserveChannels:"官网选择 Paris Museum Pass 免费预约时段"},
   "d1_3":{name:"Le Cafe Marly (晚餐)",nameEn:"Le Cafe Marly",coords:[48.8610,2.3370],day:1,desc:"位于卢浮宫黎塞留通道内的法式餐厅，正对卢浮宫金字塔。",why:"在卢浮宫享用晚餐后，出门就是玻璃金字塔夜景，位置绝佳，氛围满分。",reservation:"已通过Google预约，3位21:30",price:"中高档",reserveUrl:"",advanceBooking:"已预约",time:"21:30",category:"餐饮",type:"餐饮"},
   "d2_1":{name:"蒙马特高地",nameEn:"Montmartre",coords:[48.8867,2.3431],day:2,desc:"巴黎北部艺术区，含Rue Lamarck、葡萄园、圣心堂、蒙马特博物馆和画家广场。",why:"新版行程安排周六上午完整步行约2.5km，串联铁塔隐藏机位、巴黎市区葡萄园、圣心堂和雷诺阿花园。",reservation:"圣心堂无需预约；博物馆可提前购票",price:"圣心堂免费，登顶约8€，博物馆16€",reserveUrl:"https://museedemontmartre.fr",advanceBooking:"教堂无需预约；博物馆可提前购票",time:"09:00",category:"街区"},
-  "d2_2":{name:"巴黎歌剧院",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:2,desc:"拿破仑三世时期的新巴洛克式歌剧院，可参观大楼梯、夏加尔穹顶和大休息厅。",why:"新版行程放在蒙马特之后，随后向东前往蓬皮杜、圣母院与拉丁区。",reservation:"白天参观建议预约；本团9月11日抢票",price:"自助参观约25€",reserveUrl:"https://www.operadeparis.fr/en/visits/palais-garnier",advanceBooking:"⏰ 9月11日提醒抢票",time:"13:00",category:"剧院"},
+  "d2_2":{name:"巴黎歌剧院彩排",nameEn:"Palais Garnier",coords:[48.8719,2.3317],day:2,desc:"final 表安排15:00观看彩排。",why:"蒙马特午餐后前往；当天教皇15:00在协和广场举行弥撒，周边交通和安保可能影响抵达。",reservation:"已定时段，核对演出票或入场凭证",price:"以已购票为准",reserveUrl:"https://www.operadeparis.fr",advanceBooking:"立即核对15:00入场凭证",time:"15:00",category:"剧院"},
   "d2_3":{name:"蓬皮杜艺术中心（外观）",nameEn:"Centre Pompidou",coords:[48.8606,2.3522],day:2,desc:"欧洲重要现代艺术中心，主馆目前因全面改造关闭。",why:"本次只能参观彩色管道建筑外观，或查看蓬皮杜在巴黎其他场地的临时项目。",reservation:"主馆闭馆，无需预约",price:"外观免费",reserveUrl:"https://www.centrepompidou.fr",advanceBooking:"无需",time:"14:30",category:"建筑地标",closed:"主馆改造关闭至预计2030年"},
-  "d2_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:3,desc:"修复后重新开放的哥特式大教堂。",why:"因教皇相关安排，已从9月26日调整至9月27日下午；从凡尔赛返回后前往，随后衔接塞纳河游船。",reservation:"本团按必须预约执行；汇总表需手工确认订票与预约时间",price:"教堂免费，珍宝馆另付费",reserveUrl:"https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets",advanceBooking:"9月25日15:30起检查；时段可能到9月27日当天才逐步放出",time:"15:30",category:"教堂"},
+  "d2_4":{name:"巴黎圣母院",nameEn:"Notre-Dame de Paris",coords:[48.8530,2.3499],day:3,desc:"教皇9月25日到访后，官网确认9月27日恢复通常开放。",why:"final 表调整为9月27日17:30；从奥赛出发沿塞纳河步行约30分钟。钟楼在教皇访问期间另有关闭安排，不等同于主教堂关闭。",reservation:"免费但本团按预约入场执行",price:"教堂免费，珍宝馆另付费",reserveUrl:"https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets",advanceBooking:"9月24日起检查48小时预约窗口",time:"17:30",category:"教堂"},
   "d2_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:2,desc:"塞纳河畔传奇英文书店。",why:"从圣母院步行即达，二楼可看圣母院景观。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
   "d2_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:2,desc:"伏尔泰、卢梭、雨果、居里夫人等法国伟人安葬地。",why:"新版行程安排在拉丁区步行线末段，注意18:00前入场。",reservation:"个人无需预约；可提前购票",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.paris-pantheon.fr",advanceBooking:"无需预约",time:"17:00",category:"纪念馆"},
   "d2_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:2,desc:"从战神广场近距离观看埃菲尔铁塔。",why:"晚上作为巴黎市区行程收尾，整点灯光闪烁约5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:30",category:"地标"},
-  "d3_1":{name:"凡尔赛宫",nameEn:"Château de Versailles",coords:[48.8049,2.1204],day:3,desc:"路易十四'太阳王'打造的欧洲顶级皇家宫殿，世界文化遗产。",why:"Paris Museum Pass 覆盖主宫殿、大小特里亚农宫和王后农庄；9月27日为周日音乐喷泉日，花园不含在通票内，需另买15€花园票。",reservation:"持通票仍须预约宫殿时段",price:"单买高峰期Passport 35€；持4日通票另付花园15€",reserveUrl:"https://www.chateauversailles.fr",advanceBooking:"建议提前2-4周，旺季至少一个月",time:"09:00",category:"宫殿",transport:"RER C线至 Versailles Château Rive Gauche，车程30-40min，单程约4€",closed:"周一闭馆",website:"https://www.chateauversailles.fr",reserveChannels:"官网选择 Paris Museum Pass/免费票预约宫殿时段；另购 Musical Fountains 花园票15€"},
-  "d3_2":{name:"塞纳河游船晚餐",nameEn:"Seine River Cruise Dinner",coords:[48.8589,2.3468],day:3,desc:"乘游船沿塞纳河航行，一边享用法式晚餐一边欣赏两岸古迹。",why:"夜游塞纳河，经过巴黎圣母院、卢浮宫、埃菲尔铁塔等标志性建筑。",reservation:"需要预约",price:"70-130€/人（依套餐）",reserveUrl:"",advanceBooking:"建议提前2-3周",time:"18:00",category:"体验",type:"体验"},
-  "d4_1":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:4,desc:"世界重要博物馆，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。",why:"新版 Excel 改为9月28日上午参观，而不是抵达当天夜场。",reservation:"必须预约时段；Paris Museum Pass 持有人预约免费",price:"32€（非欧洲经济区游客）；4日博物馆通票已包含",reserveUrl:"https://ticket.louvre.fr/en",advanceBooking:"9月28日时段现已开放，立即预约09:00",time:"09:00",category:"博物馆",closed:"周二闭馆",website:"https://www.louvre.fr",reserveChannels:"Paris Museum Pass 官方明确列为必须预约；只有提前锁定时段才能保证通票入场"},
+  "d3_1":{name:"凡尔赛宫",nameEn:"Château de Versailles",coords:[48.8049,2.1204],day:3,desc:"路易十四打造的欧洲顶级皇家宫殿。",why:"final 表要求8:40在Saint-Michel–Notre-Dame集合，约10:00抵达；12:15已订午餐。",reservation:"已预约",price:"32€",reserveUrl:"https://www.chateauversailles.fr",advanceBooking:"已预约，核对入场时间",time:"10:00",category:"宫殿",transport:"8:40集合乘RER C至 Versailles Château Rive Gauche",closed:"周一闭馆"},
+  "d3_3":{name:"奥赛博物馆（当前没票）",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:3,desc:"final 表计划14:30参观，但同时注明当前没票。",why:"13:15离开Vous Restaurant，乘约13:40的RER C前往；只有补到票才执行。",reservation:"需要预约，当前没票",price:"16€",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"继续检查退票或增放票",time:"14:30 · 当前没票",category:"博物馆",unavailable:true},
+  "d3_2":{name:"塞纳河游船晚餐",nameEn:"Bateaux Parisiens Dinner Cruise",coords:[48.8600,2.2930],day:3,desc:"携程已订BP船中间位置，5位。",why:"圣母院结束后前往登船点。",reservation:"已预订，核对码头和登船时间",price:"以订单为准",reserveUrl:"",advanceBooking:"已预订",time:"20:00",category:"体验",type:"体验"},
+  "d4_1":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:4,desc:"世界重要博物馆，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。",why:"final 表确认10:00参观。",reservation:"已预约",price:"32€（非欧洲经济区游客）；通票可用",reserveUrl:"https://ticket.louvre.fr/en",advanceBooking:"已预约10:00",time:"10:00",category:"博物馆",closed:"周二闭馆"},
   "d4_2":{name:"杜乐丽花园",nameEn:"Jardin des Tuileries",coords:[48.8637,2.3260],day:4,desc:"连接卢浮宫和协和广场的法式花园。",why:"卢浮宫结束后向西步行前往橘园和香榭丽舍。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:30",category:"公园"},
   "d4_3":{name:"大皇宫 / 小皇宫（可选）",nameEn:"Grand Palais / Petit Palais",coords:[48.8661,2.3130],day:4,desc:"香榭丽舍附近的玻璃穹顶展馆和美术馆。",why:"新版 Excel 明确列为可选项，只有当天进度允许时加入。",reservation:"视具体展览决定",price:"外观免费；展览另购票",reserveUrl:"https://www.grandpalais.fr",advanceBooking:"如决定看特展再预约",time:"13:30",category:"可选景点",type:"行程"},
   "d4_4":{name:"橘园美术馆",nameEn:"Musée de l'Orangerie",coords:[48.8636,2.3220],day:4,desc:"以莫奈8幅巨型《睡莲》全景壁画闻名。",why:"16:30入场，安排约1小时参观，位于杜乐丽花园西端。",reservation:"持Paris Museum Pass仍须预约时段",price:"网购12.5€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orangerie.fr",advanceBooking:"官网开放后尽早预约",time:"16:30",category:"博物馆",closed:"周二闭馆"},
-  "d4_5":{name:"香榭丽舍大街",nameEn:"Avenue des Champs-Élysées",coords:[48.8698,2.3075],day:4,desc:"从协和广场通往凯旋门的巴黎中轴线大道。",why:"橘园结束后一路向西前往凯旋门。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:45",category:"地标"},
+  "d4_5":{name:"香榭丽舍大街",nameEn:"Avenue des Champs-Élysées",coords:[48.8698,2.3075],day:4,desc:"从协和广场通往凯旋门的巴黎中轴线大道。",why:"橘园结束后短时间散步，再前往18:00晚餐。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:35",category:"地标"},
+  "d4_10":{name:"疯马秀",nameEn:"Crazy Horse Paris",coords:[48.8659,2.3011],day:4,desc:"final 表安排20:00演出。",why:"18:00在La Maison de l'Aubrac晚餐后步行约10分钟；好座位需提前排队。",reservation:"已安排，必须核对演出票",price:"以订单为准",reserveUrl:"https://www.lecrazyhorseparis.com",advanceBooking:"提前到场排队",time:"20:00",category:"演出",type:"体验"},
   "d4_6":{name:"凯旋门",nameEn:"Arc de Triomphe",coords:[48.8738,2.2950],day:4,desc:"可登顶俯瞰巴黎12条放射状大道。",why:"新版行程把凯旋门放在9月28日巴黎行程末段。",reservation:"普通个人无需预约；可提前购票",price:"9月28日票价22€；4日博物馆通票已包含",reserveUrl:"https://tickets.monuments-nationaux.fr/en-GB/families?site=2032863779450400197",advanceBooking:"无需预约；为减少现场排队可提前购票",time:"19:00",category:"地标",reserveChannels:"官网仅要求7人以上团队至少提前4周预约；个人和通票持有人无需预约时段"},
   "d4_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:4,desc:"从大草坪仰望埃菲尔铁塔的最佳位置。",why:"傍晚在草坪上看铁塔灯光秀，每小时整点闪烁5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:00",category:"地标"},
   "d4_8":{name:"法国国民议会（波旁宫）",nameEn:"Assemblée nationale · Palais Bourbon",coords:[48.8600,2.3188],day:4,desc:"法国国民议会（下议院）所在地。现已开放个人免费预约，可选导览或语音导览，参观约1小时30分。",why:"不在开会时可参观庆典画廊、会议厅、图书馆等；开会时可能旁听辩论。一次最多登记5人，只有收到确认邮件才代表获准入内。",reservation:"必须提前免费预约并等待确认",price:"免费",reserveUrl:"https://www.assemblee-nationale.fr/dyn/visite/visites-individuelles",advanceBooking:"现在开始关注9月28日时段",time:"—",category:"见学/机构",type:"见学",transport:"按电子票注明入口准时抵达；14岁以上携带有效护照原件",website:"https://www.assemblee-nationale.fr",reserveChannels:"在线预约需填写每位访客姓名、出生日期与出生地；参观可能因议程或安保临时调整",studyTour:true},
   "d4_9":{name:"法国参议院（卢森堡宫）",nameEn:"Sénat · Palais du Luxembourg",coords:[48.8555,2.3370],day:4,desc:"法国参议院（上议院）所在地，位于卢森堡花园内。普通个人周六参观目前暂停，常规入内通常需参议员邀请或担保团体。",why:"你们到访期间建议参观外观和免费开放的卢森堡花园，不应把进入宫殿列为确定项目。2026年欧洲遗产日开放在9月19–20日，早于抵达日期。",reservation:"普通个人不能直接预约；花园无需预约",price:"宫殿常规不对个人售票；花园免费",reserveUrl:"https://www.senat.fr/le-senat-et-vous/visiter-le-senat.html",advanceBooking:"如必须入内，需联系参议员争取邀请",time:"—",category:"见学/机构",type:"见学",transport:"地铁10号线 Odéon / RER B Luxembourg 站",closed:"个人周六参观暂停；团体依议事安排",website:"https://www.senat.fr",reserveChannels:"参议员担保团体通常安排周一、周五或周六；欧洲遗产日9月19–20日无需预约但不在本次行程内",studyTour:true},
-  "d5_1":{name:"香波尔城堡",nameEn:"Château de Chambord",coords:[47.6161,1.5170],day:5,desc:"卢瓦尔河谷最大、最标志性的文艺复兴城堡。",why:"达芬奇双螺旋楼梯是灵魂；顶层露台360°俯瞰护城河与狩猎森林。",reservation:"无需预约",price:"15€（博物馆通票不含）",reserveUrl:"https://www.chambord.org",advanceBooking:"提前购票即可",time:"10:00",category:"城堡"},
-  "d5_2":{name:"波尔多",nameEn:"Bordeaux",coords:[44.8378,-0.5792],day:5,desc:"世界葡萄酒之都，联合国世界文化遗产城市。",why:"18世纪建筑群保存完好，水镜广场是网红打卡点。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"4h",dist:"560km",depart:"13:00"},
+  "d5_1":{name:"香波尔城堡",nameEn:"Château de Chambord",coords:[47.6161,1.5170],day:5,desc:"卢瓦尔河谷最大、最标志性的文艺复兴城堡。",why:"10:30从巴黎出发，约12:30抵达，游览约2小时，15:00前往波尔多。",reservation:"无需预约，可提前购票",price:"15€（博物馆通票不含）",reserveUrl:"https://www.chambord.org",advanceBooking:"提前购票即可",time:"12:30",category:"城堡"},
+  "d5_2":{name:"抵达波尔多",nameEn:"Bordeaux",coords:[44.856,-0.579],day:5,desc:"预计19:00左右抵达波尔多住宿。",why:"15:00从香波尔出发，表内估算4小时；19:45晚餐衔接很紧。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"约19:00",category:"城市",type:"行程",driveTime:"4h",depart:"15:00"},
   "d6_1":{name:"滴金酒庄",nameEn:"Château d’Yquem",coords:[44.5468,-0.3390],day:6,desc:"苏玳产区最具代表性的一级特等酒庄，以贵腐甜白葡萄酒闻名。",why:"0811 表格明确安排10:00抵达，参观约90分钟；从波尔多住宿出发需预留约1小时车程。",reservation:"已列入日程，须确认酒庄预约",price:"约100€ / 人",reserveUrl:"https://www.yquem.fr",advanceBooking:"尽快核对预约确认与到访名单",time:"10:00",category:"酒庄",type:"体验"},
-  "d6_2":{name:"波尔多葡萄酒城",nameEn:"La Cité du Vin",coords:[44.8629,-0.5498],day:6,desc:"沉浸式葡萄酒主题文化体验馆，造型如醒酒器。",why:"0811 表格安排酒庄之后返回波尔多参观，场馆18:00闭馆。",reservation:"可提前购票",price:"27€（表格注明含品酒）",reserveUrl:"https://www.laciteduvin.com/en/",advanceBooking:"建议提前购票并核对末次入场",time:"14:30",category:"博物馆",closed:"周一闭馆"},
-  "d6_3":{name:"老托特酒庄",nameEn:"Château TrotteVieille",coords:[44.89477,-0.14503],day:6,desc:"位于圣埃米利永的一级特等酒庄（Premier Grand Cru Classé），出产 Château TrotteVieille 与 Dame de TrotteVieille。",why:"已明确为9月30日晚上的指定酒庄；从波尔多市区前往约需预留驾车时间，结束后返回波尔多住宿。",reservation:"指定酒庄 · 参观须确认预约",price:"以已订参观或品酒方案为准",reserveUrl:"https://www.trottevieille.com/en/contact-3/",advanceBooking:"请确认晚间到访时间及5人名单",time:"晚上 · 时间待确认",category:"酒庄",type:"体验",transport:"1 Trotte-Vieille, 33330 Saint-Émilion"},
+  "d6_2":{name:"波尔多葡萄酒城",nameEn:"La Cité du Vin",coords:[44.8629,-0.5498],day:6,desc:"沉浸式葡萄酒主题文化体验馆。",why:"老托特结束后返回波尔多，最迟需在18:00闭馆前完成参观。",reservation:"建议提前购票",price:"27€（含品酒）",reserveUrl:"https://www.laciteduvin.com/en/",advanceBooking:"建议提前购票",time:"14:00",category:"博物馆",closed:"18:00闭馆"},
+  "d6_3":{name:"老托特酒庄",nameEn:"Château TrotteVieille",coords:[44.89477,-0.14503],day:6,desc:"圣埃米利永一级特等酒庄。",why:"final 表确认上午10:00抵达，参观90分钟，5人总价170€。",reservation:"已安排，确认5人名单",price:"170€ / 5人",reserveUrl:"https://www.trottevieille.com/en/contact-3/",advanceBooking:"核对确认邮件",time:"10:00",category:"酒庄",type:"体验"},
   "d7_1":{name:"空客工厂（开放日冲突）",nameEn:"Airbus Factory",coords:[43.5800,1.3690],day:7,desc:"空客图卢兹装配工厂由Manatour组织预约导览；非学校假期仅周三、周六安排个人参观。",why:"当前安排为10月1日周四，官方常规日历无场次，不能按原计划入内。若坚持参观，只能考虑9月30日周三（需牺牲或重排波尔多酒庄）或10月3日周六（需重排南法至里昂路线）。",reservation:"当前日期不可预约；改期后必须提前在线预约",price:"成人18€（以结算页为准）",reserveUrl:"https://www.manatour.fr/airbus/",advanceBooking:"不可预约10月1日；改期后至少提前2个完整工作日提交资料",time:"原定10:00 · 开放日冲突",category:"工业",website:"https://www.manatour.fr/airbus/",closed:"周四不开放（非学校假期仅周三、周六）",unavailable:true},
   "d7_2":{name:"协和博物馆",nameEn:"Concorde Museum / Aeroscopia",coords:[43.5770,1.3710],day:7,desc:"与空客工厂相邻的航空博物馆。",why:"可登机体验协和式超音速客机内部。",reservation:"无需预约",price:"含在参观套票中",reserveUrl:"",advanceBooking:"当天即可",time:"13:00",category:"博物馆"},
   "d7_3":{name:"图卢兹",nameEn:"Toulouse",coords:[43.6045,1.4440],day:7,desc:"法国第四大城市，'玫瑰之城'（红砖建筑）。",why:"圣塞尔南教堂是世界遗产，还有空中客车总部、欧洲航天局。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"16:00",category:"城市",type:"行程",driveTime:"2h40",dist:"240km",depart:"13:00"},
@@ -1135,30 +1138,49 @@ const POI_DATA = {
   "d9_1":{name:"富维耶圣母院",nameEn:"Basilique Notre-Dame de Fourvière",coords:[45.7623,4.8226],day:9,desc:"俯瞰里昂全城的山顶教堂，是当天步行线的起点。",why:"0811 表格把富维耶山、高卢罗马遗址与里昂老城安排在上午。",reservation:"教堂通常无需预约",price:"教堂免费",reserveUrl:"https://www.fourviere.org",advanceBooking:"无需",time:"09:00",category:"教堂"},
   "d9_2":{name:"高卢罗马博物馆与剧场遗址",nameEn:"Lugdunum Musée et Théâtres romains",coords:[45.7603,4.8197],day:9,desc:"展示古罗马时期里昂历史，旁边保存两座高卢罗马剧场遗址。",why:"与富维耶圣母院相邻，可在上午连续参观。",reservation:"可现场购票",price:"博物馆约7€；遗址免费",reserveUrl:"https://lugdunum.grandlyon.com",advanceBooking:"无需预约",time:"10:15",category:"博物馆"},
   "d9_3":{name:"里昂主座教堂与老城",nameEn:"Cathédrale Saint-Jean-Baptiste · Vieux Lyon",coords:[45.7606,4.8274],day:9,desc:"里昂老城核心的哥特式主教座堂与文艺复兴街区。",why:"从富维耶下山后顺路进入老城，衔接表格指定午餐。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:00",category:"街区"},
-  "d9_4":{name:"L'Auberge des Canuts（午餐）",nameEn:"L'Auberge des Canuts",coords:[45.7620,4.8271],day:9,desc:"里昂传统 Bouchon 餐厅。",why:"0811 表格明确指定的午餐，适合品尝 Quenelle、里昂沙拉和粉红果仁甜点。",reservation:"建议提前预约",price:"约30–50€ / 人",reserveUrl:"https://www.google.com/maps/search/?api=1&query=L%27Auberge%20des%20Canuts%20Lyon",advanceBooking:"周六午餐建议预约",time:"13:00",category:"餐饮",type:"餐饮"},
+  "d9_4":{name:"L'Auberge des Canuts（已预订）",nameEn:"L'Auberge des Canuts",coords:[45.7620,4.8271],day:9,desc:"里昂传统 Bouchon 餐厅。",why:"final 表确认12:00午餐。",reservation:"已预订12:00",price:"约30–50€ / 人",reserveUrl:"https://www.google.com/maps/search/?api=1&query=L%27Auberge%20des%20Canuts%20Lyon",advanceBooking:"已预订",time:"12:00",category:"餐饮",type:"餐饮"},
   "d9_5":{name:"里昂美术馆",nameEn:"Musée des Beaux-Arts de Lyon",coords:[45.7672,4.8336],day:9,desc:"位于沃土广场旁的法国重要综合美术馆。",why:"0811 表格安排为下午主景点。",reservation:"可提前购票",price:"常设展约8€",reserveUrl:"https://www.mba-lyon.fr",advanceBooking:"建议核对周六开放时间",time:"15:00",category:"博物馆"},
   "d9_6":{name:"里昂旧主宫医院",nameEn:"Grand Hôtel-Dieu de Lyon",coords:[45.7584,4.8361],day:9,desc:"由历史医院改造的建筑群，拥有标志性的白色穹顶与庭院。",why:"0811 表格把这里作为当天最后一站；建筑公共区域可进入散步。",reservation:"公共区域无需预约",price:"免费；个别展览另计",reserveUrl:"https://www.grand-hotel-dieu.com",advanceBooking:"无需",time:"17:30",category:"历史建筑"},
-  "d10_1":{name:"汇流博物馆",nameEn:"Musée des Confluences",coords:[45.7331,4.8180],day:10,desc:"位于罗讷河与索恩河交汇处的现代建筑与人类学、自然史博物馆。",why:"0811 表格明确安排周日上午参观，并建议到四楼看两江汇流景色。",reservation:"可提前购票",price:"约12€",reserveUrl:"https://www.museedesconfluences.fr",advanceBooking:"建议提前购票",time:"10:00",category:"博物馆"},
+  "d10_1":{name:"汇流博物馆",nameEn:"Musée des Confluences",coords:[45.7331,4.8180],day:9,desc:"位于罗讷河与索恩河交汇处的现代建筑与人类学、自然史博物馆。",why:"final 表将原10月4日内容并入10月3日里昂一日行程。",reservation:"可提前购票",price:"约12€",reserveUrl:"https://www.museedesconfluences.fr",advanceBooking:"建议提前购票",time:"17:00",category:"博物馆"},
   "d10_2":{name:"博若莱酒区（可选停靠）",nameEn:"Beaujolais Wine Region",coords:[46.0000,4.7000],day:10,desc:"从里昂向北进入的葡萄酒产区，可参观由19世纪丝绸厂改建的酒窖。",why:"0811 表格把品酒作为前往日内瓦途中可加入的体验；若预约时段影响入住则应跳过。",reservation:"需要预约",price:"品酒费用约5–20€",reserveUrl:"",advanceBooking:"确定离开里昂时间后再预约",time:"14:00",category:"可选体验",type:"行程"},
   "d10_3":{name:"日内瓦",nameEn:"Geneva",coords:[46.2044,6.1432],day:10,desc:"国际化大都市，联合国欧洲总部所在地。",why:"日内瓦湖大喷泉、花钟、老城区。200多个国际组织汇集地。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:00",category:"城市",type:"行程",driveTime:"2h",dist:"150km",depart:"15:00"},
   "d11_1":{name:"百达翡丽博物馆",nameEn:"Patek Philippe Museum",coords:[46.2002,6.1447],day:11,desc:"全球最重要钟表博物馆之一。",why:"500年2000多件钟表珍品，钟表爱好者的朝圣地。",reservation:"需要预约",price:"约10-15瑞郎",reserveUrl:"https://www.patek.com/museum",advanceBooking:"建议提前1-2周预约",time:"10:00",category:"博物馆",closed:"周日、周一闭馆"},
   "d11_2":{name:"联合国日内瓦办事处",nameEn:"United Nations Geneva",coords:[46.2263,6.1393],day:11,desc:"联合国欧洲总部，又称万国宫。",why:"参观国际外交真实发生场所。提供英文/法文导览团（约1h），可参观会议厅、各国赠礼及艺术品。如当天有会议，可申请旁听（需提前确认议程）。",reservation:"需要预约",price:"约15瑞郎",reserveUrl:"https://www.ungeneva.org",advanceBooking:"建议提前2周预约",time:"11:30",category:"机构",website:"https://www.ungeneva.org",reserveChannels:"官网在线预约导览；如需旁听理事会/委员会会议，需当天凭护照在入口处申请旁听席位（先到先得）"},
   "d11_3":{name:"欧洲核子研究中心(CERN)",nameEn:"CERN",coords:[46.2333,6.0492],day:11,desc:"全球最大的粒子物理学实验室。",why:"参观大型强子对撞机(LHC)，了解宇宙起源奥秘。免费参观需预约。",reservation:"需要预约",price:"免费",reserveUrl:"https://visit.cern",advanceBooking:"建议提前2-4周预约导览",time:"14:00",category:"科技",website:"https://visit.cern",reserveChannels:"官网 visit.cern 在线预约导览（免费）；也可自行参观展览区（无需预约）"},
+  "d2_8":{name:"凯旋门登顶看日落",nameEn:"Arc de Triomphe",coords:[48.8738,2.2950],day:2,desc:"final 表安排在9月26日晚登顶看日落。",why:"预计日落观赏19:05–19:40，之后前往20:15晚餐。",reservation:"个人无需预约，可提前购票",price:"22€；通票可用",reserveUrl:"https://tickets.monuments-nationaux.fr",advanceBooking:"可提前购票减少排队",time:"18:45",category:"地标"},
+  "d1_meal":{name:"Ober Mamma（已预订）",nameEn:"Ober Mamma",coords:[48.8531,2.3753],day:1,desc:"final 表指定的第一晚意大利餐厅。",why:"民宿入住后前往。",reservation:"已预订18:45",price:"约25–40€ / 人",reserveUrl:"https://www.bigmammagroup.com/en/trattorias/ober-mamma",advanceBooking:"已预订",time:"18:45",category:"餐饮",type:"餐饮"},
+  "d2_lunch":{name:"L’Escargot Montorgueil（已预订）",nameEn:"L’Escargot Montorgueil",coords:[48.8647,2.3461],day:2,desc:"百年蜗牛老店。",why:"12:30午餐，要求所有人到齐才安排座位。",reservation:"已预订12:30",price:"约40–65€ / 人",reserveUrl:"https://www.escargotmontorgueil.com",advanceBooking:"已预订",time:"12:30",category:"餐饮",type:"餐饮"},
+  "d2_dinner":{name:"Flora Danica（已预订）",nameEn:"Flora Danica",coords:[48.8700,2.3033],day:2,desc:"香榭丽舍附近丹麦餐厅。",why:"凯旋门日落后前往。",reservation:"已预订20:15",price:"约45–70€ / 人",reserveUrl:"https://flora-danica.fr",advanceBooking:"已预订",time:"20:15",category:"餐饮",type:"餐饮"},
+  "d3_lunch":{name:"Vous Restaurant（已预订）",nameEn:"Vous Restaurant",coords:[48.8015,2.1259],day:3,desc:"凡尔赛宫附近现代法餐。",why:"12:15入座，最迟13:15离开赶RER C。",reservation:"已预订12:15",price:"约40–70€ / 人",reserveUrl:"https://www.vous.restaurant",advanceBooking:"已预订",time:"12:15",category:"餐饮",type:"餐饮"},
+  "d4_lunch":{name:"Café Marly（已预订）",nameEn:"Café Marly",coords:[48.8610,2.3370],day:4,desc:"卢浮宫金字塔景观餐厅。",why:"卢浮宫之后14:00午餐。",reservation:"已预订14:00",price:"约55–90€ / 人",reserveUrl:"https://cafe-marly.com",advanceBooking:"已预订",time:"14:00",category:"餐饮",type:"餐饮"},
+  "d4_dinner":{name:"La Maison de l’Aubrac（已预订）",nameEn:"La Maison de l’Aubrac",coords:[48.8705,2.3063],day:4,desc:"奥布拉克牛肉餐厅。",why:"18:00晚餐，步行约10分钟到疯马秀。",reservation:"已预订18:00",price:"约45–80€ / 人",reserveUrl:"https://www.maison-aubrac.com",advanceBooking:"已预订",time:"18:00",category:"餐饮",type:"餐饮"},
+  "d5_brunch":{name:"Immersion Vendôme（已预订）",nameEn:"Immersion Vendôme",coords:[48.8686,2.3303],day:5,desc:"取车点附近早午餐。",why:"9:00抵达，步行约3分钟到10:00取车点。",reservation:"已预订09:00",price:"约20–35€ / 人",reserveUrl:"",advanceBooking:"已预订",time:"09:00",category:"餐饮",type:"餐饮"},
+  "d5_dinner":{name:"Le Mirabelle（已预订）",nameEn:"Le Mirabelle",coords:[44.858,-0.574],day:5,desc:"波尔多住宿附近晚餐。",why:"19:45入座，但表内预计19:00抵达，停车和入住缓冲不足。",reservation:"已预订19:45",price:"约35–60€ / 人",reserveUrl:"",advanceBooking:"已预订，建议告知可能晚到",time:"19:45 · 衔接偏紧",category:"餐饮",type:"餐饮"},
+  "d7_lunch":{name:"Restaurant Le Bon Vivre（已预订）",nameEn:"Le Bon Vivre",coords:[43.6035,1.4445],day:7,desc:"图卢兹传统Cassoulet餐厅。",why:"Aeroscopia参观后进城午餐。",reservation:"已预订",price:"约30–50€ / 人",reserveUrl:"",advanceBooking:"已预订",time:"13:30",category:"餐饮",type:"餐饮"},
+  "d7_dinner":{name:"PY-R（已预订）",nameEn:"PY-R",coords:[43.6006,1.4484],day:7,desc:"图卢兹米其林二星餐厅。",why:"final 表指定晚餐。",reservation:"已预订19:30",price:"158€或188€ / 人",reserveUrl:"https://www.py-r.com",advanceBooking:"已预订",time:"19:30",category:"餐饮",type:"餐饮"},
+  "d9_dinner":{name:"Flair（已预订）",nameEn:"Flair Lyon",coords:[45.7567,4.8325],day:9,desc:"final 表指定里昂晚餐。",why:"全天里昂行程结束后用餐。",reservation:"已预订19:30",price:"以餐厅菜单为准",reserveUrl:"",advanceBooking:"已预订",time:"19:30",category:"餐饮",type:"餐饮"},
+  "d10_cern":{name:"CERN（已预约）",nameEn:"CERN",coords:[46.2333,6.0492],day:10,desc:"CERN科学门户和预约项目。",why:"final 表确认10月4日11:00，需从里昂很早出发并计算过境时间。",reservation:"已预约11:00",price:"免费",reserveUrl:"https://visit.cern",advanceBooking:"已预约",time:"11:00",category:"科技"},
+  "d10_patek":{name:"百达翡丽博物馆",nameEn:"Patek Philippe Museum",coords:[46.2002,6.1447],day:10,desc:"全球重要钟表博物馆之一。",why:"周一闭馆，final 表改到周日下午。",reservation:"建议提前购票",price:"约10 CHF",reserveUrl:"https://www.patek.com/museum",advanceBooking:"核对周日下午时段",time:"15:00",category:"博物馆"},
+  "d10_dinner":{name:"Les Armures（已预订）",nameEn:"Les Armures",coords:[46.2015,6.1472],day:10,desc:"日内瓦传统瑞士菜。",why:"已预订阿尔卑斯小木屋区域。",reservation:"已预订19:00",price:"约45–75 CHF / 人",reserveUrl:"https://www.hotel-les-armures.ch",advanceBooking:"已预订",time:"19:00",category:"餐饮",type:"餐饮"},
+  "d11_redcross":{name:"国际红十字与红新月博物馆（可选）",nameEn:"International Red Cross Museum",coords:[46.2272,6.1371],day:11,desc:"联合国对面的国际人道主义主题博物馆。",why:"final 表列为可选，只有联合国时段允许时加入。",reservation:"可提前购票",price:"15 CHF",reserveUrl:"https://redcrossmuseum.ch",advanceBooking:"确定联合国时段后再购票",time:"可选",category:"博物馆",type:"行程"},
+  "d11_jlc":{name:"积家工厂导览（可选）",nameEn:"Jaeger-LeCoultre Manufacture",coords:[46.6052,6.2316],day:11,desc:"汝拉山谷Le Sentier的公众工厂导览。",why:"距日内瓦约1小时车程，会占用至少半天，不适合与联合国、红十字会同日全部执行。",reservation:"必须官网预约",price:"约50–70 CHF",reserveUrl:"https://www.jaeger-lecoultre.com",advanceBooking:"先查10月5日是否有场次",time:"可选半天",category:"工厂见学",type:"行程"},
+  "d11_lunch":{name:"L’Aparté（已预订）",nameEn:"L’Aparté",coords:[46.2191,6.1138],day:11,desc:"final 表指定午餐。",why:"需根据联合国预约时段复核交通。",reservation:"已预订12:30",price:"69 CHF / 人",reserveUrl:"",advanceBooking:"已预订",time:"12:30",category:"餐饮",type:"餐饮"},
+  "d11_dinner":{name:"Parfums de Beyrouth",nameEn:"Parfums de Beyrouth",coords:[46.2115,6.1452],day:11,desc:"黎巴嫩餐厅。",why:"final 表指定晚餐。",reservation:"通常现场排队",price:"约20–35 CHF / 人",reserveUrl:"",advanceBooking:"无需预约，建议错峰",time:"19:00",category:"餐饮",type:"餐饮"},
   "d12_1":{name:"日内瓦湖 & 返程",nameEn:"Lake Geneva",coords:[46.2100,6.1600],day:12,desc:"西欧最大的湖泊。",why:"清晨湖滨漫步看大喷泉，远眺阿尔卑斯山，15:55返程。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"09:00",category:"自然"}
 };
 
 const ITINERARY = [
-  {day:1,date:"9月25日 (五)",title:"14:25抵达巴黎",summary:"QR39 14:25抵达戴高乐机场T1 → 入境取行李 → 前往民宿入住；Cafe Marly 21:30晚餐作为餐饮安排单独显示",stops:[]},
-  {day:2,date:"9月26日 (六)",title:"蒙马特与巴黎经典线",summary:"蒙马特高地 → 巴黎歌剧院 → 蓬皮杜外观 → 莎士比亚书店 → 先贤祠 → 战神广场夜景",stops:["d2_1","d2_2","d2_3","d2_5","d2_6","d2_7"]},
-  {day:3,date:"9月27日 (日)",title:"凡尔赛、圣母院与塞纳河",summary:"凡尔赛宫 → 下午巴黎圣母院 → 塞纳河游船晚餐",stops:["d3_1","d2_4","d3_2"]},
-  {day:4,date:"9月28日 (一)",title:"卢浮宫与香榭丽舍",summary:"上午卢浮宫 → 杜乐丽花园 → 大/小皇宫（可选）→ 橘园美术馆 → 香榭丽舍大街 → 凯旋门",stops:["d4_1","d4_2","d4_3","d4_4","d4_5","d4_6"]},
-  {day:5,date:"9月29日 (二)",title:"巴黎→波尔多",summary:"取车 → 香波尔城堡 → 驱车波尔多(4h)",stops:["d5_1","d5_2"]},
-  {day:6,date:"9月30日 (三)",title:"滴金酒庄、葡萄酒城与老托特",summary:"10:00滴金酒庄(约90min) → 下午波尔多葡萄酒城 → 晚上老托特酒庄 Château TrotteVieille → 返回波尔多住宿",stops:["d6_1","d6_2","d6_3"]},
-  {day:7,date:"10月1日 (四)",title:"图卢兹航空日（工厂冲突）",summary:"波尔多→图卢兹(2h40) → 空客工厂周四无场次 → Aeroscopia航空博物馆 → 图卢兹市区",stops:["d7_1","d7_2","d7_3"]},
+  {day:1,date:"9月25日 (五)",title:"抵达巴黎",summary:"final表保留上午航空博物馆（与14:25落地冲突）→ 戴高乐机场落地 → 民宿入住 → 18:45 Ober Mamma",stops:["d1_1","d1_meal"]},
+  {day:2,date:"9月26日 (六)",title:"蒙马特、歌剧院与凯旋门",summary:"蒙马特 → 12:30 L’Escargot → 15:00歌剧院彩排 → 莎士比亚书店 → 先贤祠 → 凯旋门日落 → 20:15 Flora Danica",stops:["d2_1","d2_lunch","d2_2","d2_5","d2_6","d2_8","d2_dinner"]},
+  {day:3,date:"9月27日 (日)",title:"凡尔赛、奥赛与圣母院",summary:"8:40集合乘RER C → 10:00凡尔赛 → 12:15 Vous → 14:30奥赛（当前没票）→ 17:30圣母院 → 20:00塞纳河游船晚餐",stops:["d3_1","d3_lunch","d3_3","d2_4","d3_2"]},
+  {day:4,date:"9月28日 (一)",title:"卢浮宫、橘园与疯马秀",summary:"10:00卢浮宫 → 14:00 Café Marly → 杜乐丽花园 → 16:30橘园 → 香榭丽舍 → 18:00 La Maison de l’Aubrac → 20:00疯马秀",stops:["d4_1","d4_lunch","d4_2","d4_4","d4_5","d4_dinner","d4_10"]},
+  {day:5,date:"9月29日 (二)",title:"巴黎→香波尔→波尔多",summary:"9:00早午餐 → 10:00取车 → 10:30出发 → 12:30香波尔 → 15:00前往波尔多 → 19:45 Le Mirabelle",stops:["d5_brunch","d5_1","d5_2","d5_dinner"]},
+  {day:6,date:"9月30日 (三)",title:"老托特与葡萄酒城",summary:"10:00老托特酒庄（90分钟）→ 下午波尔多葡萄酒城 → 晚餐两家预订需二选一",stops:["d6_3","d6_2"]},
+  {day:7,date:"10月1日 (四)",title:"图卢兹航空与美食",summary:"7:00波尔多出发 → 10:00左右Aeroscopia协和博物馆 → Le Bon Vivre午餐 → 图卢兹市区 → 19:30 PY-R",stops:["d7_2","d7_lunch","d7_3","d7_dinner"]},
   {day:8,date:"10月2日 (五)",title:"南法古城→里昂",summary:"图卢兹→卡尔卡松城堡(2h) → 尼姆竞技场(2h10) → 嘉德水道桥(35min) → 里昂(2h40，约20:00抵达)",stops:["d8_1","d8_2","d8_3","d8_4"]},
-  {day:9,date:"10月3日 (六)",title:"里昂历史与美术",summary:"富维耶圣母院 → 高卢罗马博物馆与剧场 → 里昂老城 → L'Auberge des Canuts午餐 → 里昂美术馆 → 旧主宫医院",stops:["d9_1","d9_2","d9_3","d9_4","d9_5","d9_6"]},
-  {day:10,date:"10月4日 (日)",title:"里昂汇流→日内瓦",summary:"上午汇流博物馆 → 里昂午餐 → 博若莱酒区（可选）→ 下午前往日内瓦民宿",stops:["d10_1","d10_2","d10_3"]},
-  {day:11,date:"10月5日 (一)",title:"日内瓦文化日",summary:"百达翡丽博物馆 → 联合国 → CERN粒子加速器；Nico、Bonnie 下午返程",stops:["d11_1","d11_2","d11_3"]},
+  {day:9,date:"10月3日 (六)",title:"里昂历史、美术与汇流",summary:"富维耶 → 高卢罗马遗址 → 老城 → 12:00 L'Auberge des Canuts → 主座教堂/美术馆/旧主宫医院 → 汇流博物馆 → 19:30 Flair",stops:["d9_1","d9_2","d9_3","d9_4","d9_5","d9_6","d10_1","d9_dinner"]},
+  {day:10,date:"10月4日 (日)",title:"里昂→日内瓦 · CERN与钟表",summary:"清晨里昂出发并过境 → 11:00 CERN（已预约）→ 下午百达翡丽博物馆 → 19:00 Les Armures",stops:["d10_cern","d10_patek","d10_dinner"]},
+  {day:11,date:"10月5日 (一)",title:"联合国与日内瓦",summary:"联合国导览 → 国际红十字会博物馆（可选）→ 12:30 L’Aparté → 日内瓦半天 → 19:00 Parfums de Beyrouth；积家工厂为需另留半天的备选",stops:["d11_2","d11_redcross","d11_lunch","d11_jlc","d11_dinner"]},
   {day:12,date:"10月6日 (二)",title:"日内瓦返程",summary:"日内瓦湖晨间漫步 → 15:55返程",stops:["d12_1"]}
 ];
 
@@ -1174,7 +1196,7 @@ const POI_EXTRA = {
   "d2_1":{hours:"圣心堂 6:00–22:30；蒙马特博物馆约10:00–19:00",duration:"3.5–4 小时",address:"Montmartre, 75018 Paris",tips:"按 Rue Lamarck—葡萄园—圣心堂—蒙马特博物馆—画家广场顺序步行。"},
   "d2_2":{hours:"自助参观时段随演出安排变化",duration:"1–1.5 小时",address:"Place de l'Opéra, 75009 Paris",tips:"先核对当天观众厅是否开放；参观票不包含演出。"},
   "d2_3":{hours:"主馆改造关闭",duration:"外观约20–30分钟",address:"Place Georges Pompidou, 75004 Paris",tips:"不要为主馆购买旧票；只看外观或临时场地项目。"},
-  "d2_4":{hours:"9月27日下午；预约时段滚动放出",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"本团按必须预约执行：9月25日15:30开始检查48小时窗口；从凡尔赛返回后直接前往，必须控制前序参观时间。"},
+  "d2_4":{hours:"9月27日恢复通常开放；预约时段滚动放出",duration:"1–1.5 小时",address:"6 Parvis Notre-Dame, 75004 Paris",tips:"final表计划17:30；9月24日起检查48小时窗口。教皇9月25日17:15到访，主教堂9月27日恢复通常开放。"},
   "d2_5":{hours:"通常每日开放，可能排队",duration:"约30分钟",address:"37 Rue de la Bûcherie, 75005 Paris",tips:"店内通常禁止拍照，门口高峰时段可能排队。"},
   "d2_6":{hours:"通常10:00–18:00，最后入场提前",duration:"1–1.5 小时",address:"Place du Panthéon, 75005 Paris",tips:"新版表要求注意18:00闭馆，前序景点不要拖延。"},
   "d2_7":{hours:"广场全天开放",duration:"约1小时",address:"Champ de Mars, 75007 Paris",tips:"等整点灯光闪烁约5分钟；夜间注意随身物品。"},
@@ -1188,7 +1210,7 @@ const POI_EXTRA = {
   "d5_1":{hours:"每日 9:00–18:00（旺季至 17:00）",duration:"2–3 小时",address:"Château de Chambord, 41250 Chambord",tips:"达芬奇双螺旋楼梯与屋顶露台是精华；园区很大，留足停车步行时间。"},
   "d6_1":{hours:"仅按确认的预约时段接待",duration:"约90分钟",address:"Sauternes, Gironde",tips:"10:00到达；请提前核对酒庄确认邮件、访客名单和驾车时间。"},
   "d6_2":{hours:"通常10:00–18:00，末次入场提前",duration:"2–3小时",address:"134 Quai de Bacalan, 33300 Bordeaux",tips:"从滴金酒庄返回后参观；表格注明门票含品酒，购票时以官网套餐为准。"},
-  "d6_3":{hours:"仅按确认的预约时间接待",duration:"以预约方案为准",address:"1 Trotte-Vieille, 33330 Saint-Émilion",tips:"晚间到访前确认酒庄是否按预约开放；不要只依赖普通公众开放时间。结束后仍需驾车返回波尔多住宿。"},
+  "d6_3":{hours:"仅按确认的预约时间接待",duration:"约90分钟",address:"1 Trotte-Vieille, 33330 Saint-Émilion",tips:"final表安排10:00抵达，5人总价170€；提前核对确认邮件和访客名单。"},
   "d7_1":{hours:"非学校假期仅周三、周六；学校假期视排期周一至周六",duration:"导览约1.5小时，须提前30分钟核验身份",address:"Aeroscopia, Allée André Turcat, 31700 Blagnac",tips:"10月1日周四不可执行。非欧盟访客必须携带护照原件；迟到不退款、不改期。"},
   "d8_1":{hours:"城堡免费进入；伯爵城堡 10:00–18:00",duration:"2–3 小时",address:"Carcassonne, 11000",tips:"52 座塔楼可登；城内石板路滑，穿舒适鞋。"},
   "d8_2":{hours:"每日 9:00–19:00（冬季至 17:00）",duration:"约 2 小时",address:"Arènes de Nîmes, 1 Pl. des Arènes, 30000 Nîmes",tips:"新版行程安排在卡尔卡松之后；停车与进场要计入紧凑时间。"},
@@ -1199,7 +1221,7 @@ const POI_EXTRA = {
   "d9_4":{hours:"以餐厅周六午餐时段为准",duration:"1.5小时",address:"里昂老城 · Place Saint-Jean 附近",tips:"这是0811表格指定餐厅，优先确认5人座位与菜单。"},
   "d9_5":{hours:"周六通常10:30–18:00",duration:"1.5–2小时",address:"20 Place des Terreaux, 69001 Lyon",tips:"下午时间有限，建议提前选定重点展厅。"},
   "d9_6":{hours:"公共庭院与商业区按当天开放",duration:"45–60分钟",address:"1 Place de l'Hôpital, 69002 Lyon",tips:"适合作为当天收尾散步，不涉及门票的公共区域无需预约。"},
-  "d10_1":{hours:"周日通常10:30–18:30",duration:"2–3小时",address:"86 Quai Perrache, 69002 Lyon",tips:"四楼可看罗讷河与索恩河汇流；参观后直接从城市南端上路较顺。"},
+  "d10_1":{hours:"周六开放时间以官网为准",duration:"2–3小时",address:"86 Quai Perrache, 69002 Lyon",tips:"final表将该项目移至10月3日；当天景点很多，时间不足时优先删除这一项。"},
   "d11_1":{hours:"周二–周五 11:00–18:00；周六 10:00–18:00（周日周一闭馆）",duration:"1.5–2 小时",address:"Rue des Vieux-Grenadiers 7, 1208 Genève",tips:"钟表迷朝圣；珍藏品需预约，官网购票。"},
   "d11_2":{hours:"导览团 工作日 10:30 / 14:30（需预约）",duration:"1–1.5 小时",address:"Palais des Nations, 14 Av. de la Paix, Genève",tips:"带护照；如逢会议可入口申请旁听席位（先到先得）。"},
   "d11_3":{hours:"导览团需预约；展览区免费无需约",duration:"2–3 小时",address:"CERN, 1211 Genève",tips:"Globe of Science 展览免费；导览需提前数周预约。"},
@@ -1312,7 +1334,7 @@ const EVENT_CANDIDATES = [
     id:"ev_bachata",
     name:"日内瓦Bachata舞蹈节",
     nameEn:"Bachata Geneva Festival – The Festival of Nations",
-    city:"日内瓦", day:11,
+    city:"日内瓦", day:10,
     coords:[46.2320,6.1090],
     dateText:"10月8日 – 12日",
     dateStart:"10/8", dateEnd:"10/12",
@@ -1504,7 +1526,19 @@ const EVENT_CANDIDATES = [
     price:"免费为主",
     website:"https://www.geneve.com/en/events/the-theater-festival",
     bookingUrl:"https://www.fetedutheatre.ch",
-    note:"官网已确认总展期，10月5–6日的具体逐场节目仍需临近出发时复查。"
+    note:"10月4日10:30–19:00；与CERN、百达翡丽和已订晚餐重叠，只适合临时替换。"
+  },
+  {
+    id:"ev_pope_mass",name:"教皇里奥十四世巴黎弥撒",nameEn:"Papal Mass at Place de la Concorde",city:"巴黎",day:2,coords:[48.8656,2.3212],dateText:"9月26日 15:00",dateStart:"9/26",dateEnd:"9/26",category:"大型活动/交通提醒",desc:"教皇里奥十四世在协和广场举行弥撒，同日17:45离开巴黎前往卢尔德。",why:"与15:00巴黎歌剧院彩排同时段，协和广场、歌剧院和香榭丽舍周边预计有安保管制与大量客流。",reservation:"不作为普通观光项目；以官方公众入场规则为准",inviteOnly:false,price:"未公布",website:"https://www.vatican.va/content/leo-xiv/en/travels/2026/documents/francia-25-28settembre2026.html",bookingUrl:"",note:"这是行程风险提示，不建议从歌剧院临时绕去。"
+  },
+  {
+    id:"ev_gardens",name:"巴黎花园节",nameEn:"Fête des Jardins",city:"巴黎",day:3,coords:[48.8538,2.3332],dateText:"9月26–27日 14:00–19:00",dateStart:"9/26",dateEnd:"9/27",category:"免费活动",desc:"巴黎各区花园开展园艺、植物和城市自然活动。",why:"9月27日途经左岸时可作为路过型备选，但当天凡尔赛、奥赛候补、圣母院和游船时间很紧。",reservation:"免费，多数无需预约",inviteOnly:false,price:"免费",website:"https://www.paris.fr/evenements/fete-des-jardins-le-6e-celebre-la-nature-en-ville-117826",bookingUrl:"",note:"只建议顺路短停，不应影响17:30圣母院。"
+  },
+  {
+    id:"ev_toulouse_concert",name:"图卢兹国家管弦乐团音乐会",nameEn:"Tarmo Peltokoski / Daniel Lozakovich",city:"图卢兹",day:7,coords:[43.5994,1.4540],dateText:"10月1日 20:00",dateStart:"10/1",dateEnd:"10/1",category:"音乐会",desc:"Halle aux Grains举行的大型交响音乐会，曲目包括Rautavaara、Vasks与Stravinski。",why:"日期与图卢兹住宿当晚完全重合，但和已预订19:30的PY-R冲突。",reservation:"需要购票",inviteOnly:false,price:"以官方选座页为准",website:"https://onct.toulouse.fr/agenda/",bookingUrl:"https://onct.toulouse.fr/agenda/",note:"只能与PY-R二选一，不作为默认新增行程。"
+  },
+  {
+    id:"ev_gymnastics",name:"法国国际体操赛",nameEn:"Internationaux de France de gymnastique",city:"巴黎",day:2,coords:[48.8386,2.3786],dateText:"9月26–27日",dateStart:"9/26",dateEnd:"9/27",category:"体育赛事",desc:"世界级体操选手在Accor Arena进行两天比赛。",why:"两天都与final表的巴黎重点行程重叠，若参加需腾出至少半天。",reservation:"需要购票",inviteOnly:false,price:"以官方票务为准",website:"https://www.paris.fr/pages/le-calendrier-2026-des-evenements-sportifs-a-paris-33319",bookingUrl:"",note:"信息已确认，但不建议硬塞入当前行程。"
   },
   {
     id:"ev_polars",
@@ -1600,6 +1634,29 @@ const RESTAURANTS = [
   {id:"rest_d12_bains",day:12,name:"Buvette des Bains des Pâquis",city:"日内瓦",coords:[46.2107,6.1524],type:"湖畔早餐 / 简餐",meal:"早餐",price:"约12–20 CHF / 人",specialties:"早餐套餐、咖啡、面包和湖景",near:"日内瓦湖晨间散步路线内",fit:"最后一天边看大喷泉边早餐，之后仍有充足时间整理行李。",reservation:"无需预约",website:"https://www.bains-des-paquis.ch/"}
 ];
 
+// final 工作表中的已定餐厅是唯一的正式餐饮清单；旧版本的 planned 标记先清除。
+RESTAURANTS.forEach(r => { r.planned = false; });
+RESTAURANTS.push(
+  {id:"final_ober",day:1,name:"Ober Mamma",city:"巴黎",coords:[48.8531,2.3753],type:"意大利菜",meal:"晚餐 · 18:45",price:"约25–40€ / 人",averagePrice:"平均约32€ / 人",specialties:"意面、披萨、意式前菜",near:"巴黎第11区",fit:"民宿入住后前往。",reservation:"已预订18:45",website:"https://www.bigmammagroup.com/en/trattorias/ober-mamma",planned:true},
+  {id:"final_escargot",day:2,name:"L’Escargot Montorgueil",city:"巴黎",coords:[48.8647,2.3461],type:"经典法餐",meal:"午餐 · 12:30",price:"约40–65€ / 人",averagePrice:"平均约52€ / 人",specialties:"焗蜗牛、洋葱汤、鹅肝",near:"蒙托格伊街",fit:"所有人到齐才安排座位。",reservation:"已预订12:30",website:"https://www.escargotmontorgueil.com",planned:true},
+  {id:"final_flora",day:2,name:"Flora Danica",city:"巴黎",coords:[48.8700,2.3033],type:"丹麦 / 北欧菜",meal:"晚餐 · 20:15",price:"约45–70€ / 人",averagePrice:"平均约57€ / 人",specialties:"烟熏三文鱼、开放式三明治、北欧海鲜",near:"香榭丽舍",fit:"凯旋门日落后前往。",reservation:"已预订20:15",website:"https://flora-danica.fr",planned:true},
+  {id:"final_vous",day:3,name:"Vous Restaurant",city:"凡尔赛",coords:[48.8015,2.1259],type:"现代法餐",meal:"午餐 · 12:15",price:"约40–70€ / 人",averagePrice:"平均约55€ / 人",specialties:"时令菜单、现代法式主菜",near:"凡尔赛宫南侧",fit:"13:15前离开赶RER。",reservation:"已预订12:15",website:"https://www.vous.restaurant",planned:true},
+  {id:"final_cruise",day:3,name:"Bateaux Parisiens 游船晚餐",city:"巴黎",coords:[48.8600,2.2930],type:"塞纳河餐船",meal:"晚餐 · 20:00",price:"以携程订单为准",averagePrice:"预算约115€ / 人",specialties:"船上法式套餐与塞纳河夜景",near:"以船票码头为准",fit:"已订中间位置5位。",reservation:"已预订",website:"https://www.bateauxparisiens.com",planned:true},
+  {id:"final_marly",day:4,name:"Café Marly",city:"巴黎",coords:[48.8610,2.3370],type:"卢浮宫景观法餐",meal:"午餐 · 14:00",price:"约55–90€ / 人",averagePrice:"平均约72€ / 人",specialties:"烤鱼、烤肉、Pavlova",near:"卢浮宫",fit:"卢浮宫后午餐。",reservation:"已预订14:00",website:"https://cafe-marly.com",planned:true},
+  {id:"final_aubrac",day:4,name:"La Maison de l’Aubrac",city:"巴黎",coords:[48.8705,2.3063],type:"牛排法餐",meal:"晚餐 · 18:00",price:"约45–80€ / 人",averagePrice:"平均约62€ / 人",specialties:"奥布拉克牛排、Aligot",near:"疯马秀步行约10分钟",fit:"控制用餐时间。",reservation:"已预订18:00",website:"https://www.maison-aubrac.com",planned:true},
+  {id:"final_immersion",day:5,name:"Immersion Vendôme",city:"巴黎",coords:[48.8686,2.3303],type:"早午餐",meal:"早午餐 · 09:00",price:"约20–35€ / 人",averagePrice:"平均约28€ / 人",specialties:"咖啡、鸡蛋料理、法式吐司",near:"取车点步行3分钟",fit:"10:00取车前用餐。",reservation:"已预订09:00",website:"",planned:true},
+  {id:"final_mirabelle",day:5,name:"Le Mirabelle",city:"波尔多",coords:[44.858,-0.574],type:"法餐",meal:"晚餐 · 19:45",price:"约35–60€ / 人",averagePrice:"平均约48€ / 人",specialties:"时令法餐",near:"住宿步行约10分钟",fit:"预计19:00到达，衔接偏紧。",reservation:"已预订19:45",website:"",planned:true},
+  {id:"final_oiseau",day:6,name:"L’Oiseau Bleu",city:"波尔多",coords:[44.8440,-0.5570],type:"米其林一星传统法餐",meal:"晚餐 · 19:30",price:"100€或130€ / 人",averagePrice:"平均约115€ / 人",specialties:"现代传统法餐品鉴菜单",near:"波尔多",fit:"与Cent33重复预订，需二选一。",reservation:"已预订19:30",website:"https://www.loiseaubleu.fr",planned:true},
+  {id:"final_cent33",day:6,name:"Cent33",city:"波尔多",coords:[44.8525,-0.5860],type:"米其林一星融合菜",meal:"晚餐 · 20:00",price:"105€ / 人",averagePrice:"平均105€ / 人",specialties:"开放式厨房融合品鉴菜单",near:"波尔多",fit:"与L’Oiseau Bleu重复预订；9月29日前决定取消。",reservation:"已预订20:00",website:"https://cent33.com",planned:true},
+  {id:"final_bonvivre",day:7,name:"Restaurant Le Bon Vivre",city:"图卢兹",coords:[43.6035,1.4445],type:"图卢兹地方菜",meal:"午餐",price:"约30–50€ / 人",averagePrice:"平均约40€ / 人",specialties:"Cassoulet",near:"图卢兹市中心",fit:"航空博物馆后用餐。",reservation:"已预订",website:"",planned:true},
+  {id:"final_pyr",day:7,name:"PY-R",city:"图卢兹",coords:[43.6006,1.4484],type:"米其林二星",meal:"晚餐 · 19:30",price:"158€或188€ / 人",averagePrice:"平均约173€ / 人",specialties:"创意法餐品鉴菜单",near:"图卢兹市中心",fit:"当天重点晚餐。",reservation:"已预订19:30",website:"https://www.py-r.com",planned:true},
+  {id:"final_canuts",day:9,name:"L'Auberge des Canuts",city:"里昂",coords:[45.7620,4.8271],type:"里昂Bouchon",meal:"午餐 · 12:00",price:"约30–50€ / 人",averagePrice:"平均约40€ / 人",specialties:"Quenelle、里昂沙拉、粉红果仁甜点",near:"里昂老城",fit:"上午老城路线之后。",reservation:"已预订12:00",website:"",planned:true},
+  {id:"final_flair",day:9,name:"Flair",city:"里昂",coords:[45.7567,4.8325],type:"法日融合菜",meal:"晚餐 · 19:30",price:"约45–75€ / 人",averagePrice:"平均约60€ / 人",specialties:"法日融合套餐",near:"里昂市区",fit:"当日行程结束后。",reservation:"已预订19:30",website:"",planned:true},
+  {id:"final_armures",day:10,name:"Les Armures",city:"日内瓦",coords:[46.2015,6.1472],type:"瑞士传统菜",meal:"晚餐 · 19:00",price:"约45–75 CHF / 人",averagePrice:"平均约60 CHF / 人",specialties:"奶酪火锅、Raclette、Rösti",near:"日内瓦老城",fit:"阿尔卑斯小木屋区域座位。",reservation:"已预订19:00",website:"https://www.hotel-les-armures.ch",planned:true},
+  {id:"final_aparte",day:11,name:"L’Aparté",city:"日内瓦",coords:[46.2191,6.1138],type:"精致法餐",meal:"午餐 · 12:30",price:"69 CHF / 人",averagePrice:"平均69 CHF / 人",specialties:"午间品鉴菜单",near:"日内瓦",fit:"需与联合国时段协调。",reservation:"已预订12:30",website:"",planned:true},
+  {id:"final_beyrouth",day:11,name:"Parfums de Beyrouth",city:"日内瓦",coords:[46.2115,6.1452],type:"黎巴嫩菜",meal:"晚餐",price:"约20–35 CHF / 人",averagePrice:"平均约28 CHF / 人",specialties:"烤肉、鹰嘴豆泥、黎巴嫩拼盘",near:"日内瓦车站附近",fit:"轻松晚餐。",reservation:"通常现场排队",website:"",planned:true}
+);
+
 // 可实际预约/购票/公开入内的沿途加项；不收录仅能看外观或开放不确定的地点
 const EXTRA_POIS = [
   {id:"extra_canal_stmartin",name:"圣马丁运河 CityWalk",nameEn:"Canal Saint-Martin",city:"巴黎",day:1,coords:[48.8714,2.3655],category:"落地后散步",price:"免费",duration:"45–90分钟",reservation:"无需预约",website:"https://www.google.com/maps/search/?api=1&query=Canal%20Saint-Martin%20Paris",bookingUrl:"",why:"从巴黎第11区民宿附近即可开始，沿运河、铸铁桥和林荫水岸轻松散步。",fit:"最适合14:25落地、入住后仍有余力但来不及进大型博物馆时使用；可随时缩短并返回民宿。"},
@@ -1622,6 +1679,7 @@ const ACCOMMODATIONS = [
   {id:"stay_paris",name:"Modern Loft - 2BR/8P - Place de la République",city:"巴黎",area:"巴黎第11区 · République / Saint-Maur",coords:[48.862,2.380],checkinDay:1,checkoutDay:5,checkinDate:"9月25日",checkoutDate:"9月29日",checkin:"16:00",checkout:"10:00",guests:5,host:"Checkmyguest"},
   {id:"stay_bordeaux",name:"Loft Albert XL · 4 bedrooms and garden",city:"波尔多",area:"波尔多 Chartrons / Rue Albert",coords:[44.856,-0.579],checkinDay:5,checkoutDay:7,checkinDate:"9月29日",checkoutDate:"10月1日",checkin:"15:00",checkout:"11:00",guests:5,host:"Josselin"},
   {id:"stay_toulouse",name:"The Spacious Property in Toulouse",city:"图卢兹",area:"图卢兹 31500 · Rue Denis Papin",coords:[43.605,1.458],checkinDay:7,checkoutDay:8,checkinDate:"10月1日",checkoutDate:"10月2日",checkin:"16:00",checkout:"11:00",guests:5,host:"Yan"},
+  {id:"stay_lyon",name:"里昂 Saint-Priest 酒店",city:"里昂",area:"Saint-Priest · Cours du 3e Millénaire",coords:[45.702,4.932],checkinDay:8,checkoutDay:10,checkinDate:"10月2日",checkoutDate:"10月4日",checkin:"待核对",checkout:"早餐后",guests:5,host:"酒店"},
   {id:"stay_geneva",name:"L’Hôtel Privé · Riverside Retreat · AC Included",city:"日内瓦",area:"Grand-Lancy · 日内瓦河畔区域",coords:[46.179,6.115],checkinDay:10,checkoutDay:12,checkinDate:"10月4日",checkoutDate:"10月6日",checkin:"15:00",checkout:"11:00",guests:3,host:"Olivier",warning:"确认单仅登记3位住客，与全团5人不一致；请确认另外2人的住宿安排或联系房东修改人数。"}
 ];
 
@@ -1718,10 +1776,9 @@ function toggleMapLegend() {
 // ROUTE FETCHING (OSRM) - with caching + parallel loading
 // ============================================================
 function getCacheKey(coords) {
-  // Simple hash from first, last and count of coords for cache key
-  const first = coords[0].map(c => c.toFixed(4)).join(',');
-  const last = coords[coords.length-1].map(c => c.toFixed(4)).join(',');
-  return `route_${coords.length}_${first}_${last}`;
+  // Include every waypoint. The previous first/last/count key could reuse a
+  // stale route after intermediate stops changed, which caused broken lines.
+  return `route_v3_${coords.map(pair => pair.map(c => c.toFixed(4)).join(',')).join('_')}`;
 }
 
 async function fetchRoute(coords) {
@@ -1806,6 +1863,7 @@ async function loadAllRoutes() {
 
   // Refresh whichever complete-map view is open after every segment is ready
   if (currentMode === 'overview') showOverview();
+  else if (currentMode === 'attractions') showAllAttractions();
   else if (currentMode === 'events') showEvents();
   else if (currentMode === 'extras') showExtras();
   else if (currentMode === 'restaurants') showRestaurants();
@@ -1892,7 +1950,10 @@ function routeCoordsForDay(day) {
   const flight = FLIGHTS.find(item => item.day === day.day);
   if (day.day === 1 && flight) coords.push(flight.airportCoords);
   else if (start) coords.push(start.coords);
-  day.stops.forEach(id => { if (POI_DATA[id]) coords.push(POI_DATA[id].coords); });
+  day.stops.forEach(id => {
+    const poi = POI_DATA[id];
+    if (poi && !poi.unavailable) coords.push(poi.coords);
+  });
   if (day.day === 12 && flight) coords.push(flight.airportCoords);
   else if (end) coords.push(end.coords);
   return coords.filter((coord, idx) => idx === 0 || coord[0] !== coords[idx-1][0] || coord[1] !== coords[idx-1][1]);
@@ -1913,7 +1974,7 @@ function buildRouteNodes(day) {
   if (start && day.day !== 1) nodes.push({id:start.id,name:start.name,meta:`住宿出发 · ${start.area}`,time:'出发',coords:start.coords,kind:'stay',action:`showAccommodationDetail('${start.id}')`});
   day.stops.forEach(id => {
     const poi = POI_DATA[id];
-    if (!poi) return;
+    if (!poi || poi.unavailable) return;
     const warning = poi.time && (poi.time.includes('冲突') || poi.time.includes('时间紧张'));
     const dining = poi.type === '餐饮';
     nodes.push({id,name:poi.name,meta:`${poi.time || '时间待定'}${poi.type === '行程' ? ' · 行程节点' : ''}${dining ? ' · 已安排餐厅' : ''} · 点击查看详情`,time:poi.time || '待定',coords:poi.coords,kind:dining ? 'dining' : (warning ? 'warning' : (poi.type === '行程' ? 'transport' : '')),action:`showDetail('${id}')`});
@@ -1948,7 +2009,7 @@ function estimateRouteLeg(dayNum, from, to) {
 function buildDayChecks(day) {
   const items=day.stops.map(id=>({id,p:POI_DATA[id]})).filter(x=>x.p);
   const conflicts=items.filter(x=>x.p.unavailable || /冲突/.test(x.p.time||''));
-  const unconfirmed=items.filter(x=>!x.p.unavailable && x.p.reservation && !/无需|免费|已通过/.test(x.p.reservation) && !bookingState(x.id).confirmed);
+  const unconfirmed=items.filter(x=>!x.p.unavailable && x.p.reservation && !/无需|免费|已通过|已预订|已预约/.test(x.p.reservation) && !bookingState(x.id).confirmed);
   const checks=[];
   if(conflicts.length) checks.push({cls:'conflict',symbol:'×',label:'时间冲突',text:`${conflicts.length}项不可按当前日期执行`});
   if(unconfirmed.length) checks.push({cls:'action',symbol:'!',label:'需处理',text:`${unconfirmed.length}项预约尚未确认`});
@@ -2056,8 +2117,11 @@ function showDay(dayNum) {
   const visibleStops = dayData.stops.filter(id => filterAllows('planned', poiTheme(POI_DATA[id])));
   const visibleAttractionStops = visibleStops.filter(id => poiTheme(POI_DATA[id]) !== 'restaurant');
   visibleAttractionStops.forEach((id, idx) => addMarker(id, POI_DATA[id], idx, visibleAttractionStops.length, false));
-  if (DAY_CONTENT_FILTERS.planned && allDayRoutes[dayNum]) {
-    addRoute(dayNum, allDayRoutes[dayNum]);
+  if (DAY_CONTENT_FILTERS.planned) {
+    const completeRoute = allDayRoutes[dayNum];
+    const fallbackRoute = routeCoordsForDay(dayData);
+    if (completeRoute?.length > 1) addRoute(dayNum, completeRoute);
+    else if (fallbackRoute.length > 1) addRoute(dayNum, fallbackRoute, 3);
   }
 
   // Events for this day (nearby-time focus) — shown as pink 🎪 markers
@@ -2124,6 +2188,25 @@ function showOverview() {
   document.getElementById('sidebar').classList.remove('open');
   document.querySelector('.day-tab.overview-tab')?.classList.add('active');
   document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+}
+
+function showAllAttractions() {
+  currentMode = 'attractions';
+  clearMap();
+  const coords = [];
+  Object.entries(POI_DATA).forEach(([id, poi]) => {
+    if (poi.type === '餐饮' || poi.unavailable) return;
+    const dayData = ITINERARY.find(d => d.day === poi.day);
+    if (!dayData || !dayData.stops.includes(id)) return;
+    const attractionStops = dayData.stops.filter(stopId => POI_DATA[stopId] && POI_DATA[stopId].type !== '餐饮' && !POI_DATA[stopId].unavailable);
+    addMarker(id, poi, attractionStops.indexOf(id), attractionStops.length, true);
+    coords.push(poi.coords);
+  });
+  EXTRA_POIS.forEach(poi => { addExtraMarker(poi); coords.push(poi.coords); });
+  drawCompleteJourneyRoutes();
+  if (coords.length) map.fitBounds(L.latLngBounds(coords), {padding:[30,30]});
+  document.querySelectorAll('.day-tab,.day-card').forEach(el => el.classList.remove('active'));
+  document.getElementById('sidebar').classList.remove('open');
 }
 
 // ============================================================
@@ -2588,17 +2671,17 @@ const VISIT_DATES = {1:"9/25",2:"9/26",3:"9/27",4:"9/28",5:"9/29",6:"9/30",7:"10
 
 // Travel-time estimate includes visits, inter-stop travel and a practical buffer.
 const DAY_TIME_ESTIMATES = {
-  1:{window:"14:25–22:45",total:"约8小时20分",note:"入境取行李约1.5小时 + 机场到民宿约1小时 + 入住/休整；20:45左右出发去 Café Marly，21:30晚餐。",tight:false},
-  2:{window:"08:30–21:00",total:"约12小时30分",note:"蒙马特约3.5小时、歌剧院1.25小时、右岸至拉丁区步行参观约4小时、跨城移动约2小时。建议将歌剧院锁定13:00左右；若延误，先删蓬皮杜外观。",tight:true},
-  3:{window:"07:45–21:00",total:"约13小时15分",note:"凡尔赛往返约2小时，宫殿与精简花园约4.5小时，15:30圣母院约1小时，随后前往游船码头。当天非常紧：凡尔赛建议09:00入场并最迟14:00返程，游船至少提前30分钟到。",tight:true},
-  4:{window:"08:45–20:45",total:"约12小时",note:"卢浮宫约3.5小时，橘园已固定16:30，之后顺延香榭丽舍17:45、凯旋门19:00。大/小皇宫只能作为机动加项，最迟15:35离开并返回橘园。",tight:true},
-  5:{window:"08:00–19:30",total:"约11小时30分",note:"巴黎取车约1小时，至香波尔约2小时，参观2.5小时，前往波尔多约4.5小时，另留休息与停车约1.5小时。",tight:true},
-  6:{window:"08:30–22:30",total:"约14小时",note:"波尔多—滴金往返约2小时、酒庄1.5小时、葡萄酒城2.5小时、波尔多—老托特往返约2小时。老托特具体时间未定，是当天预约的关键约束。",tight:true},
-  7:{window:"07:30–18:30",total:"约11小时",note:"波尔多到图卢兹约2小时40分；10月1日周四没有空客工厂常规导览，当前可执行部分为Aeroscopia约2.5–3小时及图卢兹市区。若改到周三或周六，必须先重排跨城路线。",tight:true},
+  1:{window:"14:25–20:30",total:"约6小时",note:"上午航空博物馆无法执行；14:25落地后按入境、取行李、进城和入住约3小时计算，18:45 Ober Mamma仍偏紧。",tight:true},
+  2:{window:"08:30–22:00",total:"约13小时30分",note:"蒙马特3.5小时、12:30午餐、15:00歌剧院、拉丁区、凯旋门日落及20:15晚餐。教皇15:00在协和广场弥撒，需额外预留交通安保缓冲。",tight:true},
+  3:{window:"08:40–22:30",total:"约13小时50分",note:"10:00凡尔赛、12:15午餐、14:30奥赛候补票、17:30圣母院、20:00游船。奥赛没票时直接删除，才能保证后两项。",tight:true},
+  4:{window:"09:15–22:00",total:"约12小时45分",note:"10:00卢浮宫、14:00午餐、16:30橘园、18:00晚餐、20:00疯马秀。香榭丽舍只保留短停，必须控制每个离场时间。",tight:true},
+  5:{window:"09:00–21:15",total:"约12小时15分",note:"9:00早午餐、10:00取车、12:30香波尔、15:00开往波尔多；19:45晚餐只留约45分钟停车入住，建议提前告知餐厅可能晚到。",tight:true},
+  6:{window:"08:45–22:00",total:"约13小时15分",note:"10:00老托特90分钟，往返波尔多后参观葡萄酒城。19:30 L’Oiseau Bleu与20:00 Cent33重复预订，9月29日前必须二选一。",tight:true},
+  7:{window:"07:00–22:00",total:"约15小时",note:"波尔多7:00出发，约10:00 Aeroscopia，午餐后进城，19:30 PY-R。final表已取消不可执行的周四空客工厂导览。",tight:true},
   8:{window:"07:30–21:00",total:"约13小时30分",note:"图卢兹—卡尔卡松约1小时15分、参观2.5小时、至尼姆约2小时10分、竞技场约1.5小时、嘉德水道桥短停及至里昂约3小时15分。当天极紧，建议尼姆和水道桥二选一。",tight:true},
-  9:{window:"08:45–19:00",total:"约10小时15分",note:"富维耶及罗马遗址约3小时、老城1.5小时、13:00午餐1.5小时、美术馆2小时、旧主宫医院45分钟，步行移动约1小时。",tight:false},
- 10:{window:"09:00–18:30",total:"约9小时30分",note:"汇流博物馆2.5小时、午餐1.5小时、里昂到日内瓦约2小时；若加入博若莱需额外2.5–3小时并可能推迟入住。",tight:false},
- 11:{window:"09:30–18:00",total:"约8小时30分",note:"百达翡丽周一闭馆，不能按原计划入馆；联合国导览约1.5小时，前往 CERN 约45分钟，CERN 2–3小时。建议把上午改为老城/湖边，锁定联合国与 CERN 两个时段。",tight:true},
+  9:{window:"08:30–21:30",total:"约13小时",note:"富维耶、罗马遗址、老城、12:00午餐、美术馆、旧主宫医院及汇流博物馆全部同日，19:30 Flair。建议把汇流博物馆作为可删项。",tight:true},
+ 10:{window:"06:30–21:00",total:"约14小时30分",note:"从里昂Saint-Priest到CERN含过境建议至少3小时，需约06:30出发；11:00 CERN、下午百达翡丽、19:00 Les Armures。",tight:true},
+ 11:{window:"09:00–21:00",total:"约12小时",note:"联合国与红十字会在同一区域，12:30 L’Aparté后安排市区。积家工厂往返至少2小时，不能和全部市区项目同时执行。",tight:true},
  12:{window:"08:30–13:30",total:"约5小时",note:"湖边散步约1小时、早餐与取行李约1.5小时；国际航班建议12:45–13:00抵达机场，为15:55起飞预留约3小时。",tight:false}
 };
 
@@ -2662,7 +2745,7 @@ function buildSummaryRows() {
       const p = POI_DATA[id];
       if (!p) return;
 
-      const need = !p.unavailable && p.reservation && !p.reservation.includes('无需') && !p.reservation.includes('免费') && !p.reservation.includes('已通过');
+      const need = !p.unavailable && p.reservation && !/无需|免费|已通过|已预订|已预约/.test(p.reservation);
       const pType = p.type || '景点';
       const typeIcon = typeIcons[pType] || '📍';
       const weekday = DAY_WEEK[day.day];
@@ -2782,14 +2865,13 @@ let summarySort = 'day'; // 'day' | 'earliest'
 let summarySourceFilter = 'planned'; // 'all' | 'planned' | 'extra'
 
 const BOOKING_OVERRIDES = {
-  d2_2:{earliestDate:'⏰ 9/11 抢票',advanceBooking:'按本团安排9月11日抢票；官网参观票通常滚动开放未来60天',url:'https://www.operadeparis.fr/en/visits/palais-garnier'},
-  d2_4:{earliestDate:'9/25 15:30起',advanceBooking:'9月27日15:30参观；按48小时窗口开始检查，汇总表勾选后填写实际预约时间',url:'https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets'},
-  d3_1:{earliestDate:'现已开放',advanceBooking:'旺季建议立即锁定09:00宫殿时段',url:'https://billetterie.chateauversailles.fr/'},
-  d4_1:{earliestDate:'现已开放',advanceBooking:'9月28日票务时段已开放；建议立即预约09:00',url:'https://ticket.louvre.fr/en'},
+  d2_2:{earliestDate:'立即核对',advanceBooking:'final表写15:00彩排；检查演出票或入场凭证，并预留教皇活动交通缓冲',url:'https://www.operadeparis.fr'},
+  d2_4:{earliestDate:'9/24起检查',advanceBooking:'9月27日17:30参观；主教堂当日恢复通常开放，仍按48小时窗口预约',url:'https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets'},
+  d3_1:{earliestDate:'已预约',advanceBooking:'核对10:00入场时段与5人票证',url:'https://billetterie.chateauversailles.fr/'},
+  d3_3:{earliestDate:'持续检查',advanceBooking:'14:30当前没票；只在出现退票或增放票时加入',url:'https://billetterie.musee-orsay.fr/'},
+  d4_1:{earliestDate:'已预约',advanceBooking:'已预约9月28日10:00',url:'https://ticket.louvre.fr/en'},
   d4_4:{earliestDate:'现已开放后尽快',advanceBooking:'行程已调整为16:30，优先锁定该时段',url:'https://billetterie.musee-orangerie.fr/'},
-  d6_1:{earliestDate:'现在确认',advanceBooking:'核对10:00、5人名单及确认邮件',url:'https://www.yquem.fr/'},
-  d6_3:{earliestDate:'现在确认',advanceBooking:'先确认晚间是否接待及具体到访时间',url:'https://www.trottevieille.com/en/contact-3/'},
-  d7_1:{earliestDate:'10/1无场次',advanceBooking:'先决定是否改到9/30周三或10/3周六，再查看对应场次',url:'https://www.manatour.fr/airbus/'},
+  d6_3:{earliestDate:'现在确认',advanceBooking:'核对10:00、90分钟、5人总价170€及确认邮件',url:'https://www.trottevieille.com/en/contact-3/'},
   d11_2:{earliestDate:'建议9/21前',advanceBooking:'导览场次有限，至少提前2周',url:'https://www.ungeneva.org/en/visit'},
   d11_3:{earliestDate:'约9/7起密切关注',advanceBooking:'导览通常按滚动规则放位；免费展览区无需预约',url:'https://visit.cern/' }
 };
