@@ -587,7 +587,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.39</span>
+    <span class="v-dot"></span><span>v1.9.40</span>
   </div>
 </header>
 
@@ -641,10 +641,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.39</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.40</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry"><span class="version-tag">v1.9.40</span><span class="version-date">2026-09-10</span><div class="version-title">修复预约时间未更新</div><ul class="version-items"><li>加入一次性预约数据迁移，清除旧浏览器缓存对票面时间的覆盖</li><li>迁移后仍可在预约任务中心手工修改状态和时间</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.39</span><span class="version-date">2026-09-10</span><div class="version-title">预填已购门票确认</div><ul class="version-items"><li>核验并预填凡尔赛宫、卢浮宫、橘园、疯马秀与 CERN 的票面日期、时间和人数</li><li>公开页面不显示姓名、邮箱、票号或订单号；疯马秀仅有2张票，保留缺3张提醒</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.38</span><span class="version-date">2026-09-08</span><div class="version-title">修正红十字博物馆周一闭馆</div><ul class="version-items"><li>10月5日为周一，国际红十字与红新月博物馆闭馆</li><li>保留原表项目作为冲突提示，但从当天可执行路线和时间估算中排除</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.37</span><span class="version-date">2026-09-08</span><div class="version-title">final 行程、最新活动与完整路线</div><ul class="version-items"><li>按“法国final行程”更新12天景点、已订餐厅、住宿与日内瓦安排</li><li>核对教皇9月25–28日法国访问，增加9月26日协和广场交通提醒，并确认圣母院9月27日恢复开放</li><li>增加“一键显示全部景点”，修正路线缓存误用和加载前缺线问题</li></ul></div>
@@ -2890,6 +2891,19 @@ const BOOKING_PRESETS = {
   d4_10:{confirmed:true,status:'booked',time:'2026-09-28T20:00'},
   d10_cern:{confirmed:true,status:'booked',time:'2026-10-04T11:00'}
 };
+const BOOKING_PRESET_VERSION = 'ticket-confirmations-2026-09-10-v2';
+
+function applyBookingPresetMigration() {
+  if (localStorage.getItem('franceBookingPresetVersion') === BOOKING_PRESET_VERSION) return;
+  Object.entries(BOOKING_PRESETS).forEach(([id, preset]) => {
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(`franceBooking:${id}`) || '{}'); } catch (_) {}
+    // The verified ticket is authoritative for status and admission time. Keep
+    // any unrelated user fields, then allow subsequent manual edits as usual.
+    localStorage.setItem(`franceBooking:${id}`, JSON.stringify({...saved, ...preset}));
+  });
+  localStorage.setItem('franceBookingPresetVersion', BOOKING_PRESET_VERSION);
+}
 
 function bookingState(id) {
   try { return {...(BOOKING_PRESETS[id] || {}), ...JSON.parse(localStorage.getItem(`franceBooking:${id}`) || '{}')}; }
@@ -3833,6 +3847,7 @@ function initMatrixResizer() {
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+  applyBookingPresetMigration();
   initMap();
   buildSidebar();
   initMatrixResizer();
