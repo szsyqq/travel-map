@@ -587,7 +587,7 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
     </div>
   </div>
   <div class="version-badge" onclick="showChangelog()" title="查看更新日志">
-    <span class="v-dot"></span><span>v1.9.38</span>
+    <span class="v-dot"></span><span>v1.9.39</span>
   </div>
 </header>
 
@@ -641,10 +641,11 @@ header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%);co
 <div class="changelog-overlay" id="changelogModal" aria-hidden="true">
 <div class="changelog-modal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
 <div class="changelog-header">
-<h2 id="changelogTitle">📋 更新日志 <span>v1.9.38</span></h2>
+<h2 id="changelogTitle">📋 更新日志 <span>v1.9.39</span></h2>
 <button class="changelog-close" id="changelogCloseBtn" onclick="hideChangelog()" aria-label="关闭更新日志">✕</button>
 </div>
 <div class="changelog-body">
+<div class="version-entry"><span class="version-tag">v1.9.39</span><span class="version-date">2026-09-10</span><div class="version-title">预填已购门票确认</div><ul class="version-items"><li>核验并预填凡尔赛宫、卢浮宫、橘园、疯马秀与 CERN 的票面日期、时间和人数</li><li>公开页面不显示姓名、邮箱、票号或订单号；疯马秀仅有2张票，保留缺3张提醒</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.38</span><span class="version-date">2026-09-08</span><div class="version-title">修正红十字博物馆周一闭馆</div><ul class="version-items"><li>10月5日为周一，国际红十字与红新月博物馆闭馆</li><li>保留原表项目作为冲突提示，但从当天可执行路线和时间估算中排除</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.37</span><span class="version-date">2026-09-08</span><div class="version-title">final 行程、最新活动与完整路线</div><ul class="version-items"><li>按“法国final行程”更新12天景点、已订餐厅、住宿与日内瓦安排</li><li>核对教皇9月25–28日法国访问，增加9月26日协和广场交通提醒，并确认圣母院9月27日恢复开放</li><li>增加“一键显示全部景点”，修正路线缓存误用和加载前缺线问题</li></ul></div>
 <div class="version-entry"><span class="version-tag">v1.9.36</span><span class="version-date">2026-08-27</span><div class="version-title">▶ 行程执行与预约任务</div><ul class="version-items"><li>橘园美术馆调整至16:30，并重新顺延香榭丽舍与凯旋门时段</li><li>增加执行模式、节点间交通时间与一键导航</li><li>增加独立预约任务中心；可执行性用文字、符号和边框表示，不依赖红绿颜色</li></ul></div>
@@ -1111,15 +1112,15 @@ const POI_DATA = {
   "d2_5":{name:"莎士比亚书店",nameEn:"Shakespeare and Company",coords:[48.8526,2.3470],day:2,desc:"塞纳河畔传奇英文书店。",why:"从圣母院步行即达，二楼可看圣母院景观。",reservation:"无需预约",price:"免费参观",reserveUrl:"",advanceBooking:"无需",time:"16:15",category:"书店"},
   "d2_6":{name:"先贤祠",nameEn:"Panthéon",coords:[48.8462,2.3460],day:2,desc:"伏尔泰、卢梭、雨果、居里夫人等法国伟人安葬地。",why:"新版行程安排在拉丁区步行线末段，注意18:00前入场。",reservation:"个人无需预约；可提前购票",price:"16€；4日博物馆通票已包含",reserveUrl:"https://www.paris-pantheon.fr",advanceBooking:"无需预约",time:"17:00",category:"纪念馆"},
   "d2_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:2,desc:"从战神广场近距离观看埃菲尔铁塔。",why:"晚上作为巴黎市区行程收尾，整点灯光闪烁约5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:30",category:"地标"},
-  "d3_1":{name:"凡尔赛宫",nameEn:"Château de Versailles",coords:[48.8049,2.1204],day:3,desc:"路易十四打造的欧洲顶级皇家宫殿。",why:"final 表要求8:40在Saint-Michel–Notre-Dame集合，约10:00抵达；12:15已订午餐。",reservation:"已预约",price:"32€",reserveUrl:"https://www.chateauversailles.fr",advanceBooking:"已预约，核对入场时间",time:"10:00",category:"宫殿",transport:"8:40集合乘RER C至 Versailles Château Rive Gauche",closed:"周一闭馆"},
+  "d3_1":{name:"凡尔赛宫",nameEn:"Château de Versailles",coords:[48.8049,2.1204],day:3,desc:"路易十四打造的欧洲顶级皇家宫殿。",why:"final 表要求8:40在Saint-Michel–Notre-Dame集合，约10:00抵达；12:15已订午餐。",reservation:"已预约：9月27日10:00，5人，入口A",price:"票面0€；花园不包含",reserveUrl:"https://www.chateauversailles.fr",advanceBooking:"已核验电子票；10:00后半小时内从Dufour Pavilion入口A进场",time:"10:00",category:"宫殿",transport:"8:40集合乘RER C至 Versailles Château Rive Gauche",closed:"周一闭馆",ticketConfirmation:"已核验5张实名票；Passport免费资格票，花园不包含。"},
   "d3_3":{name:"奥赛博物馆（当前没票）",nameEn:"Musée d'Orsay",coords:[48.8600,2.3264],day:3,desc:"final 表计划14:30参观，但同时注明当前没票。",why:"13:15离开Vous Restaurant，乘约13:40的RER C前往；只有补到票才执行。",reservation:"需要预约，当前没票",price:"16€",reserveUrl:"https://www.musee-orsay.fr",advanceBooking:"继续检查退票或增放票",time:"14:30 · 当前没票",category:"博物馆",unavailable:true},
   "d3_2":{name:"塞纳河游船晚餐",nameEn:"Bateaux Parisiens Dinner Cruise",coords:[48.8600,2.2930],day:3,desc:"携程已订BP船中间位置，5位。",why:"圣母院结束后前往登船点。",reservation:"已预订，核对码头和登船时间",price:"以订单为准",reserveUrl:"",advanceBooking:"已预订",time:"20:00",category:"体验",type:"体验"},
-  "d4_1":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:4,desc:"世界重要博物馆，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。",why:"final 表确认10:00参观。",reservation:"已预约",price:"32€（非欧洲经济区游客）；通票可用",reserveUrl:"https://ticket.louvre.fr/en",advanceBooking:"已预约10:00",time:"10:00",category:"博物馆",closed:"周二闭馆"},
+  "d4_1":{name:"卢浮宫",nameEn:"Musée du Louvre",coords:[48.8606,2.3376],day:4,desc:"世界重要博物馆，必看《蒙娜丽莎》《断臂维纳斯》《胜利女神》。",why:"已核验两套预约：10:00共5张、15:30共5张；当前主线仍按10:00执行。",reservation:"已预约：9月28日10:00（5人）；另有15:30备用时段（5人）",price:"预约票0€；入场须同时出示Paris Museum Pass",reserveUrl:"https://ticket.louvre.fr/en",advanceBooking:"两套时段均已核验；出发前确定使用哪一套",time:"10:00",category:"博物馆",closed:"周二闭馆",ticketConfirmation:"10:00预约5张；15:30预约5张。实名票不可转让、不可更改。"},
   "d4_2":{name:"杜乐丽花园",nameEn:"Jardin des Tuileries",coords:[48.8637,2.3260],day:4,desc:"连接卢浮宫和协和广场的法式花园。",why:"卢浮宫结束后向西步行前往橘园和香榭丽舍。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"12:30",category:"公园"},
   "d4_3":{name:"大皇宫 / 小皇宫（可选）",nameEn:"Grand Palais / Petit Palais",coords:[48.8661,2.3130],day:4,desc:"香榭丽舍附近的玻璃穹顶展馆和美术馆。",why:"新版 Excel 明确列为可选项，只有当天进度允许时加入。",reservation:"视具体展览决定",price:"外观免费；展览另购票",reserveUrl:"https://www.grandpalais.fr",advanceBooking:"如决定看特展再预约",time:"13:30",category:"可选景点",type:"行程"},
-  "d4_4":{name:"橘园美术馆",nameEn:"Musée de l'Orangerie",coords:[48.8636,2.3220],day:4,desc:"以莫奈8幅巨型《睡莲》全景壁画闻名。",why:"16:30入场，安排约1小时参观，位于杜乐丽花园西端。",reservation:"持Paris Museum Pass仍须预约时段",price:"网购12.5€；4日博物馆通票已包含",reserveUrl:"https://www.musee-orangerie.fr",advanceBooking:"官网开放后尽早预约",time:"16:30",category:"博物馆",closed:"周二闭馆"},
+  "d4_4":{name:"橘园美术馆",nameEn:"Musée de l'Orangerie",coords:[48.8636,2.3220],day:4,desc:"以莫奈8幅巨型《睡莲》全景壁画闻名。",why:"16:30入场，安排约1小时参观，位于杜乐丽花园西端。",reservation:"已预约：9月28日16:30，5人",price:"预约票0€；必须同时出示Paris Museum Pass或非定时经销商门票",reserveUrl:"https://www.musee-orangerie.fr",advanceBooking:"已核验5张定时预约票",time:"16:30",category:"博物馆",closed:"周二闭馆",ticketConfirmation:"已核验5张16:30定时预约票；预约票本身不能替代通票。"},
   "d4_5":{name:"香榭丽舍大街",nameEn:"Avenue des Champs-Élysées",coords:[48.8698,2.3075],day:4,desc:"从协和广场通往凯旋门的巴黎中轴线大道。",why:"橘园结束后短时间散步，再前往18:00晚餐。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"17:35",category:"地标"},
-  "d4_10":{name:"疯马秀",nameEn:"Crazy Horse Paris",coords:[48.8659,2.3011],day:4,desc:"final 表安排20:00演出。",why:"18:00在La Maison de l'Aubrac晚餐后步行约10分钟；好座位需提前排队。",reservation:"已安排，必须核对演出票",price:"以订单为准",reserveUrl:"https://www.lecrazyhorseparis.com",advanceBooking:"提前到场排队",time:"20:00",category:"演出",type:"体验"},
+  "d4_10":{name:"疯马秀",nameEn:"Crazy Horse Paris",coords:[48.8659,2.3011],day:4,desc:"Totally Crazy演出，9月28日20:00。",why:"18:00在La Maison de l'Aubrac晚餐后步行约10分钟；票面建议提前30分钟到场。",reservation:"已购票：9月28日20:00，目前票据仅2张",price:"Crazy Champagne；票面演出贡献额61.40€ / 张",reserveUrl:"https://www.lecrazyhorseparis.com",advanceBooking:"已核验2张；若全团5人同行，尚缺3张",time:"20:00",category:"演出",type:"体验",ticketConfirmation:"已核验2张票，建议19:30前到场；与5人总人数相比尚缺3张。"},
   "d4_6":{name:"凯旋门",nameEn:"Arc de Triomphe",coords:[48.8738,2.2950],day:4,desc:"可登顶俯瞰巴黎12条放射状大道。",why:"新版行程把凯旋门放在9月28日巴黎行程末段。",reservation:"普通个人无需预约；可提前购票",price:"9月28日票价22€；4日博物馆通票已包含",reserveUrl:"https://tickets.monuments-nationaux.fr/en-GB/families?site=2032863779450400197",advanceBooking:"无需预约；为减少现场排队可提前购票",time:"19:00",category:"地标",reserveChannels:"官网仅要求7人以上团队至少提前4周预约；个人和通票持有人无需预约时段"},
   "d4_7":{name:"战神广场（埃菲尔铁塔夜景）",nameEn:"Champ de Mars / Eiffel Tower",coords:[48.8558,2.2980],day:4,desc:"从大草坪仰望埃菲尔铁塔的最佳位置。",why:"傍晚在草坪上看铁塔灯光秀，每小时整点闪烁5分钟。",reservation:"无需预约",price:"免费",reserveUrl:"",advanceBooking:"无需",time:"19:00",category:"地标"},
   "d4_8":{name:"法国国民议会（波旁宫）",nameEn:"Assemblée nationale · Palais Bourbon",coords:[48.8600,2.3188],day:4,desc:"法国国民议会（下议院）所在地。现已开放个人免费预约，可选导览或语音导览，参观约1小时30分。",why:"不在开会时可参观庆典画廊、会议厅、图书馆等；开会时可能旁听辩论。一次最多登记5人，只有收到确认邮件才代表获准入内。",reservation:"必须提前免费预约并等待确认",price:"免费",reserveUrl:"https://www.assemblee-nationale.fr/dyn/visite/visites-individuelles",advanceBooking:"现在开始关注9月28日时段",time:"—",category:"见学/机构",type:"见学",transport:"按电子票注明入口准时抵达；14岁以上携带有效护照原件",website:"https://www.assemblee-nationale.fr",reserveChannels:"在线预约需填写每位访客姓名、出生日期与出生地；参观可能因议程或安保临时调整",studyTour:true},
@@ -1160,7 +1161,7 @@ const POI_DATA = {
   "d7_lunch":{name:"Restaurant Le Bon Vivre（已预订）",nameEn:"Le Bon Vivre",coords:[43.6035,1.4445],day:7,desc:"图卢兹传统Cassoulet餐厅。",why:"Aeroscopia参观后进城午餐。",reservation:"已预订",price:"约30–50€ / 人",reserveUrl:"",advanceBooking:"已预订",time:"13:30",category:"餐饮",type:"餐饮"},
   "d7_dinner":{name:"PY-R（已预订）",nameEn:"PY-R",coords:[43.6006,1.4484],day:7,desc:"图卢兹米其林二星餐厅。",why:"final 表指定晚餐。",reservation:"已预订19:30",price:"158€或188€ / 人",reserveUrl:"https://www.py-r.com",advanceBooking:"已预订",time:"19:30",category:"餐饮",type:"餐饮"},
   "d9_dinner":{name:"Flair（已预订）",nameEn:"Flair Lyon",coords:[45.7567,4.8325],day:9,desc:"final 表指定里昂晚餐。",why:"全天里昂行程结束后用餐。",reservation:"已预订19:30",price:"以餐厅菜单为准",reserveUrl:"",advanceBooking:"已预订",time:"19:30",category:"餐饮",type:"餐饮"},
-  "d10_cern":{name:"CERN（已预约）",nameEn:"CERN",coords:[46.2333,6.0492],day:10,desc:"CERN科学门户和预约项目。",why:"final 表确认10月4日11:00，需从里昂很早出发并计算过境时间。",reservation:"已预约11:00",price:"免费",reserveUrl:"https://visit.cern",advanceBooking:"已预约",time:"11:00",category:"科技"},
+  "d10_cern":{name:"CERN（已预约）",nameEn:"CERN Science Gateway",coords:[46.2333,6.0492],day:10,desc:"确认函实际到达时间为10月4日11:00，共5人；文件名中的10:00不是票面时间。",why:"需从里昂很早出发并计算过境时间；确认只保证科学门户免费活动入场，高需求导览和实验室工作坊需签到后现场另约。",reservation:"已预约：10月4日11:00，5人",price:"免费",reserveUrl:"https://visit.cern",advanceBooking:"已核验确认函；到前台出示二维码签到",time:"11:00",category:"科技",ticketConfirmation:"已核验5人预约，11:00到达；导览和实验室活动不包含在基础确认中。"},
   "d10_patek":{name:"百达翡丽博物馆",nameEn:"Patek Philippe Museum",coords:[46.2002,6.1447],day:10,desc:"全球重要钟表博物馆之一。",why:"周一闭馆，final 表改到周日下午。",reservation:"建议提前购票",price:"约10 CHF",reserveUrl:"https://www.patek.com/museum",advanceBooking:"核对周日下午时段",time:"15:00",category:"博物馆"},
   "d10_dinner":{name:"Les Armures（已预订）",nameEn:"Les Armures",coords:[46.2015,6.1472],day:10,desc:"日内瓦传统瑞士菜。",why:"已预订阿尔卑斯小木屋区域。",reservation:"已预订19:00",price:"约45–75 CHF / 人",reserveUrl:"https://www.hotel-les-armures.ch",advanceBooking:"已预订",time:"19:00",category:"餐饮",type:"餐饮"},
   "d11_redcross":{name:"国际红十字与红新月博物馆（周一闭馆）",nameEn:"International Red Cross Museum",coords:[46.2272,6.1371],day:11,desc:"联合国对面的国际人道主义主题博物馆；官网开放时间为周二至周日10:00–17:00，周一闭馆。",why:"final 表把它列为10月5日可选项，但当天是周一，无法入内参观；仅保留为排期冲突提示，不接入当天路线。",reservation:"当天闭馆，不能预约",price:"成人15 CHF（本日不适用）",reserveUrl:"https://redcrossmuseum.ch/en/prices-opening-hours-access/",advanceBooking:"10月5日不可执行；如要参观须改到10月4日周日",time:"10月5日周一 · 闭馆",category:"博物馆",type:"行程",closed:"每周一闭馆",unavailable:true},
@@ -2544,9 +2545,10 @@ function showDetail(id) {
 
   // Professional reservation badge
   const hasReserve = Boolean(!poi.unavailable && poi.reservation && (/必须预约|须预约|需要预约|建议预约/.test(poi.reservation)) && !/无需预约|已通过/.test(poi.reservation));
+  const ticketState = bookingState(id);
   const reserveBadge = poi.unavailable
     ? '<span class="badge-reserve badge-need">日期冲突</span>'
-    : (hasReserve ? '<span class="badge-reserve badge-need">需要预约</span>' : '<span class="badge-reserve badge-free">免预约</span>');
+    : (ticketState.confirmed ? '<span class="badge-reserve badge-free">已预约</span>' : (hasReserve ? '<span class="badge-reserve badge-need">需要预约</span>' : '<span class="badge-reserve badge-free">免预约</span>'));
 
   // Clean up reservation text
   let reserveClean = '';
@@ -2580,6 +2582,7 @@ function showDetail(id) {
   if (poi.reserveUrl) reserveRows += `<tr><td class="k">预约入口</td><td class="v"><a href="${poi.reserveUrl}" target="_blank" style="color:#007aff">${poi.reserveUrl}</a></td></tr>`;
   else if (hasReserve) reserveRows += `<tr><td class="k">预约入口</td><td class="v" style="color:#e65100;font-size:11px">需自行搜索官网预约</td></tr>`;
   if (poi.reserveChannels) reserveRows += `<tr><td class="k">预约渠道</td><td class="v">${poi.reserveChannels}</td></tr>`;
+  if (poi.ticketConfirmation) reserveRows += `<tr><td class="k">票据核验</td><td class="v"><strong>${poi.ticketConfirmation}</strong></td></tr>`;
   if (poi.transport) reserveRows += `<tr><td class="k">交通方式</td><td class="v">${poi.transport}</td></tr>`;
 
   const bodyHtml = `
@@ -2799,6 +2802,7 @@ function buildSummaryRows() {
         closedText,
         closedConflict,
         linkCell,
+        ticketConfirmation:p.ticketConfirmation || '',
         passInfo:museumPassInfo(id, p, pType),
         source:'planned',
         sourceLabel:'原定行程'
@@ -2868,18 +2872,28 @@ let summarySourceFilter = 'planned'; // 'all' | 'planned' | 'extra'
 const BOOKING_OVERRIDES = {
   d2_2:{earliestDate:'立即核对',advanceBooking:'final表写15:00彩排；检查演出票或入场凭证，并预留教皇活动交通缓冲',url:'https://www.operadeparis.fr'},
   d2_4:{earliestDate:'9/24起检查',advanceBooking:'9月27日17:30参观；主教堂当日恢复通常开放，仍按48小时窗口预约',url:'https://resa.notredamedeparis.fr/en/reservationindividuelle/tickets'},
-  d3_1:{earliestDate:'已预约',advanceBooking:'核对10:00入场时段与5人票证',url:'https://billetterie.chateauversailles.fr/'},
+  d3_1:{earliestDate:'已预约',advanceBooking:'已核验9月27日10:00、5张票；入口A，花园不包含',url:'https://billetterie.chateauversailles.fr/'},
   d3_3:{earliestDate:'持续检查',advanceBooking:'14:30当前没票；只在出现退票或增放票时加入',url:'https://billetterie.musee-orsay.fr/'},
-  d4_1:{earliestDate:'已预约',advanceBooking:'已预约9月28日10:00',url:'https://ticket.louvre.fr/en'},
-  d4_4:{earliestDate:'现已开放后尽快',advanceBooking:'行程已调整为16:30，优先锁定该时段',url:'https://billetterie.musee-orangerie.fr/'},
+  d4_1:{earliestDate:'已预约',advanceBooking:'10:00和15:30各有5张；主线使用10:00',url:'https://ticket.louvre.fr/en'},
+  d4_4:{earliestDate:'已预约',advanceBooking:'已核验9月28日16:30、5张票；需同时出示通票',url:'https://billetterie.musee-orangerie.fr/'},
+  d4_10:{earliestDate:'已购2张',advanceBooking:'20:00演出，19:30前到；全团5人尚缺3张',url:'https://www.lecrazyhorseparis.com'},
+  d10_cern:{earliestDate:'已预约',advanceBooking:'确认函实际为10月4日11:00、5人；高需求活动到场后另约',url:'https://visit.cern'},
   d6_3:{earliestDate:'现在确认',advanceBooking:'核对10:00、90分钟、5人总价170€及确认邮件',url:'https://www.trottevieille.com/en/contact-3/'},
   d11_2:{earliestDate:'建议9/21前',advanceBooking:'导览场次有限，至少提前2周',url:'https://www.ungeneva.org/en/visit'},
   d11_3:{earliestDate:'约9/7起密切关注',advanceBooking:'导览通常按滚动规则放位；免费展览区无需预约',url:'https://visit.cern/' }
 };
 
+const BOOKING_PRESETS = {
+  d3_1:{confirmed:true,status:'booked',time:'2026-09-27T10:00'},
+  d4_1:{confirmed:true,status:'booked',time:'2026-09-28T10:00'},
+  d4_4:{confirmed:true,status:'booked',time:'2026-09-28T16:30'},
+  d4_10:{confirmed:true,status:'booked',time:'2026-09-28T20:00'},
+  d10_cern:{confirmed:true,status:'booked',time:'2026-10-04T11:00'}
+};
+
 function bookingState(id) {
-  try { return JSON.parse(localStorage.getItem(`franceBooking:${id}`) || '{}'); }
-  catch (_) { return {}; }
+  try { return {...(BOOKING_PRESETS[id] || {}), ...JSON.parse(localStorage.getItem(`franceBooking:${id}`) || '{}')}; }
+  catch (_) { return {...(BOOKING_PRESETS[id] || {})}; }
 }
 
 function saveBookingState(id, field, value) {
@@ -2919,7 +2933,7 @@ function bookingTaskRows() {
 function renderBookingTasks() {
   const rows=bookingTaskRows();
   const counts={}; rows.forEach(r=>{const s=defaultTaskStatus(r);counts[s]=(counts[s]||0)+1;});
-  document.getElementById('bookingTaskBody').innerHTML=`<div class="task-summary">共 ${rows.length} 项 · 待预约 ${counts.pending||0} · 等待放票 ${counts.waiting||0} · 已预约 ${counts.booked||0} · 日期冲突 ${counts.conflict||0}<br>状态同时使用文字、符号和边框表达，不以红色或绿色作为判断依据。</div><div class="task-list">${rows.map(r=>{const state=bookingState(r.id),key=defaultTaskStatus(r),s=TASK_STATUS[key]||TASK_STATUS.pending,override=BOOKING_OVERRIDES[r.id]||{};return `<article class="task-card ${s.cls}"><div class="task-card-head"><span class="task-state-symbol">${s.symbol}</span><div><div class="task-card-name">第${r.day}天 · ${VISIT_DATES[r.day]} · ${r.name}</div><div class="task-card-meta">${r.time} · ${override.advanceBooking||r.advanceBooking} · 当前：${s.label}</div></div></div><div class="task-controls"><select aria-label="${r.name}预约状态" onchange="saveTaskState('${r.id}','status',this.value)">${Object.entries(TASK_STATUS).map(([value,item])=>`<option value="${value}" ${value===key?'selected':''}>${item.symbol} ${item.label}</option>`).join('')}</select><input type="datetime-local" aria-label="${r.name}预约时间" value="${state.time||''}" onchange="saveTaskState('${r.id}','time',this.value)">${(override.url||r.linkCell.match(/href="([^"]+)/)?.[1])?`<a class="task-link" href="${override.url||r.linkCell.match(/href="([^"]+)/)?.[1]}" target="_blank">官网预约 ↗</a>`:'<span></span>'}</div></article>`;}).join('')}</div>`;
+  document.getElementById('bookingTaskBody').innerHTML=`<div class="task-summary">共 ${rows.length} 项 · 待预约 ${counts.pending||0} · 等待放票 ${counts.waiting||0} · 已预约 ${counts.booked||0} · 日期冲突 ${counts.conflict||0}<br>状态同时使用文字、符号和边框表达，不以红色或绿色作为判断依据。</div><div class="task-list">${rows.map(r=>{const state=bookingState(r.id),key=defaultTaskStatus(r),s=TASK_STATUS[key]||TASK_STATUS.pending,override=BOOKING_OVERRIDES[r.id]||{};return `<article class="task-card ${s.cls}"><div class="task-card-head"><span class="task-state-symbol">${s.symbol}</span><div><div class="task-card-name">第${r.day}天 · ${VISIT_DATES[r.day]} · ${r.name}</div><div class="task-card-meta">${r.time} · ${override.advanceBooking||r.advanceBooking} · 当前：${s.label}${r.ticketConfirmation?`<br><strong>${r.ticketConfirmation}</strong>`:''}</div></div></div><div class="task-controls"><select aria-label="${r.name}预约状态" onchange="saveTaskState('${r.id}','status',this.value)">${Object.entries(TASK_STATUS).map(([value,item])=>`<option value="${value}" ${value===key?'selected':''}>${item.symbol} ${item.label}</option>`).join('')}</select><input type="datetime-local" aria-label="${r.name}预约时间" value="${state.time||''}" onchange="saveTaskState('${r.id}','time',this.value)">${(override.url||r.linkCell.match(/href="([^"]+)/)?.[1])?`<a class="task-link" href="${override.url||r.linkCell.match(/href="([^"]+)/)?.[1]}" target="_blank">官网预约 ↗</a>`:'<span></span>'}</div></article>`;}).join('')}</div>`;
 }
 
 function showBookingTasks() { renderBookingTasks();const el=document.getElementById('bookingTaskModal');el.classList.add('open');el.setAttribute('aria-hidden','false');el.querySelector('.task-close').focus(); }
@@ -2972,14 +2986,14 @@ function renderSummaryTable() {
     if (override.advanceBooking) r.advanceBooking = override.advanceBooking;
     if (override.url) r.linkCell = `<a href="${override.url}" target="_blank" rel="noopener" class="link-btn">🔗 预约/购票</a>`;
     const booked = bookingState(r.id);
-    const confirmable = r.need && !['餐饮','住宿','交通'].includes(r.type);
+    const confirmable = (r.need || BOOKING_PRESETS[r.id]) && !['餐饮','住宿','交通'].includes(r.type);
     html += `<tr${r.closedConflict ? ' style="background:#fff5f5"' : ''}>
       <td class="col-day"><span class="tag-day" style="background:${DAY_COLORS[r.day]}">第${r.day}天</span><span class="summary-date">${VISIT_DATES[r.day]}</span><span class="summary-weekday">周${r.weekday}</span></td>
       <td class="tag-time">${r.time}<br><span style="font-size:9px;color:#ccc">周${r.weekday}</span></td>
       <td class="col-item"><strong>${r.typeIcon} ${r.name}</strong><br><span style="font-size:9px;color:#86868b">${r.nameEn}</span></td>
       <td class="col-pass"><span class="pass-tag ${r.passInfo.cls}" title="${r.passInfo.note}">${r.passInfo.label}</span></td>
-      <td class="col-reserve">${r.unavailable ? '<span class="tag-reserve need">⚠ 不可预约</span>' : (r.need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯ 无需</span>')}</td>
-      <td class="adv-info col-booking">${r.advanceBooking}</td>
+      <td class="col-reserve">${r.unavailable ? '<span class="tag-reserve need">⚠ 不可预约</span>' : (booked.confirmed ? '<span class="tag-reserve free">✓ 已预约</span>' : (r.need ? '<span class="tag-reserve need">⬡ 需预约</span>' : '<span class="tag-reserve free">◯ 无需</span>'))}</td>
+      <td class="adv-info col-booking">${r.advanceBooking}${r.ticketConfirmation ? `<br><strong style="color:#24653a">${r.ticketConfirmation}</strong>` : ''}</td>
       <td class="adv-info" style="font-weight:${r.earliestDate ? '600' : '400'};color:${r.earliestDate ? '#e65100' : '#555'}">${r.earliestDate || '—'}</td>
       <td>${r.closedText}</td>
       <td>${r.linkCell}</td>
